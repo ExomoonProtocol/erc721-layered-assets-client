@@ -1,0 +1,28 @@
+{
+  "name": "@exomoon/erc721-layered-assets-client",
+  "version": "1.0.0",
+  "description": "Exomoon JS Client for ERC721 Layered assets.",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "set-dev": "./scripts/set-dev-env.sh",
+    "lint": "eslint \"**/*.ts\" && eslint \"**/*.tsx\""
+  },
+  "dependencies": {
+    "typescript-json-serializer": "^5.1.0"
+  },
+  "devDependencies": {
+    "@burneeble/eslint-plugin-burneeble": "^1.0.12",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.1.6"
+  },
+  "peerDependencies": {},
+  "files": [
+    "/lib"
+  ]
+}
