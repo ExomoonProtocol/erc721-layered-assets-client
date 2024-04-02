@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="0.164">
+  <testsuite name="AssetsClient" errors="0" failures="0" skipped="0" timestamp="2024-04-02T09:44:40" time="0.118" tests="1">
+    <testcase classname="AssetsClient getCollectionInfo method Should read" name="AssetsClient getCollectionInfo method Should read" time="0.011">
+    </testcase>
+  </testsuite>
+</testsuites>

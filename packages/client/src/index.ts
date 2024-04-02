@@ -1,3 +1,2 @@
-export const Client = {
-  solutionToLife: () => 42,
-};
+export * from "./models";
+export * from "./lib";
