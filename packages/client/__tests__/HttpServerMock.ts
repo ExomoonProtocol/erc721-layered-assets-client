@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, statSync, readdirSync } from "fs";
 
 /**
  * Response mapping object
@@ -96,6 +96,39 @@ export class HttpServerMock {
     return [...this._responseMappings, ...this.temporaryResponseMappings];
   }
 
+  protected static validateResponseMapping(
+    mapping: ResponseMapping
+  ): Array<ResponseMapping> {
+    console.log("Validating mapping", mapping);
+
+    let mappings: Array<ResponseMapping> = [mapping];
+
+    if (mapping.filePath) {
+      const stats = statSync(mapping.filePath);
+
+      if (stats.isDirectory()) {
+        const files = readdirSync(mapping.filePath);
+
+        mappings = files.map((file) => {
+          const extension = file.split(".").pop();
+
+          return {
+            ...mapping,
+            url: `${mapping.url}/${file}`,
+            filePath: `${mapping.filePath}/${file}`,
+            fileEncoding: ["json", "txt"].includes(extension || "")
+              ? "utf-8"
+              : undefined,
+          };
+        });
+
+        return mappings.map(HttpServerMock.validateResponseMapping).flat();
+      }
+    }
+
+    return mappings;
+  }
+
   public setTemporaryResponseMappings(
     newResponseMappings: Array<ResponseMapping>
   ): void {
@@ -107,7 +140,7 @@ export class HttpServerMock {
   ): void {
     this.setTemporaryResponseMappings([
       ...this._temporaryResponseMappings,
-      ...newResponseMappings,
+      ...newResponseMappings.map(HttpServerMock.validateResponseMapping).flat(),
     ]);
   }
 
@@ -168,7 +201,17 @@ export class HttpServerMock {
     } else if (mapping.responseObject) {
       response = this.makeObjectResponse(mapping);
     } else if (mapping.filePath) {
-      response = this.makeFileResponse(mapping);
+      // Check if file or folder
+
+      const stats = statSync(mapping.filePath);
+
+      if (stats.isDirectory()) {
+        // response = this.makeFolderResponse(mapping);
+      } else {
+        response = this.makeFileResponse(mapping);
+      }
+
+      // response = this.makeFileResponse(mapping);
     }
 
     return new HttpServerMockResponseInstance(response);

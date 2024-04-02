@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetsClient getCollectionInfo method Should fetch collectionInfo with cache: a2 - collectionInfo 1`] = `
+CollectionInfo {
+  "collectionName": "Collection 1",
+  "traitIndexes": {
+    "Background": 0,
+    "Eyes": 1,
+    "Hair": 3,
+    "Mouth": 2,
+  },
+}
+`;
+
+exports[`AssetsClient getCollectionInfo method Should fetch collectionInfo: a1 - collectionInfo 1`] = `
+CollectionInfo {
+  "collectionName": "Collection 1",
+  "traitIndexes": {
+    "Background": 0,
+    "Eyes": 1,
+    "Hair": 3,
+    "Mouth": 2,
+  },
+}
+`;
+
+exports[`AssetsClient getTraits method Should fetch traits with cache: a4 - traits 1`] = `[]`;
+
+exports[`AssetsClient getTraits method Should fetch traits: a3 - traits 1`] = `[]`;

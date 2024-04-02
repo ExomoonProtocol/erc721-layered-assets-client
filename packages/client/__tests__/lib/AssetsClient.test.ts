@@ -8,22 +8,68 @@ describe("AssetsClient", () => {
   });
 
   describe("getCollectionInfo method", () => {
-    it("Should read", async () => {
+    it("Should fetch collectionInfo", async () => {
       HttpServerMock.instance.addTemporaryResponseMappings([
         {
-          url: "https://example.com/collection.json",
-          filePath: path.resolve(__dirname, "../assets/1/collection.json"),
-          fileEncoding: "utf-8",
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
         },
       ]);
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
-      const result = await client.getCollectionInfo();
-      console.log(result);
-      // expect(result).toEqual({
-      //   name: "test",
-      //   version: "1.0.0",
-      // });
+      const collectionInfo = await client.getCollectionInfo({});
+      expect(collectionInfo).toMatchSnapshot("a1 - collectionInfo");
+    });
+
+    it("Should fetch collectionInfo with cache", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({
+        baseUrl: "https://example.com",
+        useCache: true,
+      });
+      await client.getCollectionInfo({});
+      HttpServerMock.instance.clearTemporary();
+      const collectionInfo = await client.getCollectionInfo({});
+      expect(collectionInfo).toMatchSnapshot("a2 - collectionInfo");
+    });
+  });
+
+  describe("getTraits method", () => {
+    it("Should fetch traits", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      const traits = await client.getTraits({});
+      expect(traits).toMatchSnapshot("a3 - traits");
+    });
+
+    it("Should fetch traits with cache", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({
+        baseUrl: "https://example.com",
+        useCache: true,
+      });
+      await client.getTraits({});
+      HttpServerMock.instance.clearTemporary();
+      const traits = await client.getTraits({});
+      expect(traits).toMatchSnapshot("a4 - traits");
     });
   });
 });

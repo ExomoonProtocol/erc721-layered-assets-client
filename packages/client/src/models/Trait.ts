@@ -1,15 +1,24 @@
 import { JsonObject, JsonProperty } from "typescript-json-serializer";
+import { IVariation, Variation } from "./Variation";
 
 export interface ITrait {
-  variationIndexes: Array<number>;
+  name: string;
+  variationIndexes: Record<string, number>;
+  variations?: Array<IVariation>;
 }
 
 @JsonObject()
 export class Trait implements ITrait {
   @JsonProperty()
-  public variationIndexes: Array<number>;
+  public name: string;
+
+  @JsonProperty()
+  public variationIndexes: Record<string, number>;
+
+  @JsonProperty({ type: Variation })
+  public variations?: Array<Variation>;
 
   constructor() {
-    this.variationIndexes = [];
+    this.variationIndexes = {};
   }
 }

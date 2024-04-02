@@ -1,3 +1,9 @@
 {
-  "test": 42
+  "collectionName": "Collection 1",
+  "traitIndexes": {
+    "Background": 0,
+    "Eyes": 1,
+    "Mouth": 2,
+    "Hair": 3
+  }
 }
