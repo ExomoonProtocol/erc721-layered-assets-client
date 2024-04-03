@@ -3,7 +3,7 @@ import { IVariation, Variation } from "./Variation";
 
 export interface ITrait {
   name: string;
-  variationIndexes: Record<string, number>;
+  variationsOrder: Array<string>;
   variations?: Array<IVariation>;
 }
 
@@ -13,12 +13,12 @@ export class Trait implements ITrait {
   public name: string;
 
   @JsonProperty()
-  public variationIndexes: Record<string, number>;
+  public variationsOrder: Array<string>;
 
   @JsonProperty({ type: Variation })
   public variations?: Array<Variation>;
 
   constructor() {
-    this.variationIndexes = {};
+    this.variationsOrder = [];
   }
 }

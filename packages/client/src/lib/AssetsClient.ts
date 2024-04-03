@@ -72,9 +72,9 @@ export class AssetsClient {
    * @public
    */
   public async getCollectionInfo(
-    params: BaseFetchingParams
+    params?: BaseFetchingParams
   ): Promise<CollectionInfo | null> {
-    params = this.validateParams(params);
+    const validatedParams = this.validateParams(params || {});
 
     let collectionInfoObj: CollectionInfo | null = null;
 
@@ -100,26 +100,34 @@ export class AssetsClient {
     return collectionInfoObj;
   }
 
-  public async getTraits(params: BaseFetchingParams): Promise<Array<Trait>> {
-    params = this.validateParams(params);
+  public async getTraits(params?: BaseFetchingParams): Promise<Array<Trait>> {
+    const validatedParams = this.validateParams(params || {});
+    const collectionInfo = await this.getCollectionInfo({});
 
     let traits: Array<Trait> = [];
 
     if (this._useCache && this._cachedAssetsInfo?.traits) {
       traits = this._cachedAssetsInfo.traits;
     } else {
-      const response = await this.fetchResource(`${this.baseUrl}/traits.json`);
-      const rawObj =
-        ModelsUtils.instance.serializer.deserializeObjectArray<Trait>(
-          response.data,
-          Trait
-        ) as Array<Trait>;
+      const traitNames = collectionInfo?.traitsOrder || [];
+      traits = await Promise.all(
+        traitNames.map(async (traitName) => {
+          const response = await this.fetchResource(
+            `${this.baseUrl}/traits/${traitName}/trait.json`
+          );
+          const rawObj =
+            ModelsUtils.instance.serializer.deserializeObject<Trait>(
+              response.data,
+              Trait
+            );
 
-      traits = rawObj || [];
-
-      if (traits.length > 0) {
-        this._cachedAssetsInfo.traits = traits;
-      }
+          if (rawObj) {
+            return rawObj;
+          } else {
+            throw new Error("Trait not found");
+          }
+        })
+      );
     }
 
     return traits;

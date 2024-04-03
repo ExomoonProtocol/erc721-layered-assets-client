@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="4" failures="0" errors="0" time="0.197">
-  <testsuite name="AssetsClient" errors="0" failures="0" skipped="0" timestamp="2024-04-02T13:59:56" time="0.165" tests="4">
-    <testcase classname="AssetsClient getCollectionInfo method Should fetch collectionInfo" name="AssetsClient getCollectionInfo method Should fetch collectionInfo" time="0.003">
+<testsuites name="jest tests" tests="3" failures="0" errors="0" time="0.187">
+  <testsuite name="AssetsClient" errors="0" failures="0" skipped="0" timestamp="2024-04-03T22:33:59" time="0.131" tests="3">
+    <testcase classname="AssetsClient getCollectionInfo method Should fetch collectionInfo" name="AssetsClient getCollectionInfo method Should fetch collectionInfo" time="0.004">
     </testcase>
     <testcase classname="AssetsClient getCollectionInfo method Should fetch collectionInfo with cache" name="AssetsClient getCollectionInfo method Should fetch collectionInfo with cache" time="0">
     </testcase>
     <testcase classname="AssetsClient getTraits method Should fetch traits" name="AssetsClient getTraits method Should fetch traits" time="0.001">
-    </testcase>
-    <testcase classname="AssetsClient getTraits method Should fetch traits with cache" name="AssetsClient getTraits method Should fetch traits with cache" time="0">
     </testcase>
   </testsuite>
 </testsuites>
