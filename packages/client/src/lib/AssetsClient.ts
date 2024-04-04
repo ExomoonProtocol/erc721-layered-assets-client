@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CollectionInfo, AssetsObject, Trait } from "../models";
 import axios from "axios";
 import { ModelsUtils } from "../utils/ModelsUtils";

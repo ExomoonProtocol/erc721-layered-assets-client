@@ -1,5 +1,4 @@
 const rules = require("@burneeble/eslint-plugin-burneeble").rules;
-const disabled = require("@burneeble/eslint-plugin-burneeble").disabled;
 
 const customRules = {};
 
@@ -8,43 +7,24 @@ Object.keys(rules).forEach((rule) => {
 });
 
 module.exports = {
+  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  plugins: ["@burneeble/burneeble"],
+  rules: {
+    "n/no-missing-import": "off",
+    "no-console": "off",
+    "padding-line-between-statements": "off",
+    "sort-imports": "off",
+    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    ...customRules,
+  },
+  ignorePatterns: ["dist/", ".eslintrc.js", "__tests__/"],
   env: {
-    browser: true,
-    es2021: true,
+    node: true,
+    es6: true,
   },
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:storybook/recommended",
-  ],
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: [".eslintrc.{js,cjs}"],
-      parserOptions: {
-        sourceType: "script",
-      },
-    },
-  ],
-  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 2020,
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "react", "@burneeble/burneeble"],
-  rules: {
-    "react/jsx-key": "error",
-    "storybook/prefer-pascal-case": "off",
-    ...customRules,
-    ...disabled,
-  },
-  ignorePatterns: [".eslintrc.js", "dist/**/*"],
+  parser: "@typescript-eslint/parser",
 };

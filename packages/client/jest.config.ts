@@ -1,5 +1,3 @@
-import path from "path";
-
 process.env.AWS_SDK_JS_SUPPRESS_MAINTENANCE_MODE_MESSAGE = "1";
 process.env.IS_TESTING = "true";
 process.env.STAGE = "d1";

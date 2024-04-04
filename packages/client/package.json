@@ -9,7 +9,7 @@
     "test-verbose": "jest --verbose --maxWorkers=1 --passWithNoTests",
     "test": "yarn test-verbose --silent",
     "coverage": "yarn test --coverage",
-    "build": "yarn build:esm && yarn build:cjs",
+    "build": "tsc",
     "clean-build": "yarn clean && yarn build",
     "clean": "rm -rf dist && rm -rf dist",
     "lint": "eslint . --ext .js,.ts"
