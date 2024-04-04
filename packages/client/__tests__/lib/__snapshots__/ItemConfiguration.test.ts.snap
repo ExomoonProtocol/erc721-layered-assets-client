@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ItemConfiguration class setVariation method Should set variation with a speciic color 1`] = `
+[
+  TraitConfiguration {
+    "_assetsClient": AssetsClient {
+      "_baseUrl": "https://example.com",
+      "_cachedAssetsInfo": {
+        "collectionInfo": CollectionInfo {
+          "collectionName": "Collection 1",
+          "traitsOrder": [
+            "Background",
+          ],
+        },
+        "traits": [
+          Trait {
+            "name": "Background",
+            "variations": [
+              Variation {
+                "colors": [
+                  "Black",
+                  "Blue",
+                  "Brown",
+                  "Green",
+                ],
+                "name": "Single Color",
+              },
+              Variation {
+                "name": "Custom 1",
+              },
+            ],
+          },
+        ],
+      },
+      "_useCache": true,
+    },
+    "_colorName": "Blue",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class setVariation method Should set variation with color without specifying a color 1`] = `
+[
+  TraitConfiguration {
+    "_assetsClient": AssetsClient {
+      "_baseUrl": "https://example.com",
+      "_cachedAssetsInfo": {
+        "collectionInfo": CollectionInfo {
+          "collectionName": "Collection 1",
+          "traitsOrder": [
+            "Background",
+          ],
+        },
+        "traits": [
+          Trait {
+            "name": "Background",
+            "variations": [
+              Variation {
+                "colors": [
+                  "Black",
+                  "Blue",
+                  "Brown",
+                  "Green",
+                ],
+                "name": "Single Color",
+              },
+              Variation {
+                "name": "Custom 1",
+              },
+            ],
+          },
+        ],
+      },
+      "_useCache": true,
+    },
+    "_colorName": "Black",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class setVariation method Should set variation with no color 1`] = `
+[
+  TraitConfiguration {
+    "_assetsClient": AssetsClient {
+      "_baseUrl": "https://example.com",
+      "_cachedAssetsInfo": {
+        "collectionInfo": CollectionInfo {
+          "collectionName": "Collection 1",
+          "traitsOrder": [
+            "Background",
+          ],
+        },
+        "traits": [
+          Trait {
+            "name": "Background",
+            "variations": [
+              Variation {
+                "colors": [
+                  "Black",
+                  "Blue",
+                  "Brown",
+                  "Green",
+                ],
+                "name": "Single Color",
+              },
+              Variation {
+                "name": "Custom 1",
+              },
+            ],
+          },
+        ],
+      },
+      "_useCache": true,
+    },
+    "_colorName": undefined,
+    "_traitName": "Background",
+    "_variationName": "Custom 1",
+  },
+]
+`;

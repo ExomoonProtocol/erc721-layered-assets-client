@@ -6,7 +6,7 @@ export class TraitConfiguration extends AssetsClientConsumer {
 
   private _variationName: string;
 
-  private _colorName: string;
+  private _colorName?: string;
 
   constructor(_client: AssetsClient) {
     super(_client);
@@ -28,11 +28,11 @@ export class TraitConfiguration extends AssetsClientConsumer {
     this._variationName = value;
   }
 
-  public get colorName(): string {
+  public get colorName(): string | undefined {
     return this._colorName;
   }
 
-  public set colorName(value: string) {
+  public set colorName(value: string | undefined) {
     this._colorName = value;
   }
 }
