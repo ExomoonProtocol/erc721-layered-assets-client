@@ -54,22 +54,55 @@ describe("AssetsClient", () => {
       expect(traits).toMatchSnapshot("a3 - traits");
     });
 
-    // it("Should fetch traits with cache", async () => {
-    //   HttpServerMock.instance.addTemporaryResponseMappings([
-    //     {
-    //       url: "https://example.com",
-    //       filePath: path.resolve(__dirname, "../assets/1/"),
-    //     },
-    //   ]);
+    it("Should fetch traits with cache", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
 
-    //   const client = new AssetsClient({
-    //     baseUrl: "https://example.com",
-    //     useCache: true,
-    //   });
-    //   await client.getTraits({});
-    //   HttpServerMock.instance.clearTemporary();
-    //   const traits = await client.getTraits({});
-    //   expect(traits).toMatchSnapshot("a4 - traits");
-    // });
+      const client = new AssetsClient({
+        baseUrl: "https://example.com",
+        useCache: true,
+      });
+      await client.getTraits({});
+      HttpServerMock.instance.clearTemporary();
+      const traits = await client.getTraits({});
+      expect(traits).toMatchSnapshot("a4 - traits");
+    });
+  });
+
+  describe("getAssetsObject method", () => {
+    it("Should fetch assets", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      const assets = await client.getAssetsObject();
+      expect(assets).toMatchSnapshot("a5 - assets");
+    });
+
+    it("Should fetch assets with cache", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({
+        baseUrl: "https://example.com",
+        useCache: true,
+      });
+      await client.getAssetsObject({});
+      HttpServerMock.instance.clearTemporary();
+      const assets = await client.getAssetsObject({});
+      expect(assets).toMatchSnapshot("a6 - assets");
+    });
   });
 });

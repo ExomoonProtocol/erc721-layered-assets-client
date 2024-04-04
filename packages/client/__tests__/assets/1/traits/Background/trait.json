@@ -1,4 +1,17 @@
 {
   "name": "Background",
-  "variationsOrder": []
+  "variations": [
+    {
+      "name": "Single Color",
+      "colors": [
+        "Black",
+        "Blue",
+        "Brown",
+        "Green"
+      ]
+    },
+    {
+      "name": "Custom 1"
+    }
+  ]
 }

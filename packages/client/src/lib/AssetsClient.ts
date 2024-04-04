@@ -100,6 +100,12 @@ export class AssetsClient {
     return collectionInfoObj;
   }
 
+  /**
+   * Get traits
+   * @param params Base fetching parameters
+   * @returns Traits list
+   * @public
+   */
   public async getTraits(params?: BaseFetchingParams): Promise<Array<Trait>> {
     const validatedParams = this.validateParams(params || {});
     const collectionInfo = await this.getCollectionInfo({});
@@ -128,8 +134,30 @@ export class AssetsClient {
           }
         })
       );
+
+      if (traits.length > 0) {
+        this._cachedAssetsInfo.traits = traits;
+      }
     }
 
     return traits;
+  }
+
+  /**
+   * Get assets object
+   * @param _params Base fetching parameters
+   * @returns Assets object
+   * @public
+   */
+  public async getAssetsObject(
+    _params?: BaseFetchingParams
+  ): Promise<AssetsObject> {
+    const collectionInfo = await this.getCollectionInfo();
+    const traits = await this.getTraits();
+
+    this._cachedAssetsInfo.collectionInfo = collectionInfo!;
+    this._cachedAssetsInfo.traits = traits;
+
+    return this._cachedAssetsInfo;
   }
 }
