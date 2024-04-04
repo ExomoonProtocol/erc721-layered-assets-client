@@ -99,8 +99,6 @@ export class HttpServerMock {
   protected static validateResponseMapping(
     mapping: ResponseMapping
   ): Array<ResponseMapping> {
-    console.log("Validating mapping", mapping);
-
     let mappings: Array<ResponseMapping> = [mapping];
 
     if (mapping.filePath) {

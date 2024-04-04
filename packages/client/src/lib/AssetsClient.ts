@@ -50,6 +50,7 @@ export class AssetsClient {
   }
 
   protected fetchResource(url: string): Promise<any> {
+    console.log(`[AssetsClient] Fetching resource: ${url}`);
     return axios.get(url);
   }
 
@@ -115,26 +116,17 @@ export class AssetsClient {
 
     let traits: Array<Trait> = [];
 
-    if (this._useCache && this._cachedAssetsInfo?.traits) {
+    if (
+      this._useCache &&
+      this._cachedAssetsInfo?.traits &&
+      this._cachedAssetsInfo.traits.length == collectionInfo?.traitsOrder.length
+    ) {
       traits = this._cachedAssetsInfo.traits;
     } else {
       const traitNames = collectionInfo?.traitsOrder || [];
       traits = await Promise.all(
         traitNames.map(async (traitName) => {
-          const response = await this.fetchResource(
-            `${this.baseUrl}/traits/${traitName}/trait.json`
-          );
-          const rawObj =
-            ModelsUtils.instance.serializer.deserializeObject<Trait>(
-              response.data,
-              Trait
-            );
-
-          if (rawObj) {
-            return rawObj;
-          } else {
-            throw new Error("Trait not found");
-          }
+          return await this.getTrait(traitName);
         })
       );
 
@@ -144,6 +136,39 @@ export class AssetsClient {
     }
 
     return traits;
+  }
+
+  public async getTrait(
+    traitName: string,
+    params?: BaseFetchingParams
+  ): Promise<Trait> {
+    const validatedParams = this.validateParams(params || {});
+
+    const response = await this.fetchResource(
+      `${this.baseUrl}/traits/${traitName}/trait.json`
+    );
+    const rawObj = ModelsUtils.instance.serializer.deserializeObject<Trait>(
+      response.data,
+      Trait
+    );
+
+    if (rawObj) {
+      // Cache trait
+      if (this._cachedAssetsInfo.traits) {
+        const traitIndex = this._cachedAssetsInfo.traits.findIndex(
+          (t) => t.name === traitName
+        );
+        if (traitIndex !== -1) {
+          this._cachedAssetsInfo.traits[traitIndex] = rawObj;
+        } else {
+          this._cachedAssetsInfo.traits.push(rawObj);
+        }
+      }
+
+      return rawObj;
+    } else {
+      throw new Error("Trait not found");
+    }
   }
 
   /**

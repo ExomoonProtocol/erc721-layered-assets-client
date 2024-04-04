@@ -36,7 +36,7 @@ describe("AssetsClient", () => {
       await client.getCollectionInfo({});
       HttpServerMock.instance.clearTemporary();
       const collectionInfo = await client.getCollectionInfo({});
-      expect(collectionInfo).toMatchSnapshot("a2 - collectionInfo");
+      expect(collectionInfo).toMatchSnapshot("a1 - collectionInfo cached");
     });
   });
 
@@ -51,7 +51,7 @@ describe("AssetsClient", () => {
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
       const traits = await client.getTraits();
-      expect(traits).toMatchSnapshot("a3 - traits");
+      expect(traits).toMatchSnapshot("a1 - traits");
     });
 
     it("Should fetch traits with cache", async () => {
@@ -69,7 +69,7 @@ describe("AssetsClient", () => {
       await client.getTraits({});
       HttpServerMock.instance.clearTemporary();
       const traits = await client.getTraits({});
-      expect(traits).toMatchSnapshot("a4 - traits");
+      expect(traits).toMatchSnapshot("a1 - traits cached");
     });
   });
 
@@ -84,7 +84,7 @@ describe("AssetsClient", () => {
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
       const assets = await client.getAssetsObject();
-      expect(assets).toMatchSnapshot("a5 - assets");
+      expect(assets).toMatchSnapshot("a1 - assets");
     });
 
     it("Should fetch assets with cache", async () => {
@@ -102,7 +102,7 @@ describe("AssetsClient", () => {
       await client.getAssetsObject({});
       HttpServerMock.instance.clearTemporary();
       const assets = await client.getAssetsObject({});
-      expect(assets).toMatchSnapshot("a6 - assets");
+      expect(assets).toMatchSnapshot("a1 - assets cached");
     });
   });
 });
