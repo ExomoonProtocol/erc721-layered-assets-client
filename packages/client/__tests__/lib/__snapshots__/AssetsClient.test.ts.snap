@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AssetsClient getAssetsObject method Should fetch assets with cache: a1 - assets cached 1`] = `
+exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a1 - assets cached 1`] = `
 {
   "collectionInfo": CollectionInfo {
     "collectionName": "Collection 1",
@@ -30,7 +30,7 @@ exports[`AssetsClient getAssetsObject method Should fetch assets with cache: a1 
 }
 `;
 
-exports[`AssetsClient getAssetsObject method Should fetch assets: a1 - assets 1`] = `
+exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 1`] = `
 {
   "collectionInfo": CollectionInfo {
     "collectionName": "Collection 1",
@@ -60,7 +60,7 @@ exports[`AssetsClient getAssetsObject method Should fetch assets: a1 - assets 1`
 }
 `;
 
-exports[`AssetsClient getCollectionInfo method Should fetch collectionInfo with cache: a1 - collectionInfo cached 1`] = `
+exports[`AssetsClient fetchCollectionInfo method Should fetch collectionInfo with cache: a1 - collectionInfo cached 1`] = `
 CollectionInfo {
   "collectionName": "Collection 1",
   "traitsOrder": [
@@ -69,7 +69,7 @@ CollectionInfo {
 }
 `;
 
-exports[`AssetsClient getCollectionInfo method Should fetch collectionInfo: a1 - collectionInfo 1`] = `
+exports[`AssetsClient fetchCollectionInfo method Should fetch collectionInfo: a1 - collectionInfo 1`] = `
 CollectionInfo {
   "collectionName": "Collection 1",
   "traitsOrder": [
@@ -78,7 +78,7 @@ CollectionInfo {
 }
 `;
 
-exports[`AssetsClient getTraits method Should fetch traits with cache: a1 - traits cached 1`] = `
+exports[`AssetsClient fetchTraits method Should fetch traits with cache: a1 - traits cached 1`] = `
 [
   Trait {
     "name": "Background",
@@ -100,7 +100,7 @@ exports[`AssetsClient getTraits method Should fetch traits with cache: a1 - trai
 ]
 `;
 
-exports[`AssetsClient getTraits method Should fetch traits: a1 - traits 1`] = `
+exports[`AssetsClient fetchTraits method Should fetch traits: a1 - traits 1`] = `
 [
   Trait {
     "name": "Background",

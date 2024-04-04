@@ -70,12 +70,12 @@ export class AssetsClient {
   }
 
   /**
-   * Get collection info
+   * Fetches collection info
    * @param params Base fetching parameters
    * @returns Collection info
    * @public
    */
-  public async getCollectionInfo(
+  public async fetchCollectionInfo(
     params?: BaseFetchingParams
   ): Promise<CollectionInfo | null> {
     const validatedParams = this.validateParams(params || {});
@@ -105,14 +105,14 @@ export class AssetsClient {
   }
 
   /**
-   * Get traits
+   * Fetches traits
    * @param params Base fetching parameters
    * @returns Traits list
    * @public
    */
-  public async getTraits(params?: BaseFetchingParams): Promise<Array<Trait>> {
+  public async fetchTraits(params?: BaseFetchingParams): Promise<Array<Trait>> {
     const validatedParams = this.validateParams(params || {});
-    const collectionInfo = await this.getCollectionInfo({});
+    const collectionInfo = await this.fetchCollectionInfo({});
 
     let traits: Array<Trait> = [];
 
@@ -126,7 +126,7 @@ export class AssetsClient {
       const traitNames = collectionInfo?.traitsOrder || [];
       traits = await Promise.all(
         traitNames.map(async (traitName) => {
-          return await this.getTrait(traitName);
+          return await this.fetchTrait(traitName);
         })
       );
 
@@ -138,7 +138,14 @@ export class AssetsClient {
     return traits;
   }
 
-  public async getTrait(
+  /**
+   * Fetches trait
+   * @param traitName Trait name
+   * @param params Base fetching parameters
+   * @returns Trait object
+   * @public
+   */
+  public async fetchTrait(
     traitName: string,
     params?: BaseFetchingParams
   ): Promise<Trait> {
@@ -172,20 +179,66 @@ export class AssetsClient {
   }
 
   /**
-   * Get assets object
+   * Fetches assets object
    * @param _params Base fetching parameters
    * @returns Assets object
    * @public
    */
-  public async getAssetsObject(
+  public async fetchAssetsObject(
     _params?: BaseFetchingParams
   ): Promise<AssetsObject> {
-    const collectionInfo = await this.getCollectionInfo();
-    const traits = await this.getTraits();
+    const collectionInfo = await this.fetchCollectionInfo();
+    const traits = await this.fetchTraits();
 
     this._cachedAssetsInfo.collectionInfo = collectionInfo!;
     this._cachedAssetsInfo.traits = traits;
 
     return this._cachedAssetsInfo;
+  }
+
+  /**
+   * Get cached assets object
+   * @returns Cached assets object
+   * @public
+   */
+  public getAssetsObject(): AssetsObject | null {
+    return this._cachedAssetsInfo || null;
+  }
+
+  /**
+   * Get cached traits
+   * @returns Cached traits
+   * @public
+   */
+  public getTrais(): Trait[] {
+    return this._cachedAssetsInfo.traits || [];
+  }
+
+  /**
+   * Get trait
+   * @param traitName Trait name
+   * @returns Trait object
+   * @public
+   */
+  public getTrait(traitName: string): Trait | null {
+    if (this._cachedAssetsInfo.traits) {
+      return (
+        this._cachedAssetsInfo.traits.find((t) => t.name === traitName) || null
+      );
+    }
+
+    return null;
+  }
+
+  public getCollectionInfo(): CollectionInfo | null {
+    return this._cachedAssetsInfo.collectionInfo || null;
+  }
+
+  /**
+   * Clear cache
+   * @public
+   */
+  public clearCache(): void {
+    this.initCache();
   }
 }

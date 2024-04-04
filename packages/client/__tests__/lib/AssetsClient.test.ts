@@ -7,7 +7,7 @@ describe("AssetsClient", () => {
     HttpServerMock.instance.clearTemporary();
   });
 
-  describe("getCollectionInfo method", () => {
+  describe("fetchCollectionInfo method", () => {
     it("Should fetch collectionInfo", async () => {
       HttpServerMock.instance.addTemporaryResponseMappings([
         {
@@ -17,7 +17,7 @@ describe("AssetsClient", () => {
       ]);
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
-      const collectionInfo = await client.getCollectionInfo({});
+      const collectionInfo = await client.fetchCollectionInfo({});
       expect(collectionInfo).toMatchSnapshot("a1 - collectionInfo");
     });
 
@@ -33,14 +33,14 @@ describe("AssetsClient", () => {
         baseUrl: "https://example.com",
         useCache: true,
       });
-      await client.getCollectionInfo({});
+      await client.fetchCollectionInfo({});
       HttpServerMock.instance.clearTemporary();
-      const collectionInfo = await client.getCollectionInfo({});
+      const collectionInfo = await client.fetchCollectionInfo({});
       expect(collectionInfo).toMatchSnapshot("a1 - collectionInfo cached");
     });
   });
 
-  describe("getTraits method", () => {
+  describe("fetchTraits method", () => {
     it("Should fetch traits", async () => {
       HttpServerMock.instance.addTemporaryResponseMappings([
         {
@@ -50,7 +50,7 @@ describe("AssetsClient", () => {
       ]);
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
-      const traits = await client.getTraits();
+      const traits = await client.fetchTraits();
       expect(traits).toMatchSnapshot("a1 - traits");
     });
 
@@ -66,14 +66,14 @@ describe("AssetsClient", () => {
         baseUrl: "https://example.com",
         useCache: true,
       });
-      await client.getTraits({});
+      await client.fetchTraits({});
       HttpServerMock.instance.clearTemporary();
-      const traits = await client.getTraits({});
+      const traits = await client.fetchTraits({});
       expect(traits).toMatchSnapshot("a1 - traits cached");
     });
   });
 
-  describe("getAssetsObject method", () => {
+  describe("fetchAssetsObject method", () => {
     it("Should fetch assets", async () => {
       HttpServerMock.instance.addTemporaryResponseMappings([
         {
@@ -83,7 +83,7 @@ describe("AssetsClient", () => {
       ]);
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
-      const assets = await client.getAssetsObject();
+      const assets = await client.fetchAssetsObject();
       expect(assets).toMatchSnapshot("a1 - assets");
     });
 
@@ -99,9 +99,9 @@ describe("AssetsClient", () => {
         baseUrl: "https://example.com",
         useCache: true,
       });
-      await client.getAssetsObject({});
+      await client.fetchAssetsObject({});
       HttpServerMock.instance.clearTemporary();
-      const assets = await client.getAssetsObject({});
+      const assets = await client.fetchAssetsObject({});
       expect(assets).toMatchSnapshot("a1 - assets cached");
     });
   });
