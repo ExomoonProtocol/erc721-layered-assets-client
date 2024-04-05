@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CollectionInfo, AssetsObject, Trait } from "../models";
+import {
+  CollectionInfo,
+  AssetsObject,
+  Trait,
+  ConditionalRenderingConfig,
+} from "../models";
 import axios from "axios";
 import { ModelsUtils } from "../utils/ModelsUtils";
 
@@ -242,63 +247,60 @@ export class AssetsClient {
     this.initCache();
   }
 
-  public getTraitImageUrl(
-    _traitName: string,
-    _variationName: string,
-    _colorName?: string
-  ): string {
-    const trait = this.getTrait(_traitName);
+  public getTraitImageUrl(params: {
+    traitName: string;
+    variationName: string;
+    colorName?: string;
+    conditionalTraitConfig?: ConditionalRenderingConfig;
+  }): string {
+    const trait = this.getTrait(params.traitName);
 
     if (!trait) {
-      throw new Error(`Trait ${_traitName} not found`);
+      throw new Error(`Trait ${params.traitName} not found`);
     }
 
     let traitUrlSection = trait.name;
-    const variationUrlSection = _variationName;
-    const colorUrlSection = _colorName ? _colorName : _variationName;
+    const variationUrlSection = params.variationName;
+    const colorUrlSection = params.colorName
+      ? params.colorName
+      : params.variationName;
 
-    const conditionalTraitConfig = trait.conditonalRenderingConfig;
-    if (conditionalTraitConfig) {
+    if (params.conditionalTraitConfig) {
       const traits = this.getTrais();
 
-      let configIndex = -1;
+      let configMatchedWithTrait = false;
 
-      for (let i = 0; i < conditionalTraitConfig.length; i++) {
-        const config = conditionalTraitConfig[i];
-        const trait = traits.find((t) => t.name === config.traitName);
+      const config = params.conditionalTraitConfig;
+      const trait = traits.find((t) => t.name === config.traitName);
 
-        if (trait) {
-          // If there is no variation name, use match only by trait name
-          if (!config.variationName) {
-            configIndex = i;
-          }
+      if (trait) {
+        // If there is no variation name, use match only by trait name
+        if (!config.variationName) {
+          configMatchedWithTrait = true;
+        }
 
-          // If there is a variation name, match by trait name and variation name
-          const variation = trait.variations.find(
-            (v) => v.name === config.variationName
-          );
+        // If there is a variation name, match by trait name and variation name
+        const variation = trait.variations.find(
+          (v) => v.name === config.variationName
+        );
 
-          if (variation) {
-            if (config.colorName) {
-              // If there is a color name, match by trait name, variation name and color name
-              const color = variation.colors.find(
-                (c) => c === config.colorName
-              );
+        if (variation) {
+          if (config.colorName) {
+            // If there is a color name, match by trait name, variation name and color name
+            const color = variation.colors.find((c) => c === config.colorName);
 
-              if (color) {
-                configIndex = i;
-              }
-            } else {
-              // If there is no color name, match by trait name and variation name
-              configIndex = i;
+            if (color) {
+              configMatchedWithTrait = true;
             }
+          } else {
+            // If there is no color name, match by trait name and variation name
+            configMatchedWithTrait = true;
           }
         }
-      }
 
-      if (configIndex !== -1) {
-        const config = conditionalTraitConfig[configIndex];
-        traitUrlSection = `${trait.name}/${config.folderName}`;
+        if (configMatchedWithTrait) {
+          traitUrlSection = `${params.traitName}/${config.folderName}`;
+        }
       }
     }
 

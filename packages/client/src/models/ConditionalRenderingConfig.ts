@@ -19,7 +19,11 @@ export class ConditionalRenderingConfig implements IConditionalRenderingConfig {
   @JsonProperty()
   public colorName?: string;
 
-  constructor() {}
+  constructor(obj?: IConditionalRenderingConfig) {
+    this.traitName = obj?.traitName ?? "";
+    this.variationName = obj?.variationName;
+    this.colorName = obj?.colorName;
+  }
 
   public get folderName(): string {
     let value = this.traitName;

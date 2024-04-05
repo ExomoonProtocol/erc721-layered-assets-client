@@ -46,11 +46,11 @@ export class TraitConfiguration extends AssetsClientConsumer {
     }`;
   }
 
-  public getImageUrl(): string {
-    return this.assetsClient.getTraitImageUrl(
-      this._traitName,
-      this._variationName,
-      this._colorName
-    );
-  }
+  // public getImageUrl(): string {
+  //   // return this.assetsClient.getTraitImageUrl(
+  //   //   this._traitName,
+  //   //   this._variationName,
+  //   //   this._colorName
+  //   // );
+  // }
 }

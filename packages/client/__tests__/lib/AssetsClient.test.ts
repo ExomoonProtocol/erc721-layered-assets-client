@@ -1,4 +1,5 @@
 import { AssetsClient } from "../../src/lib/AssetsClient";
+import { ConditionalRenderingConfig } from "../../src/models";
 import { HttpServerMock } from "../HttpServerMock";
 import path from "path";
 
@@ -117,7 +118,11 @@ describe("AssetsClient", () => {
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
       await client.fetchAssetsObject();
-      const url = client.getTraitImageUrl("Background", "Single Color", "Blue");
+      const url = client.getTraitImageUrl({
+        traitName: "Background",
+        variationName: "Single Color",
+        colorName: "Blue",
+      });
       expect(url).toBe(
         "https://example.com/traits/Background/Single Color/Blue.png"
       );
@@ -133,9 +138,35 @@ describe("AssetsClient", () => {
 
       const client = new AssetsClient({ baseUrl: "https://example.com" });
       await client.fetchAssetsObject();
-      const url = client.getTraitImageUrl("Background", "Custom 1");
+      const url = client.getTraitImageUrl({
+        traitName: "Background",
+        variationName: "Custom 1",
+      });
       expect(url).toBe(
         "https://example.com/traits/Background/Custom 1/Custom 1.png"
+      );
+    });
+
+    it("Should get trait image url with conditional rendering config", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/2/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      await client.fetchAssetsObject();
+      const url = client.getTraitImageUrl({
+        traitName: "Cover",
+        variationName: "Rectangle",
+        conditionalTraitConfig: new ConditionalRenderingConfig({
+          traitName: "Shape",
+          variationName: "Rectangle",
+        }),
+      });
+      expect(url).toBe(
+        "https://example.com/traits/Cover/Shape_Rectangle/Rectangle/Rectangle.png"
       );
     });
   });
