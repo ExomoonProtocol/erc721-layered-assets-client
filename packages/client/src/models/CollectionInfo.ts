@@ -6,6 +6,8 @@ import { JsonObject, JsonProperty } from "typescript-json-serializer";
 export interface ICollectionInfo {
   collectionName: string;
 
+  description: string;
+
   traitsOrder: Array<string>;
 }
 
@@ -18,7 +20,10 @@ export class CollectionInfo implements ICollectionInfo {
   public collectionName: string;
 
   @JsonProperty()
-  traitsOrder: Array<string>;
+  public description: string;
+
+  @JsonProperty()
+  public traitsOrder: Array<string>;
 
   constructor() {
     this.traitsOrder = [];
