@@ -1,0 +1,17 @@
+{
+  "name": "Background",
+  "variations": [
+    {
+      "name": "Single Color",
+      "colors": [
+        "Black",
+        "Blue",
+        "Brown",
+        "Green"
+      ]
+    },
+    {
+      "name": "Custom 1"
+    }
+  ]
+}
