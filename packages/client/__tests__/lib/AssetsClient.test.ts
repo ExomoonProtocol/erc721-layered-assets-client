@@ -105,4 +105,38 @@ describe("AssetsClient", () => {
       expect(assets).toMatchSnapshot("a1 - assets cached");
     });
   });
+
+  describe("getTraitImageUrl method", () => {
+    it("Should get trait image url of a normal variation with color", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      await client.fetchAssetsObject();
+      const url = client.getTraitImageUrl("Background", "Single Color", "Blue");
+      expect(url).toBe(
+        "https://example.com/traits/Background/Single Color/Blue.png"
+      );
+    });
+
+    it("Should get trait image url of a normal variation without color", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      await client.fetchAssetsObject();
+      const url = client.getTraitImageUrl("Background", "Custom 1");
+      expect(url).toBe(
+        "https://example.com/traits/Background/Custom 1/Custom 1.png"
+      );
+    });
+  });
 });

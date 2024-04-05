@@ -245,7 +245,7 @@ export class AssetsClient {
   public getTraitImageUrl(
     _traitName: string,
     _variationName: string,
-    _colorName: string | undefined
+    _colorName?: string
   ): string {
     const trait = this.getTrait(_traitName);
 
@@ -254,8 +254,8 @@ export class AssetsClient {
     }
 
     let traitUrlSection = trait.name;
-    const variationUrlSection = "";
-    const colorUrlSection = "";
+    const variationUrlSection = _variationName;
+    const colorUrlSection = _colorName ? _colorName : _variationName;
 
     const conditionalTraitConfig = trait.conditonalRenderingConfig;
     if (conditionalTraitConfig) {
@@ -298,7 +298,6 @@ export class AssetsClient {
 
       if (configIndex !== -1) {
         const config = conditionalTraitConfig[configIndex];
-
         traitUrlSection = `${trait.name}/${config.folderName}`;
       }
     }
