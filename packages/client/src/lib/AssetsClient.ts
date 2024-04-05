@@ -241,4 +241,70 @@ export class AssetsClient {
   public clearCache(): void {
     this.initCache();
   }
+
+  public getTraitImageUrl(
+    _traitName: string,
+    _variationName: string,
+    _colorName: string | undefined
+  ): string {
+    const trait = this.getTrait(_traitName);
+
+    if (!trait) {
+      throw new Error(`Trait ${_traitName} not found`);
+    }
+
+    let traitUrlSection = trait.name;
+    const variationUrlSection = "";
+    const colorUrlSection = "";
+
+    const conditionalTraitConfig = trait.conditonalRenderingConfig;
+    if (conditionalTraitConfig) {
+      const traits = this.getTrais();
+
+      let configIndex = -1;
+
+      for (let i = 0; i < conditionalTraitConfig.length; i++) {
+        const config = conditionalTraitConfig[i];
+        const trait = traits.find((t) => t.name === config.traitName);
+
+        if (trait) {
+          // If there is no variation name, use match only by trait name
+          if (!config.variationName) {
+            configIndex = i;
+          }
+
+          // If there is a variation name, match by trait name and variation name
+          const variation = trait.variations.find(
+            (v) => v.name === config.variationName
+          );
+
+          if (variation) {
+            if (config.colorName) {
+              // If there is a color name, match by trait name, variation name and color name
+              const color = variation.colors.find(
+                (c) => c === config.colorName
+              );
+
+              if (color) {
+                configIndex = i;
+              }
+            } else {
+              // If there is no color name, match by trait name and variation name
+              configIndex = i;
+            }
+          }
+        }
+      }
+
+      if (configIndex !== -1) {
+        const config = conditionalTraitConfig[configIndex];
+
+        traitUrlSection = `${trait.name}/${config.folderName}`;
+      }
+    }
+
+    const imageUrl = `${this.baseUrl}/traits/${traitUrlSection}/${variationUrlSection}/${colorUrlSection}.png`;
+
+    return imageUrl;
+  }
 }

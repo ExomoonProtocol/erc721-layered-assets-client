@@ -35,4 +35,22 @@ export class TraitConfiguration extends AssetsClientConsumer {
   public set colorName(value: string | undefined) {
     this._colorName = value;
   }
+
+  public get metadataTraitName(): string {
+    return this._traitName;
+  }
+
+  public get metadataTraitValue(): string {
+    return `${this._variationName || ""}${
+      this._colorName ? ` ${this._colorName}` : ""
+    }`;
+  }
+
+  public getImageUrl(): string {
+    return this.assetsClient.getTraitImageUrl(
+      this._traitName,
+      this._variationName,
+      this._colorName
+    );
+  }
 }
