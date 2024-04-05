@@ -33,5 +33,9 @@
   },
   "files": [
     "/dist"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false
 }
