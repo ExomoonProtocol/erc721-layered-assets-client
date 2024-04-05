@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits 1`] = `
+[
+  "https://example2.com/traits/Background/Single Color/Blue.png",
+  "https://example2.com/traits/Shape/Circle/Circle.png",
+]
+`;
+
+exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits with conditional rendering 1`] = `
+[
+  "https://example2.com/traits/Background/Single Color/Blue.png",
+  "https://example2.com/traits/Shape/Circle/Circle.png",
+  "https://example2.com/traits/Cover/Shape_Circle/Custom Cover 1/Red.png",
+]
+`;
+
+exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - single trait 1`] = `
+[
+  "https://example2.com/traits/Shape/Circle/Circle.png",
+]
+`;
+
 exports[`ItemConfiguration class setVariation method Should set variation with a speciic color 1`] = `
 [
   TraitConfiguration {

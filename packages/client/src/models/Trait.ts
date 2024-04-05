@@ -30,7 +30,7 @@ export class Trait implements ITrait {
   @JsonProperty({ type: Variation })
   public variations: Array<Variation>;
 
-  @JsonProperty()
+  @JsonProperty({ type: ConditionalRenderingConfig })
   public conditonalRenderingConfig?: Array<ConditionalRenderingConfig>;
 
   constructor() {

@@ -169,5 +169,16 @@ describe("AssetsClient", () => {
         "https://example.com/traits/Cover/Shape_Rectangle/Rectangle/Rectangle.png"
       );
     });
+
+    it("Should throw an error if trait not found", async () => {
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      expect(() =>
+        client.getTraitImageUrl({
+          traitName: "Background",
+          variationName: "Single Color",
+          colorName: "Blue",
+        })
+      ).toThrow("Trait Background not found");
+    });
   });
 });

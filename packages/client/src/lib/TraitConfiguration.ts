@@ -1,3 +1,4 @@
+import { ConditionalRenderingConfig } from "../models";
 import { AssetsClient } from "./AssetsClient";
 import { AssetsClientConsumer } from "./AssetsClientConsumer";
 
@@ -46,11 +47,14 @@ export class TraitConfiguration extends AssetsClientConsumer {
     }`;
   }
 
-  // public getImageUrl(): string {
-  //   // return this.assetsClient.getTraitImageUrl(
-  //   //   this._traitName,
-  //   //   this._variationName,
-  //   //   this._colorName
-  //   // );
-  // }
+  public getImageUrl(
+    conditionalRenderingConfig?: ConditionalRenderingConfig
+  ): string {
+    return this.assetsClient.getTraitImageUrl({
+      traitName: this._traitName,
+      variationName: this._variationName,
+      colorName: this._colorName,
+      conditionalTraitConfig: conditionalRenderingConfig,
+    });
+  }
 }

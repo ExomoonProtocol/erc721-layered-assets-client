@@ -105,6 +105,79 @@ export class ItemConfiguration extends AssetsClientConsumer {
       newTraitConfiguration.variationName = variation;
       newTraitConfiguration.colorName = selectedColor || undefined;
       this._traitConfigurations.push(newTraitConfiguration);
+      this.sortTraitConfigurations();
     }
+  }
+
+  /**
+   * Sort trait configurations based on the order of traits in collection info
+   */
+  protected sortTraitConfigurations(): void {
+    this._traitConfigurations = (
+      this.assetsClient.getCollectionInfo()?.traitsOrder || []
+    )
+      .map((traitName) => {
+        console.log(traitName);
+        return this._traitConfigurations.find(
+          (tc) => tc.traitName === traitName
+        ) as TraitConfiguration;
+      })
+      .filter((tc) => tc);
+  }
+
+  /**
+   * Get trait image urls
+   * @returns Array of trait image urls
+   */
+  public getTraitsUrls(): Array<string> {
+    this.requireReady();
+
+    return this._traitConfigurations.map((tc) => {
+      // Getting info about trait (asset info)
+      const traitAsset = this.assetsClient.getTrait(tc.traitName);
+      console.log("Asset: ", traitAsset);
+
+      // Check if there is a conditional rendering config for this trait
+      if (traitAsset?.conditonalRenderingConfig) {
+        const conditionalRenderingConfig =
+          traitAsset.conditonalRenderingConfig.find(
+            (currentConditionalConfig) => {
+              const matchedConfiguration = this._traitConfigurations.find(
+                (tcToMatch) => {
+                  let matched = true;
+
+                  if (
+                    currentConditionalConfig.traitName !== tcToMatch.traitName
+                  ) {
+                    matched = false;
+                  } else if (
+                    currentConditionalConfig.variationName &&
+                    currentConditionalConfig.variationName !==
+                      tcToMatch.variationName
+                  ) {
+                    matched = false;
+                  } else if (
+                    currentConditionalConfig.colorName &&
+                    currentConditionalConfig.colorName !== tcToMatch.colorName
+                  ) {
+                    matched = false;
+                  }
+
+                  return matched;
+                }
+              );
+
+              return matchedConfiguration;
+            }
+          );
+
+        if (conditionalRenderingConfig) {
+          console.log(conditionalRenderingConfig);
+          return tc.getImageUrl(conditionalRenderingConfig);
+        }
+      }
+
+      return tc.getImageUrl();
+    });
   }
 }

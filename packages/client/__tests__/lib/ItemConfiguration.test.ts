@@ -8,6 +8,7 @@ import path from "path";
 
 describe("ItemConfiguration class", () => {
   let client: AssetsClient;
+  let client2: AssetsClient;
 
   beforeEach(() => {
     HttpServerMock.instance.clearTemporary();
@@ -21,6 +22,18 @@ describe("ItemConfiguration class", () => {
 
     client = new AssetsClient({
       baseUrl: "https://example.com",
+      useCache: true,
+    });
+
+    HttpServerMock.instance.addTemporaryResponseMappings([
+      {
+        url: "https://example2.com",
+        filePath: path.resolve(__dirname, "../assets/2/"),
+      },
+    ]);
+
+    client2 = new AssetsClient({
+      baseUrl: "https://example2.com",
       useCache: true,
     });
   });
@@ -61,6 +74,32 @@ describe("ItemConfiguration class", () => {
       expect(() =>
         itemConfiguration.setVariation("Background", "Custom 1", "Blue")
       ).toThrow();
+    });
+  });
+
+  describe("getTraitsUrls method", () => {
+    it("Should get trait urls - single trait", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
+    });
+
+    it("Should get trait urls - multiple traits", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
+    });
+
+    it("Should get trait urls - multiple traits with conditional rendering", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+      expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
     });
   });
 });
