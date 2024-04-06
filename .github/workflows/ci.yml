@@ -145,4 +145,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: exomoon-erc721-layered-assets-client-documentation-${{ steps.extract_branch.outputs.branch }}
-          path: ./docs
+          path: ./packages/client/docs
