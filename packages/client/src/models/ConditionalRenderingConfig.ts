@@ -25,6 +25,9 @@ export class ConditionalRenderingConfig implements IConditionalRenderingConfig {
     this.colorName = obj?.colorName;
   }
 
+  /**
+   * Get the folder name for the conditional rendering configuration.
+   */
   public get folderName(): string {
     let value = this.traitName;
 
