@@ -4,11 +4,27 @@ import { AssetsClient } from "./AssetsClient";
 import { AssetsClientConsumer } from "./AssetsClientConsumer";
 import { TraitConfiguration } from "./TraitConfiguration";
 
+/**
+ * Status of item configuration
+ */
 export enum ItemConfigurationStatus {
+  /**
+   * Item configuration is not ready to be used, and it needs to be loaded.
+   * If this condition is encountered, the consumer should most likely call the `load` method.
+   */
   Unloaded = 0,
+
+  /**
+   * Item configuration is ready to be used.
+   */
   Ready,
 }
 
+/**
+ * Handles configuration for a single NFT item.
+ * It can be used to build an NFT item configuration by setting variations for each trait; it may be useful both for creating the NFT item in the frontend and for rendering the NFT item image in the backend.
+ * Under the hood, it wraps the `AssetsClient` and `TraitConfiguration` classes, handling the state for a single item.
+ */
 export class ItemConfiguration extends AssetsClientConsumer {
   private _traitConfigurations: Array<TraitConfiguration>;
 
@@ -22,7 +38,7 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
-   * Prepare item configuration, and make sure all assets are loaded.
+   * Prepares item configuration, and makes sure all assets are loaded in the `AssetsClient` instance.
    */
   public async load(): Promise<void> {
     this._status = ItemConfigurationStatus.Ready;
@@ -30,7 +46,7 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
-   * Get trait configuration by trait name
+   * Gets the list of all traits configurations for the item, sorted based on the order of traits in the collection info.
    */
   public get traitConfigurations(): Array<TraitConfiguration> {
     return this._traitConfigurations;
@@ -53,10 +69,11 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
-   * Set variation for a trait
+   * Set a variation configuration. It can be either a new configuration (eg. adding a new trait) or an existing one (eg. changing the color of an existing trait).
    * @param trait Trait name
    * @param variation Variation name
-   * @param color Color name
+   * @param color Color name (optional)
+   * @throws Error if trait or variation not found, or if color is not supported by the variation
    */
   public setVariation(trait: string, variation: string, color?: string): void {
     this.requireReady();
@@ -126,7 +143,10 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
-   * Get trait image urls
+   * Get the image URLs for all traits in the item configuration.
+   * It will also consider conditional rendering configurations, so that the correct image URL is returned for each trait.
+   * Also, the order of the traits will be based on the order of traits in the collection info, so the output images are ready to be used for rendering the NFT item.
+   *
    * @returns Array of trait image urls
    */
   public getTraitsUrls(): Array<string> {
