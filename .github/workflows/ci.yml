@@ -104,3 +104,45 @@ jobs:
 
       - name: Coverage
         run: yarn coverage
+
+  docs:
+    name: Documentation
+    needs: [build, lint, test]
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./node_modules
+            ./packages/client/node_modules
+          key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-yarn-
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Generate Documentation
+        run: |
+          yarn run docs
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Archive Documentation
+        uses: actions/upload-artifact@v4
+        with:
+          name: exomoon-erc721-layered-assets-client-documentation-${{ steps.extract_branch.outputs.branch }}
+          path: ./docs
