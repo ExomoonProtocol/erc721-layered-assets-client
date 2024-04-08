@@ -101,15 +101,30 @@ export class AssetsClient {
         `${this.baseUrl}/collection.json`
       );
 
-      console.log("[AssetsClient] Collection info response:", response.data);
+      console.log(
+        "[AssetsClient] Collection info response:",
+        JSON.stringify(response.data),
+        typeof response.data
+      );
 
       const rawObj =
         ModelsUtils.instance.serializer.deserializeObject<CollectionInfo>(
-          response.data,
+          JSON.stringify(response.data),
           CollectionInfo
         );
 
       console.log("[AssetsClient] Collection info raw:", rawObj);
+
+      console.log(
+        "Test deser:",
+        ModelsUtils.instance.serializer.deserializeObject<CollectionInfo>(
+          {
+            collectionName: "Collection 1",
+            traitsOrder: ["Background", "Shape", "Cover"],
+          },
+          CollectionInfo
+        )
+      );
 
       collectionInfoObj = rawObj || null;
 
@@ -206,9 +221,7 @@ export class AssetsClient {
     _params?: BaseFetchingParams
   ): Promise<AssetsObject> {
     const collectionInfo = await this.fetchCollectionInfo();
-    console.log("[AssetsClient] Collection info fetched:", collectionInfo);
     const traits = await this.fetchTraits();
-    console.log("[AssetsClient] Traits fetched", traits);
 
     this._cachedAssetsInfo.collectionInfo = collectionInfo!;
     this._cachedAssetsInfo.traits = traits;

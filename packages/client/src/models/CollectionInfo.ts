@@ -27,14 +27,14 @@ export interface ICollectionInfo {
  */
 @JsonObject()
 export class CollectionInfo implements ICollectionInfo {
-  @JsonProperty()
-  public collectionName: string;
+  @JsonProperty({ required: true })
+  collectionName: string;
 
-  @JsonProperty()
-  public description: string;
+  @JsonProperty({ required: true })
+  description: string;
 
-  @JsonProperty()
-  public traitsOrder: Array<string>;
+  @JsonProperty({ required: true })
+  traitsOrder: Array<string>;
 
   constructor() {
     this.traitsOrder = [];

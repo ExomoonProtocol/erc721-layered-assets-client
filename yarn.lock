@@ -10012,14 +10012,6 @@ typedoc@^0.25.12:
     minimatch "^9.0.3"
     shiki "^0.14.7"
 
-typescript-json-serializer@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/typescript-json-serializer/-/typescript-json-serializer-5.1.0.tgz#88e35eaa13b0d2edbf17863cfb7085d1e52fcb2f"
-  integrity sha512-0q50ZQV5G+yKNJSZLRwTMAXXS8nx4LvDaNGp82FmLE3lXTKRcSaU+0+A8Ic0lKkqKLhj08OYwBGG6pVuCJImUw==
-  dependencies:
-    reflect-metadata "^0.1.13"
-    tslib "^2.3.0"
-
 typescript-json-serializer@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/typescript-json-serializer/-/typescript-json-serializer-6.0.1.tgz#dc9983c81d72a8cfe280105e936b89e173c885e9"

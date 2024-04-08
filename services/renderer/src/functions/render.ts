@@ -4,6 +4,10 @@ import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { LambdaResponses } from "../utils/LambdaResponses";
 import { ValidationUtils } from "../utils";
 import { RenderingManager } from "../lib/RenderingManager";
+import {
+  CollectionInfo,
+  ModelsUtils,
+} from "@exomoon/erc721-layered-assets-client";
 
 export const render: APIGatewayProxyHandler = async (
   _event: APIGatewayProxyEvent
@@ -28,13 +32,23 @@ export const render: APIGatewayProxyHandler = async (
       (_event.queryStringParameters && _event.queryStringParameters.size) || ""
     );
 
+    const id = parseInt(fileInfo.name);
+
     if (fileInfo.type === "metadata") {
       // If the requested file is a metadata file, render the metadata
       const metadata = await RenderingManager.instance.renderMetadata(
-        fileInfo,
+        id,
         layersData
       );
       return LambdaResponses.success(metadata);
+    } else {
+      // If the requested file is an image, render the image
+      const image = await RenderingManager.instance.renderImage(
+        id,
+        layersData,
+        imageSize
+      );
+      return LambdaResponses.success({});
     }
 
     return LambdaResponses.success({ imageSize, fileInfo, layersData });

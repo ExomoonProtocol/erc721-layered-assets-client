@@ -231,15 +231,7 @@ export class ItemConfiguration extends AssetsClientConsumer {
     client: AssetsClient
   ): Promise<ItemConfiguration> {
     const itemConfiguration = new ItemConfiguration(client);
-    console.log("Loading info.");
     await itemConfiguration.load();
-    console.log(
-      "Info loaded: ",
-      itemConfiguration.assetsClient.getAssetsObject()
-    );
-
-    // layersData is a hex string of unknown length "0x40a6".
-    // Every byte represents a trait: the first 5 bits are for variation index, and the last 3 bits are for color index. The byte position is the trait index.
 
     let layersDataHex = layersData.substring(2);
     let traitIndex = 0;
@@ -256,13 +248,9 @@ export class ItemConfiguration extends AssetsClientConsumer {
       const variationIndex = traitByte >> 3;
       const colorIndex = traitByte & 0b111;
 
-      console.log(
-        `Trait index: ${traitIndex}, Variation index: ${variationIndex}, Color index: ${colorIndex}`
-      );
-
       const trait = client.getTraitByIndex(traitIndex);
       if (!trait) {
-        throw new Error(`Trait with index ${traitIndex} not found`);
+        throw new Error(`Trait with indexx ${traitIndex} not found`);
       }
       console.log(trait);
 

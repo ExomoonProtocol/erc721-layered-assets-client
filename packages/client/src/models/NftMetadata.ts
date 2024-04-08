@@ -129,7 +129,16 @@ export class NftMetadata implements INftMetadata {
    * Serialize the object
    * @returns Serialized object
    */
-  public serialize(): object {
-    return ModelsUtils.instance.serializer.serialize(this) || {};
+  public serialize(): INftMetadata {
+    const obj: INftMetadata = ModelsUtils.instance.serializer.serialize(
+      this
+    ) as INftMetadata;
+
+    return {
+      name: obj.name || "",
+      description: obj.description || "",
+      image: obj.image || "",
+      attributes: obj.attributes || [],
+    };
   }
 }

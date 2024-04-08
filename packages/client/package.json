@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "axios": "^1.6.8",
-    "typescript-json-serializer": "^5.1.0"
+    "typescript-json-serializer": "^6.0.0"
   },
   "devDependencies": {
     "@burneeble/eslint-plugin-burneeble": "^1.0.12",
