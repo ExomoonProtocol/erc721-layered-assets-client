@@ -14,14 +14,14 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   region: us-east-1
   stage: ${env:STAGE}
   environment:
     STAGE: ${self:provider.stage}
     API_GATEWAY_NAME: Exomoon-ApiGateway-Assets-Renderer-${self:provider.stage}
   layers:
-    - arn:aws:lambda:us-east-1:940798882457:layer:canvas-nodejs:2
+    - arn:aws:lambda:us-east-1:940798882457:layer:canvas:1
 
 custom:
   stage: ${self:provider.stage}

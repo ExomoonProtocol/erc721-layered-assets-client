@@ -1,0 +1,72 @@
+name: Service Operation (CD)
+run-name: Service operation - ${{ github.event.inputs.operation }} ${{ github.event.inputs.serviceName }} ${{ github.event.inputs.stageName }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      serviceName:
+        type: choice
+        description: "Service Name"
+        required: true
+        options:
+          - "renderer"
+        default: "renderer"
+      stageName:
+        type: choice
+        description: "Stage Name"
+        required: true
+        default: "d1"
+        options:
+          - "d1"
+          - "p1"
+      operation:
+        type: choice
+        description: "Operation"
+        required: true
+        default: "deploy-service"
+        options:
+          - "deploy"
+          - "remove"
+
+env:
+  GOOGLE_AUTH_CLIENT_ID: ${{ secrets.GOOGLE_AUTH_CLIENT_ID }}
+  GOOGLE_AUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}
+
+jobs:
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install dependencies
+        run: |
+          yarn install --force
+
+      - name: Serverless Deploy - d1
+        if: ${{ github.event.inputs.stageName == 'd1' }}
+        run: |
+          cd ./services/${{ github.event.inputs.serviceName }}
+          sh scripts/${{ github.event.inputs.operation }}.sh
+
+      - name: Serverless Deploy - p1
+        if: ${{ github.event.inputs.stageName == 'p1' }}
+        run: |
+          cd ./services/${{ github.event.inputs.serviceName }}
+          sh scripts/${{ github.event.inputs.operation }}.sh --prod
