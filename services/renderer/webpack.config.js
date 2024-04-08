@@ -10,10 +10,14 @@ module.exports = {
     extensions: [".ts", ".tsx", ".py", ".js"],
   },
   target: "node",
-  externals: ["aws-sdk", "aws-lambda", "@types/aws-lambda", "@types/aws-sdk"],
+  externals: ["canvas", "aws-sdk", "aws-lambda", "@types/aws-lambda", "@types/aws-sdk"],
 
   module: {
     rules: [
+      {
+        test: /\.node$/,
+        loader: "node-loader",
+      },
       {
         test: /\.(tsx?)$/,
         loader: "ts-loader",

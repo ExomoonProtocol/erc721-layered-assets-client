@@ -44,11 +44,10 @@ export const render: APIGatewayProxyHandler = async (
     } else {
       // If the requested file is an image, render the image
       const image = await RenderingManager.instance.renderImage(
-        id,
         layersData,
         imageSize
       );
-      return LambdaResponses.success({});
+      return LambdaResponses.imageResponse(200, image);
     }
 
     return LambdaResponses.success({ imageSize, fileInfo, layersData });

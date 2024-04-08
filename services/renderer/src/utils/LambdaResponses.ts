@@ -29,6 +29,31 @@ export class LambdaResponses {
   }
 
   /**
+   * LambdaResponses creator for images
+   *
+   * @param statusCode statusCode to be in the response
+   * @param imageBuffer imageBuffer to be in the response
+   * @returns APIGatewayProxyResult objects made of the two parameters
+   */
+  public static imageResponse(
+    statusCode: number,
+    imageBuffer: Buffer
+  ): APIGatewayProxyResult {
+    let lambdaResponse: APIGatewayProxyResult = {
+      statusCode: statusCode,
+      headers: {
+        "Content-Type": "image/png",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":
+          "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+      },
+      body: imageBuffer.toString("base64"),
+      isBase64Encoded: true,
+    };
+    return lambdaResponse;
+  }
+
+  /**
    * Transforms a message into an object
    *
    * @param message the message to be transformed

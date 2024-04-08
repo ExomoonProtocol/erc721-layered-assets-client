@@ -23,17 +23,21 @@
     "@typescript-eslint/parser": "^6.19.1",
     "eslint": "^8.56.0",
     "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "node-loader": "^2.0.0",
     "serverless": "^3.28.1",
     "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-latest-layer-version": "^2.1.2",
     "serverless-offline": "^12.0.4",
-    "ts-loader": "^9.4.2",
     "serverless-plugin-typescript": "^2.1.4",
     "serverless-webpack": "^5.11.0",
+    "ts-loader": "^9.4.2",
     "typescript": "^4.9.5",
     "webpack": "^5.76.1"
   },
   "dependencies": {
-    "typescript-json-serializer": "^6.0.0",
-    "@exomoon/erc721-layered-assets-client": "^1.0.0"
+    "@exomoon/erc721-layered-assets-client": "^1.0.0",
+    "axios": "^1.6.8",
+    "canvas": "^2.11.2",
+    "typescript-json-serializer": "^6.0.0"
   }
 }

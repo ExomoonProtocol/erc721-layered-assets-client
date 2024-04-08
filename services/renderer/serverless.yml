@@ -4,6 +4,7 @@ plugins:
   - serverless-webpack
   - serverless-offline
   - serverless-dotenv-plugin
+  # - serverless-latest-layer-version
 
 package:
   individually: true
@@ -13,12 +14,14 @@ useDotenv: true
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs16.x
   region: us-east-1
   stage: ${env:STAGE}
   environment:
     STAGE: ${self:provider.stage}
     API_GATEWAY_NAME: Exomoon-ApiGateway-Assets-Renderer-${self:provider.stage}
+  layers:
+    - arn:aws:lambda:us-east-1:940798882457:layer:canvas-nodejs:2
 
 custom:
   stage: ${self:provider.stage}
@@ -33,6 +36,7 @@ custom:
     webpackConfig: "webpack.config.js"
     keepOutputDirectory: true
     includeModules:
+      nodeModulesRelativeDir: "../../"
       forceExclude:
         - aws-sdk
         - aws-lambda
