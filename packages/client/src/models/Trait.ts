@@ -5,19 +5,24 @@ import {
   IConditionalRenderingConfig,
 } from "./ConditionalRenderingConfig";
 
+/**
+ * Configuration object for a single trait.
+ * There should be a folder with the same name inside the `<root>/traits/` folder.
+ */
 export interface ITrait {
   /**
-   * Trait name
+   * Trait name. It will be used in different parts of the application, like the UI, the metadata generation (more specifically inside the `attributes` objects), and more.
+   *
    */
   name: string;
 
   /**
-   * Variations
+   * List of variations for the trait.
    */
   variations: Array<IVariation>;
 
   /**
-   * Conditional rendering config
+   * Conditional rendering configurations for the trait.
    */
   conditonalRenderingConfig?: Array<IConditionalRenderingConfig>;
 }

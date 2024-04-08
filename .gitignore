@@ -2,3 +2,5 @@ node_modules/
 dist
 coverage
 report.xml
+docs
+.DS_Store
