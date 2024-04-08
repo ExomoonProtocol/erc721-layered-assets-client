@@ -3,6 +3,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { LambdaResponses } from "../utils/LambdaResponses";
 import { ValidationUtils } from "../utils";
+import { RenderingManager } from "../lib/RenderingManager";
 
 export const render: APIGatewayProxyHandler = async (
   _event: APIGatewayProxyEvent
@@ -26,6 +27,15 @@ export const render: APIGatewayProxyHandler = async (
     const imageSize = ValidationUtils.validateImageSize(
       (_event.queryStringParameters && _event.queryStringParameters.size) || ""
     );
+
+    if (fileInfo.type === "metadata") {
+      // If the requested file is a metadata file, render the metadata
+      const metadata = await RenderingManager.instance.renderMetadata(
+        fileInfo,
+        layersData
+      );
+      return LambdaResponses.success(metadata);
+    }
 
     return LambdaResponses.success({ imageSize, fileInfo, layersData });
     // return LambdaResponses.success(process.env);

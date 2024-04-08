@@ -1,5 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ItemConfiguration class buildFromLayersDataString method Should build item configuration from layers data string 1`] = `
+[
+  TraitConfiguration {
+    "_assetsClient": AssetsClient {
+      "_baseUrl": "https://example2.com",
+      "_cachedAssetsInfo": {
+        "collectionInfo": CollectionInfo {
+          "collectionName": "Collection 1",
+          "traitsOrder": [
+            "Background",
+            "Shape",
+            "Cover",
+          ],
+        },
+        "traits": [
+          Trait {
+            "name": "Background",
+            "variations": [
+              Variation {
+                "colors": [
+                  "Black",
+                  "Blue",
+                  "Brown",
+                  "Green",
+                ],
+                "name": "Single Color",
+              },
+              Variation {
+                "name": "Custom 1",
+              },
+            ],
+          },
+          Trait {
+            "name": "Shape",
+            "variations": [
+              Variation {
+                "name": "Rectangle",
+              },
+              Variation {
+                "name": "Circle",
+              },
+              Variation {
+                "name": "Triangle",
+              },
+            ],
+          },
+          Trait {
+            "conditonalRenderingConfig": [
+              ConditionalRenderingConfig {
+                "colorName": undefined,
+                "traitName": "Shape",
+                "variationName": "Rectangle",
+              },
+              ConditionalRenderingConfig {
+                "colorName": undefined,
+                "traitName": "Shape",
+                "variationName": "Circle",
+              },
+              ConditionalRenderingConfig {
+                "colorName": undefined,
+                "traitName": "Shape",
+                "variationName": "Triangle",
+              },
+            ],
+            "name": "Cover",
+            "variations": [
+              Variation {
+                "colors": [
+                  "Red",
+                  "Blue",
+                ],
+                "name": "Custom Cover 1",
+              },
+            ],
+          },
+        ],
+      },
+      "_useCache": true,
+    },
+    "_colorName": "Black",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
 exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits 1`] = `
 [
   "https://example2.com/traits/Background/Single Color/Blue.png",
@@ -19,6 +105,28 @@ exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - si
 [
   "https://example2.com/traits/Shape/Circle/Circle.png",
 ]
+`;
+
+exports[`ItemConfiguration class renderMetadata method Should render metadata 1`] = `
+{
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Single Color Blue",
+    },
+    {
+      "trait_type": "Shape",
+      "value": "Circle",
+    },
+    {
+      "trait_type": "Cover",
+      "value": "Custom Cover 1 Red",
+    },
+  ],
+  "description": "",
+  "image": "{{imageUrl}}",
+  "name": "Collection 1 #{{id}}",
+}
 `;
 
 exports[`ItemConfiguration class setVariation method Should set variation with a speciic color 1`] = `

@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from "typescript-json-serializer";
+import { ModelsUtils } from "../utils";
 
 /**
  * Attribute interface
@@ -122,5 +123,13 @@ export class NftMetadata implements INftMetadata {
     this.attributes.forEach((attribute) => {
       attribute.value = this.substitute(attribute.value);
     });
+  }
+
+  /**
+   * Serialize the object
+   * @returns Serialized object
+   */
+  public serialize(): object {
+    return ModelsUtils.instance.serializer.serialize(this) || {};
   }
 }

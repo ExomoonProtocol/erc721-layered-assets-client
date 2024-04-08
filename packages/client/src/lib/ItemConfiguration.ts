@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 
+import { NftMetadata } from "../models";
 import { AssetsClient } from "./AssetsClient";
 import { AssetsClientConsumer } from "./AssetsClientConsumer";
 import { TraitConfiguration } from "./TraitConfiguration";
@@ -41,8 +42,8 @@ export class ItemConfiguration extends AssetsClientConsumer {
    * Prepares item configuration, and makes sure all assets are loaded in the `AssetsClient` instance.
    */
   public async load(): Promise<void> {
-    this._status = ItemConfigurationStatus.Ready;
     await this.assetsClient.fetchAssetsObject();
+    this._status = ItemConfigurationStatus.Ready;
   }
 
   /**
@@ -143,6 +144,30 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Render metadata for the item.
+   * It will use the collection info to get the item name and description, and will use the trait configurations to get the attributes.
+   * @returns NFT metadata
+   */
+  public renderMetadata(): NftMetadata {
+    this.requireReady();
+
+    const collectionInfo = this.assetsClient.getCollectionInfo();
+
+    const metadata = new NftMetadata();
+    metadata.name = (collectionInfo?.collectionName || "") + " #{{id}}";
+    metadata.description = collectionInfo?.description || "";
+    metadata.image = "{{imageUrl}}";
+    metadata.attributes = this._traitConfigurations.map((tc) => {
+      return {
+        trait_type: tc.traitName,
+        value: tc.variationName + (tc.colorName ? ` ${tc.colorName}` : ""),
+      };
+    });
+
+    return metadata;
+  }
+
+  /**
    * Get the image URLs for all traits in the item configuration.
    * It will also consider conditional rendering configurations, so that the correct image URL is returned for each trait.
    * Also, the order of the traits will be based on the order of traits in the collection info, so the output images are ready to be used for rendering the NFT item.
@@ -199,5 +224,65 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
       return tc.getImageUrl();
     });
+  }
+
+  public static async buildFromLayersDataString(
+    layersData: string,
+    client: AssetsClient
+  ): Promise<ItemConfiguration> {
+    const itemConfiguration = new ItemConfiguration(client);
+    console.log("Loading info.");
+    await itemConfiguration.load();
+    console.log(
+      "Info loaded: ",
+      itemConfiguration.assetsClient.getAssetsObject()
+    );
+
+    // layersData is a hex string of unknown length "0x40a6".
+    // Every byte represents a trait: the first 5 bits are for variation index, and the last 3 bits are for color index. The byte position is the trait index.
+
+    let layersDataHex = layersData.substring(2);
+    let traitIndex = 0;
+
+    // if length is not even, add a 0 at the end
+    if (layersDataHex.length % 2 !== 0) {
+      layersDataHex += "0";
+    }
+
+    while (layersDataHex.length > 0) {
+      const traitByte = parseInt(layersDataHex.substring(0, 2), 16);
+      layersDataHex = layersDataHex.substring(2);
+
+      const variationIndex = traitByte >> 3;
+      const colorIndex = traitByte & 0b111;
+
+      console.log(
+        `Trait index: ${traitIndex}, Variation index: ${variationIndex}, Color index: ${colorIndex}`
+      );
+
+      const trait = client.getTraitByIndex(traitIndex);
+      if (!trait) {
+        throw new Error(`Trait with index ${traitIndex} not found`);
+      }
+      console.log(trait);
+
+      const variation = trait.variations[variationIndex];
+      if (!variation) {
+        throw new Error(
+          `Variation with index ${variationIndex} not found for trait ${trait.name}`
+        );
+      }
+
+      let color: string | undefined;
+      if (variation.colors && variation.colors.length > 0) {
+        color = variation.colors[colorIndex];
+      }
+
+      itemConfiguration.setVariation(trait.name, variation.name, color);
+
+      traitIndex++;
+    }
+
+    return itemConfiguration;
   }
 }
