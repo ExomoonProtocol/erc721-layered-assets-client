@@ -1,6 +1,6 @@
 {
   "name": "@exomoon/erc721-layered-assets-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Exomoon JS Client for ERC721 Layered assets.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -37,7 +37,6 @@
     "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.1.6"
   },
-  "peerDependencies": {},
   "files": [
     "/dist"
   ]
