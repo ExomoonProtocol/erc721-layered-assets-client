@@ -29,8 +29,7 @@ on:
           - "remove"
 
 env:
-  GOOGLE_AUTH_CLIENT_ID: ${{ secrets.GOOGLE_AUTH_CLIENT_ID }}
-  GOOGLE_AUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_AUTH_CLIENT_SECRET }}
+  ASSETS_BASE_URL: ${{ secrets.ASSETS_BASE_URL }}
 
 jobs:
   deploy:
