@@ -33,6 +33,7 @@
     "webpack": "^5.76.1"
   },
   "dependencies": {
-    "typescript-json-serializer": "^6.0.0"
+    "typescript-json-serializer": "^6.0.0",
+    "@exomoon/erc721-layered-assets-client": "^1.0.0"
   }
 }

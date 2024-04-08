@@ -63,10 +63,10 @@ resources:
         Name: exomoon-assets-${self:provider.stage}-ExtApiGatewayRestApiRootResourceId
 
 functions:
-  serviceInfo:
-    handler: src/functions/serviceInfo.serviceInfo
+  render:
+    handler: src/functions/render.render
     events:
       - http:
           cors: true
           method: get
-          path: /service-info
+          path: /render/data/{data}/file/{file}
