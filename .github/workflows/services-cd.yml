@@ -66,6 +66,7 @@ jobs:
         if: ${{ github.event.inputs.stageName == 'd1' }}
         run: |
           cd ./services/${{ github.event.inputs.serviceName }}
+          yarn install --force
           sh scripts/${{ github.event.inputs.operation }}.sh
 
       - name: Serverless Deploy - p1
