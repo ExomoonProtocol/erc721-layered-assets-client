@@ -11,7 +11,8 @@
     "docs": "lerna run docs"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "services/*"
   ],
   "dependencies": {},
   "devDependencies": {
