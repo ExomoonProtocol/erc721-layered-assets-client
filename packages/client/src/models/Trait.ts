@@ -30,6 +30,12 @@ export interface ITrait {
    * Conditional rendering configurations for the trait.
    */
   conditonalRenderingConfig?: Array<IConditionalRenderingConfig>;
+
+  /**
+   * Icon URL for the trait.
+   * If not provided, the icon will be generated based on the expected default icon url.
+   */
+  iconUrl?: string;
 }
 
 @JsonObject()
@@ -45,6 +51,9 @@ export class Trait implements ITrait {
 
   @JsonProperty({ type: ConditionalRenderingConfig, required: false })
   public conditonalRenderingConfig?: Array<ConditionalRenderingConfig>;
+
+  @JsonProperty({ required: false })
+  public iconUrl?: string;
 
   constructor() {
     this.variations = [];

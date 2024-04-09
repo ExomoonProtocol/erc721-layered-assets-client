@@ -29,6 +29,12 @@ export interface IVariation {
    * Rarity of the variation. Useful for UI and/or metadata generation.
    */
   rarity?: number | string;
+
+  /**
+   * Preview/Thumbnail image URL for the variation.
+   * If not provided, the image url will be generated based on the expected default thumbnail image url.
+   */
+  previewImageUrl?: string;
 }
 
 /**
@@ -47,6 +53,9 @@ export class Variation implements IVariation {
 
   @JsonProperty({ required: false })
   public rarity?: number | string;
+
+  @JsonProperty({ required: false })
+  public previewImageUrl?: string;
 
   constructor() {}
 }
