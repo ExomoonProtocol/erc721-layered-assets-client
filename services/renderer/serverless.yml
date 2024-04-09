@@ -19,6 +19,7 @@ provider:
   stage: ${env:STAGE}
   environment:
     STAGE: ${self:provider.stage}
+    ASSETS_BASE_URL: ${env:ASSETS_BASE_URL}
     API_GATEWAY_NAME: Exomoon-ApiGateway-Assets-Renderer-${self:provider.stage}
   layers:
     - arn:aws:lambda:us-east-1:940798882457:layer:canvas:1
