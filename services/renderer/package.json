@@ -4,6 +4,7 @@
   "license": "MIT",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
+  "private": true,
   "scripts": {
     "clean": "rm -rf .serverless && rm -rf .webpack && rm -rf swagger",
     "start-offline": "./scripts/start-offline.sh",
