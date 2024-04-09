@@ -1,8 +1,11 @@
 {
   "name": "Background",
+  "description": "A simple background layer",
   "variations": [
     {
       "name": "Single Color",
+      "description": "A single color background",
+      "rarity": "common",
       "colors": [
         "Black",
         "Blue",
@@ -11,7 +14,9 @@
       ]
     },
     {
-      "name": "Custom 1"
+      "name": "Custom 1",
+      "description": "A custom background",
+      "rarity": "rare"
     }
   ]
 }

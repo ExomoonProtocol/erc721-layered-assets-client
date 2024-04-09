@@ -19,6 +19,16 @@ export interface IVariation {
    * @example ["blue", "red"]
    */
   colors: Array<string>;
+
+  /**
+   * Description of the variation (optional). Useful for UI and/or metadata generation.
+   */
+  description?: string;
+
+  /**
+   * Rarity of the variation. Useful for UI and/or metadata generation.
+   */
+  rarity?: number | string;
 }
 
 /**
@@ -26,11 +36,17 @@ export interface IVariation {
  */
 @JsonObject()
 export class Variation implements IVariation {
-  @JsonProperty()
+  @JsonProperty({ required: true })
   public name: string;
 
-  @JsonProperty()
+  @JsonProperty({ required: false })
   public colors: Array<string>;
+
+  @JsonProperty({ required: false })
+  public description?: string;
+
+  @JsonProperty({ required: false })
+  public rarity?: number | string;
 
   constructor() {}
 }

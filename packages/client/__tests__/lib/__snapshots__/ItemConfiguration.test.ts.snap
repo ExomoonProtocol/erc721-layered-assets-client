@@ -143,6 +143,7 @@ exports[`ItemConfiguration class setVariation method Should set variation with a
         },
         "traits": [
           Trait {
+            "description": "A simple background layer",
             "name": "Background",
             "variations": [
               Variation {
@@ -152,10 +153,14 @@ exports[`ItemConfiguration class setVariation method Should set variation with a
                   "Brown",
                   "Green",
                 ],
+                "description": "A single color background",
                 "name": "Single Color",
+                "rarity": "common",
               },
               Variation {
+                "description": "A custom background",
                 "name": "Custom 1",
+                "rarity": "rare",
               },
             ],
           },
@@ -184,6 +189,7 @@ exports[`ItemConfiguration class setVariation method Should set variation with c
         },
         "traits": [
           Trait {
+            "description": "A simple background layer",
             "name": "Background",
             "variations": [
               Variation {
@@ -193,10 +199,14 @@ exports[`ItemConfiguration class setVariation method Should set variation with c
                   "Brown",
                   "Green",
                 ],
+                "description": "A single color background",
                 "name": "Single Color",
+                "rarity": "common",
               },
               Variation {
+                "description": "A custom background",
                 "name": "Custom 1",
+                "rarity": "rare",
               },
             ],
           },
@@ -225,6 +235,7 @@ exports[`ItemConfiguration class setVariation method Should set variation with n
         },
         "traits": [
           Trait {
+            "description": "A simple background layer",
             "name": "Background",
             "variations": [
               Variation {
@@ -234,10 +245,14 @@ exports[`ItemConfiguration class setVariation method Should set variation with n
                   "Brown",
                   "Green",
                 ],
+                "description": "A single color background",
                 "name": "Single Color",
+                "rarity": "common",
               },
               Variation {
+                "description": "A custom background",
                 "name": "Custom 1",
+                "rarity": "rare",
               },
             ],
           },
