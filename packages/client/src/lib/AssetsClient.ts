@@ -101,30 +101,13 @@ export class AssetsClient {
         `${this.baseUrl}/collection.json`
       );
 
-      console.log(
-        "[AssetsClient] Collection info response:",
-        JSON.stringify(response.data),
-        typeof response.data
-      );
-
       const rawObj =
         ModelsUtils.instance.serializer.deserializeObject<CollectionInfo>(
-          JSON.stringify(response.data),
+          response.data,
           CollectionInfo
         );
 
       console.log("[AssetsClient] Collection info raw:", rawObj);
-
-      console.log(
-        "Test deser:",
-        ModelsUtils.instance.serializer.deserializeObject<CollectionInfo>(
-          {
-            collectionName: "Collection 1",
-            traitsOrder: ["Background", "Shape", "Cover"],
-          },
-          CollectionInfo
-        )
-      );
 
       collectionInfoObj = rawObj || null;
 

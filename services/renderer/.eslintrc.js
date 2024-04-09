@@ -18,7 +18,7 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     ...customRules,
   },
-  ignorePatterns: ["dist/", ".eslintrc.js", "__tests__/"],
+  ignorePatterns: ["dist/", ".eslintrc.js", "__tests__/", "webpack.config.js"],
   env: {
     node: true,
     es6: true,

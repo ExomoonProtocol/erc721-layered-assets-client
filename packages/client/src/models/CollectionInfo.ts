@@ -30,7 +30,7 @@ export class CollectionInfo implements ICollectionInfo {
   @JsonProperty({ required: true })
   collectionName: string;
 
-  @JsonProperty({ required: true })
+  @JsonProperty({ required: false })
   description: string;
 
   @JsonProperty({ required: true })

@@ -15,7 +15,7 @@ export class LambdaResponses {
     statusCode: number,
     body: string | object
   ): APIGatewayProxyResult {
-    let lambdaResponse: APIGatewayProxyResult = {
+    const lambdaResponse: APIGatewayProxyResult = {
       statusCode: statusCode,
       body: JSON.stringify(
         typeof body === "object" ? body : this.responseMessage(body)
@@ -39,7 +39,7 @@ export class LambdaResponses {
     statusCode: number,
     imageBuffer: Buffer
   ): APIGatewayProxyResult {
-    let lambdaResponse: APIGatewayProxyResult = {
+    const lambdaResponse: APIGatewayProxyResult = {
       statusCode: statusCode,
       headers: {
         "Content-Type": "image/png",
@@ -71,8 +71,8 @@ export class LambdaResponses {
    * @returns Not Found response as an object
    */
   public static notFound(customBody?: string | object) {
-    let body = customBody || "Not Found";
-    let lambdaResponse = this.response(404, body);
+    const body = customBody || "Not Found";
+    const lambdaResponse = this.response(404, body);
     return lambdaResponse;
   }
 
@@ -83,8 +83,8 @@ export class LambdaResponses {
    * @returns Server Error response as an object
    */
   public static serverError(customBody?: string | object) {
-    let body = customBody || "Server Error";
-    let lambdaResponse = this.response(500, body);
+    const body = customBody || "Server Error";
+    const lambdaResponse = this.response(500, body);
     return lambdaResponse;
   }
 
@@ -95,8 +95,8 @@ export class LambdaResponses {
    * @returns Bad Request response as an object
    */
   public static badRequest(customBody?: string | object) {
-    let body = customBody || "Bad Request";
-    let lambdaResponse = this.response(400, body);
+    const body = customBody || "Bad Request";
+    const lambdaResponse = this.response(400, body);
     return lambdaResponse;
   }
 
@@ -107,8 +107,8 @@ export class LambdaResponses {
    * @returns Forbidden response as an object
    */
   public static forbidden(customBody?: string | object) {
-    let body = customBody || "Forbidden";
-    let lambdaResponse = this.response(403, body);
+    const body = customBody || "Forbidden";
+    const lambdaResponse = this.response(403, body);
     return lambdaResponse;
   }
 
@@ -119,8 +119,8 @@ export class LambdaResponses {
    * @returns unauthorized response as an object
    */
   public static unauthorized(customBody?: string | object) {
-    let body = customBody || "Unauthorized";
-    let lambdaResponse = this.response(401, body);
+    const body = customBody || "Unauthorized";
+    const lambdaResponse = this.response(401, body);
     return lambdaResponse;
   }
 
@@ -131,8 +131,8 @@ export class LambdaResponses {
    * @returns Success response as an object
    */
   public static success(customBody?: string | object) {
-    let body = customBody || "Success";
-    let lambdaResponse = this.response(200, body);
+    const body = customBody || "Success";
+    const lambdaResponse = this.response(200, body);
     return lambdaResponse;
   }
 }

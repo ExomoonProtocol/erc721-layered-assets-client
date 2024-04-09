@@ -2,12 +2,9 @@ import {
   AssetsClient,
   INftMetadata,
   ItemConfiguration,
-  ItemConfigurationStatus,
-  NftMetadata,
 } from "@exomoon/erc721-layered-assets-client";
-import { FileInfo } from "../models";
 import axios from "axios";
-import { createCanvas, Canvas, loadImage } from "canvas";
+import { createCanvas, loadImage } from "canvas";
 
 /**
  * Rendering manager class

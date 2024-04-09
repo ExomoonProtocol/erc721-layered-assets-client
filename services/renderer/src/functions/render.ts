@@ -1,13 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use strict";
 
 import { APIGatewayProxyEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { LambdaResponses } from "../utils/LambdaResponses";
 import { ValidationUtils } from "../utils";
 import { RenderingManager } from "../lib/RenderingManager";
-import {
-  CollectionInfo,
-  ModelsUtils,
-} from "@exomoon/erc721-layered-assets-client";
 
 export const render: APIGatewayProxyHandler = async (
   _event: APIGatewayProxyEvent
