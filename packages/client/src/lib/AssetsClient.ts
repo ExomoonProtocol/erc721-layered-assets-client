@@ -60,9 +60,10 @@ export class AssetsClient {
     this._cachedAssetsInfo = {};
   }
 
-  protected fetchResource(url: string): Promise<any> {
+  protected async fetchResource(url: string): Promise<any> {
     console.log(`[AssetsClient] Fetching resource: ${url}`);
-    return axios.get(url);
+    const res = await axios.get(url);
+    return res;
   }
 
   /**
@@ -99,11 +100,14 @@ export class AssetsClient {
       const response = await this.fetchResource(
         `${this.baseUrl}/collection.json`
       );
+
       const rawObj =
         ModelsUtils.instance.serializer.deserializeObject<CollectionInfo>(
           response.data,
           CollectionInfo
         );
+
+      console.log("[AssetsClient] Collection info raw:", rawObj);
 
       collectionInfoObj = rawObj || null;
 
@@ -243,6 +247,22 @@ export class AssetsClient {
       return (
         this._cachedAssetsInfo.traits.find((t) => t.name === traitName) || null
       );
+    }
+
+    return null;
+  }
+
+  /**
+   * Get a single trait by index. If the trait is not cached, it will return null.
+   * This method should be called after being sure that the trait has been fetched, otherwise it will return null.
+   *
+   * @param index Trait index
+   * @returns Trait object, or null if not found
+   * @public
+   */
+  public getTraitByIndex(index: number): Trait | null {
+    if (this._cachedAssetsInfo.traits) {
+      return this._cachedAssetsInfo.traits[index] || null;
     }
 
     return null;

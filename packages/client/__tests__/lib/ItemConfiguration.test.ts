@@ -102,4 +102,24 @@ describe("ItemConfiguration class", () => {
       expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
     });
   });
+
+  describe("renderMetadata method", () => {
+    it("Should render metadata", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+      expect(itemConfiguration.renderMetadata().serialize()).toMatchSnapshot();
+    });
+  });
+
+  describe("buildFromLayersDataString method", () => {
+    it("Should build item configuration from layers data string", async () => {
+      const itemConfiguration =
+        await ItemConfiguration.buildFromLayersDataString("0x00", client2);
+
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+    });
+  });
 });

@@ -1,0 +1,42 @@
+{
+  "name": "@exomoon/erc721-layered-assets-renderer-service",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "scripts": {
+    "clean": "rm -rf .serverless && rm -rf .webpack && rm -rf swagger",
+    "start-offline": "./scripts/start-offline.sh",
+    "deploy": "./scripts/deploy.sh",
+    "build": "./scripts/package.sh",
+    "clean-build": "yarn clean && yarn build",
+    "force-deploy": "./scripts/force-deploy.sh",
+    "remove-stack": "./scripts/remove.sh",
+    "lint": "eslint . --ext .js,.ts"
+  },
+  "devDependencies": {
+    "@burneeble/eslint-plugin-burneeble": "^1.0.4",
+    "@types/aws-lambda": "^8.10.131",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "node-loader": "^2.0.0",
+    "serverless": "^3.28.1",
+    "serverless-api-gateway-caching": "^1.10.3",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "serverless-latest-layer-version": "^2.1.2",
+    "serverless-offline": "^12.0.4",
+    "serverless-plugin-typescript": "^2.1.4",
+    "serverless-webpack": "^5.11.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.5",
+    "webpack": "^5.76.1"
+  },
+  "dependencies": {
+    "@exomoon/erc721-layered-assets-client": "1.0.2",
+    "axios": "^1.6.8",
+    "canvas": "2.11.2",
+    "typescript-json-serializer": "^6.0.0"
+  }
+}

@@ -10,7 +10,11 @@ export class ModelsUtils {
   private _serializer: JsonSerializer;
 
   constructor() {
-    this._serializer = new JsonSerializer();
+    this._serializer = new JsonSerializer({
+      errorCallback: (error) => {
+        console.error(error);
+      },
+    });
   }
 
   /**

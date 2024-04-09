@@ -17,7 +17,9 @@
     // "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     // "ignoreDeprecations": "5.0",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
