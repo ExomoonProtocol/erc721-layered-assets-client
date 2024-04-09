@@ -4,7 +4,8 @@ plugins:
   - serverless-webpack
   - serverless-offline
   - serverless-dotenv-plugin
-  # - serverless-latest-layer-version
+  - serverless-latest-layer-version
+  - serverless-api-gateway-caching
 
 package:
   individually: true
@@ -22,10 +23,13 @@ provider:
     ASSETS_BASE_URL: ${env:ASSETS_BASE_URL}
     API_GATEWAY_NAME: Exomoon-ApiGateway-Assets-Renderer-${self:provider.stage}
   layers:
-    - arn:aws:lambda:us-east-1:940798882457:layer:canvas:1
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:canvas-nodejs:latest
 
 custom:
   stage: ${self:provider.stage}
+
+  apiGatewayCaching:
+    enabled: true
 
   serverless-offline:
     httpPort: 3003
@@ -72,3 +76,12 @@ functions:
           cors: true
           method: get
           path: /render/data/{data}/file/{file}
+          caching:
+            enabled: true
+            cacheKeyParameters:
+              - name: request.path.data
+              - name: request.path.file
+              - name: request.querystring.size
+            perKeyInvalidation:
+              requireAuthorization: false
+              handleUnauthorizedRequests: Ignore

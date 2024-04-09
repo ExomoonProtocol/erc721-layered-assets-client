@@ -49,7 +49,7 @@ export class ValidationUtils {
    */
   public static validateImageSize(size?: string): number {
     let sizeNumber = parseInt(size || "");
-    if (isNaN(sizeNumber) || sizeNumber < 1) {
+    if (isNaN(sizeNumber) || sizeNumber < 1 || sizeNumber > 2048) {
       sizeNumber = 1024;
     }
 

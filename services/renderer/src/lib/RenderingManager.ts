@@ -61,6 +61,12 @@ export class RenderingManager {
     return metadata.serialize();
   }
 
+  /**
+   * Fetches an image from the provided URL.
+   * @param imageUrl Image URL
+   * @returns Image buffer
+   * @throws Error if the image cannot be fetched
+   */
   public static async fetchImage(imageUrl: string): Promise<Buffer> {
     const response = await axios.get(imageUrl, {
       responseType: "arraybuffer",
@@ -69,6 +75,13 @@ export class RenderingManager {
     return Buffer.from(response.data, "binary");
   }
 
+  /**
+   * Layers images on top of each other.
+   * @param images Images to layer
+   * @param size Image size
+   * @returns Layered image
+   * @throws Error if the images cannot be layered
+   */
   public static async layerizeImages(
     images: Array<Buffer>,
     size: number
@@ -78,7 +91,7 @@ export class RenderingManager {
 
     for (let i = 0; i < images.length; i++) {
       const image = await loadImage(images[i]);
-      ctx.drawImage(image, 0, 0);
+      ctx.drawImage(image, 0, 0, size, size);
     }
 
     return canvas.toBuffer();
