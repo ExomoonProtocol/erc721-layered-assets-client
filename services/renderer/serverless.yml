@@ -32,15 +32,12 @@ custom:
     lambdaPort: 3005
 
   webpack:
-    packager: yarn
     webpackConfig: "webpack.config.js"
+    packager: "yarn"
+    excludeFiles: src/**/*.test.js
     keepOutputDirectory: true
-    includeModules:
-      nodeModulesRelativeDir: "../../"
-      forceExclude:
-        - aws-sdk
-        - aws-lambda
-    excludeFiles: ./**/*.test.js
+    packagerOptions:
+      lockFile: "../../yarn.lock"
 
 resources:
   Resources:

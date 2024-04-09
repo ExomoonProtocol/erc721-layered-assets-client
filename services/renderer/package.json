@@ -35,7 +35,7 @@
   "dependencies": {
     "@exomoon/erc721-layered-assets-client": "1.0.2",
     "axios": "^1.6.8",
-    "canvas": "^2.11.2",
+    "canvas": "2.11.2",
     "typescript-json-serializer": "^6.0.0"
   }
 }

@@ -11,7 +11,6 @@ module.exports = {
   },
   target: "node",
   externals: ["canvas", "aws-sdk", "aws-lambda", "@types/aws-lambda", "@types/aws-sdk"],
-
   module: {
     rules: [
       {
