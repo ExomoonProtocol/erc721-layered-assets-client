@@ -1,6 +1,16 @@
 import { JsonObject, JsonProperty } from "typescript-json-serializer";
 
 /**
+ * Configuration object for a single variation.
+ * It should be located inside the trait configuration object.
+ */
+export interface ITraitConfiguration {
+  traitName: string;
+  variationName: string;
+  colorName?: string;
+}
+
+/**
  * Configuration object for the collection info. It handles all the more generic information about the collection.
  * A file with this configuration should be located at the root of the collection folder, and should be named `collection.json`.
  */
@@ -19,6 +29,12 @@ export interface ICollectionInfo {
    * Order of the traits, under a rendering perspective. This order will be used by the `AssetsClient` and the other modules to generating metadata, image URLs, and more based on the correct rendering order of the traits.
    */
   traitsOrder: Array<string>;
+
+  /**
+   * Initial item configuration for the collection (optional).
+   * It will be used for frontend development purposes, to have a starting point for the item configuration.
+   */
+  initialItemConfiguration?: Array<ITraitConfiguration>;
 }
 
 /**
@@ -35,6 +51,9 @@ export class CollectionInfo implements ICollectionInfo {
 
   @JsonProperty({ required: true })
   traitsOrder: Array<string>;
+
+  @JsonProperty({ required: false })
+  initialItemConfiguration?: Array<ITraitConfiguration>;
 
   constructor() {
     this.traitsOrder = [];

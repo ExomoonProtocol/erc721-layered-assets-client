@@ -175,6 +175,20 @@ export class AssetsClient {
     );
 
     if (rawObj) {
+      // Build missing params in trait object
+      if (!rawObj.iconUrl) {
+        rawObj.iconUrl = `${this.baseUrl}/traits/${traitName}/icon.svg`;
+      }
+
+      // Build missing params in variations
+      rawObj.variations = rawObj.variations.map((v) => {
+        if (!v.previewImageUrl) {
+          v.previewImageUrl = `${this.baseUrl}/traits/${traitName}/thumbnail.png`;
+        }
+
+        return v;
+      });
+
       // Cache trait
       if (this._cachedAssetsInfo.traits) {
         const traitIndex = this._cachedAssetsInfo.traits.findIndex(

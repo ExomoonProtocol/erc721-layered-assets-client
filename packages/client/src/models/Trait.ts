@@ -17,6 +17,11 @@ export interface ITrait {
   name: string;
 
   /**
+   * Description of the trait (optional). Useful for UI and/or metadata generation.
+   */
+  description?: string;
+
+  /**
    * List of variations for the trait.
    */
   variations: Array<IVariation>;
@@ -25,18 +30,30 @@ export interface ITrait {
    * Conditional rendering configurations for the trait.
    */
   conditonalRenderingConfig?: Array<IConditionalRenderingConfig>;
+
+  /**
+   * Icon URL for the trait.
+   * If not provided, the icon will be generated based on the expected default icon url.
+   */
+  iconUrl?: string;
 }
 
 @JsonObject()
 export class Trait implements ITrait {
-  @JsonProperty()
+  @JsonProperty({ required: true })
   public name: string;
 
-  @JsonProperty({ type: Variation })
+  @JsonProperty({ type: Variation, required: true })
   public variations: Array<Variation>;
 
-  @JsonProperty({ type: ConditionalRenderingConfig })
+  @JsonProperty({ required: false })
+  public description?: string;
+
+  @JsonProperty({ type: ConditionalRenderingConfig, required: false })
   public conditonalRenderingConfig?: Array<ConditionalRenderingConfig>;
+
+  @JsonProperty({ required: false })
+  public iconUrl?: string;
 
   constructor() {
     this.variations = [];

@@ -16,6 +16,7 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
         },
         "traits": [
           Trait {
+            "iconUrl": "https://example2.com/traits/Background/icon.svg",
             "name": "Background",
             "variations": [
               Variation {
@@ -26,23 +27,29 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
                   "Green",
                 ],
                 "name": "Single Color",
+                "previewImageUrl": "https://example2.com/traits/Background/thumbnail.png",
               },
               Variation {
                 "name": "Custom 1",
+                "previewImageUrl": "https://example2.com/traits/Background/thumbnail.png",
               },
             ],
           },
           Trait {
+            "iconUrl": "https://example2.com/traits/Shape/icon.svg",
             "name": "Shape",
             "variations": [
               Variation {
                 "name": "Rectangle",
+                "previewImageUrl": "https://example2.com/traits/Shape/thumbnail.png",
               },
               Variation {
                 "name": "Circle",
+                "previewImageUrl": "https://example2.com/traits/Shape/thumbnail.png",
               },
               Variation {
                 "name": "Triangle",
+                "previewImageUrl": "https://example2.com/traits/Shape/thumbnail.png",
               },
             ],
           },
@@ -64,6 +71,7 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
                 "variationName": "Triangle",
               },
             ],
+            "iconUrl": "https://example2.com/traits/Cover/icon.svg",
             "name": "Cover",
             "variations": [
               Variation {
@@ -72,6 +80,7 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
                   "Blue",
                 ],
                 "name": "Custom Cover 1",
+                "previewImageUrl": "https://example2.com/traits/Cover/thumbnail.png",
               },
             ],
           },
@@ -143,6 +152,8 @@ exports[`ItemConfiguration class setVariation method Should set variation with a
         },
         "traits": [
           Trait {
+            "description": "A simple background layer",
+            "iconUrl": "https://example.com/traits/Background/icon.svg",
             "name": "Background",
             "variations": [
               Variation {
@@ -152,10 +163,16 @@ exports[`ItemConfiguration class setVariation method Should set variation with a
                   "Brown",
                   "Green",
                 ],
+                "description": "A single color background",
                 "name": "Single Color",
+                "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+                "rarity": "common",
               },
               Variation {
+                "description": "A custom background",
                 "name": "Custom 1",
+                "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+                "rarity": "rare",
               },
             ],
           },
@@ -184,6 +201,8 @@ exports[`ItemConfiguration class setVariation method Should set variation with c
         },
         "traits": [
           Trait {
+            "description": "A simple background layer",
+            "iconUrl": "https://example.com/traits/Background/icon.svg",
             "name": "Background",
             "variations": [
               Variation {
@@ -193,10 +212,16 @@ exports[`ItemConfiguration class setVariation method Should set variation with c
                   "Brown",
                   "Green",
                 ],
+                "description": "A single color background",
                 "name": "Single Color",
+                "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+                "rarity": "common",
               },
               Variation {
+                "description": "A custom background",
                 "name": "Custom 1",
+                "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+                "rarity": "rare",
               },
             ],
           },
@@ -225,6 +250,8 @@ exports[`ItemConfiguration class setVariation method Should set variation with n
         },
         "traits": [
           Trait {
+            "description": "A simple background layer",
+            "iconUrl": "https://example.com/traits/Background/icon.svg",
             "name": "Background",
             "variations": [
               Variation {
@@ -234,10 +261,16 @@ exports[`ItemConfiguration class setVariation method Should set variation with n
                   "Brown",
                   "Green",
                 ],
+                "description": "A single color background",
                 "name": "Single Color",
+                "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+                "rarity": "common",
               },
               Variation {
+                "description": "A custom background",
                 "name": "Custom 1",
+                "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+                "rarity": "rare",
               },
             ],
           },
