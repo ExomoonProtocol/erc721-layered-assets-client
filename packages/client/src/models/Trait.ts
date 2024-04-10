@@ -55,6 +55,13 @@ export interface ITrait {
    * @note It is incompatible with the required flag. If the required flag is set to true, the randomness factor will be ignored.
    */
   radnomnessFactor?: number;
+
+  /**
+   * Group name for the trait (optional)
+   * Default is the trait name.
+   * If provided, it will be used to group the trait in the UI.
+   */
+  traitGroupName?: string;
 }
 
 @JsonObject()
@@ -79,6 +86,9 @@ export class Trait implements ITrait {
 
   @JsonProperty({ required: false })
   public radnomnessFactor?: number;
+
+  @JsonProperty({ required: false })
+  public traitGroupName?: string;
 
   constructor() {
     this.variations = [];

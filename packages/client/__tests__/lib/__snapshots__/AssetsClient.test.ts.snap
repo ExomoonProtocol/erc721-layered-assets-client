@@ -16,6 +16,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a
       "name": "Background",
       "radnomnessFactor": 0.5,
       "required": false,
+      "traitGroupName": "Background",
       "variations": [
         Variation {
           "colors": [
@@ -57,6 +58,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
       "name": "Background",
       "radnomnessFactor": 0.5,
       "required": false,
+      "traitGroupName": "Background",
       "variations": [
         Variation {
           "colors": [
@@ -110,6 +112,7 @@ exports[`AssetsClient fetchTraits method Should fetch traits with cache: a1 - tr
     "name": "Background",
     "radnomnessFactor": 0.5,
     "required": false,
+    "traitGroupName": "Background",
     "variations": [
       Variation {
         "colors": [
@@ -142,6 +145,7 @@ exports[`AssetsClient fetchTraits method Should fetch traits: a1 - traits 1`] = 
     "name": "Background",
     "radnomnessFactor": 0.5,
     "required": false,
+    "traitGroupName": "Background",
     "variations": [
       Variation {
         "colors": [
@@ -161,6 +165,24 @@ exports[`AssetsClient fetchTraits method Should fetch traits: a1 - traits 1`] = 
         "previewImageUrl": "https://example.com/traits/Background/Custom 1/thumbnail.png",
         "rarity": "rare",
       },
+    ],
+  },
+]
+`;
+
+exports[`AssetsClient getTraitsGroups method Should get traits groups 1`] = `
+[
+  {
+    "groupName": "Background",
+    "traits": [
+      "Background",
+    ],
+  },
+  {
+    "groupName": "Accessory",
+    "traits": [
+      "Shape",
+      "Cover",
     ],
   },
 ]
