@@ -1,6 +1,6 @@
 {
   "name": "@exomoon/erc721-layered-assets-renderer-service",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -35,7 +35,7 @@
     "webpack": "^5.76.1"
   },
   "dependencies": {
-    "@exomoon/erc721-layered-assets-client": "^1.0.6",
+    "@exomoon/erc721-layered-assets-client": "^1.0.7",
     "axios": "^1.6.8",
     "canvas": "2.11.2",
     "typescript-json-serializer": "^6.0.0"
