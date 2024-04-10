@@ -1,6 +1,6 @@
 {
   "name": "@exomoon/erc721-layered-assets-cli",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Exomoon CLI package for ERC721 Layered assets.",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -22,10 +22,10 @@
     "start": "yarn build && node --experimental-specifier-resolution=node dist/esm/index.js"
   },
   "dependencies": {
+    "@exomoon/erc721-layered-assets-client": "^1.0.4",
     "canvas": "2.11.2",
     "chalk": "^5.3.0",
-    "inquirer": "^9.2.17",
-    "@exomoon/erc721-layered-assets-client": "1.0.3"
+    "inquirer": "^9.2.17"
   },
   "devDependencies": {
     "@burneeble/eslint-plugin-burneeble": "^1.0.12",
