@@ -117,6 +117,85 @@ describe("ItemConfiguration class", () => {
     });
   });
 
+  describe("historyUndo method", () => {
+    it("Should undo the last change", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+
+    it("Should do nothing if there is no operation to undo", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+  });
+
+  describe("historyRedo method", () => {
+    it("Should redo the last change", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+
+      itemConfiguration.historyRedo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+
+    it("Should do nothing if there is no operation to redo", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      itemConfiguration.historyUndo();
+      itemConfiguration.historyRedo();
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyRedo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+
+    it("Should redo multiple changes", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+      itemConfiguration.historyUndo();
+
+      itemConfiguration.historyRedo();
+      itemConfiguration.historyRedo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+  });
+
   describe("removeVariation method", () => {
     it("Should remove variation", async () => {
       const itemConfiguration = new ItemConfiguration(client3);

@@ -4,6 +4,7 @@ import { NftMetadata } from "../models";
 import { AssetsClient } from "./AssetsClient";
 import { AssetsClientConsumer } from "./AssetsClientConsumer";
 import { TraitConfiguration } from "./TraitConfiguration";
+import lodash from "lodash";
 
 /**
  * Status of item configuration
@@ -21,13 +22,19 @@ export enum ItemConfigurationStatus {
   Ready,
 }
 
+export type ItemConfigurationState = Array<TraitConfiguration>;
+
 /**
  * Handles configuration for a single NFT item.
  * It can be used to build an NFT item configuration by setting variations for each trait; it may be useful both for creating the NFT item in the frontend and for rendering the NFT item image in the backend.
  * Under the hood, it wraps the `AssetsClient` and `TraitConfiguration` classes, handling the state for a single item.
  */
 export class ItemConfiguration extends AssetsClientConsumer {
-  private _traitConfigurations: Array<TraitConfiguration>;
+  private _historyPreviousStates: Array<ItemConfigurationState>;
+
+  private _historyNextStates: Array<ItemConfigurationState>;
+
+  private _traitConfigurations: ItemConfigurationState;
 
   private _status: ItemConfigurationStatus;
 
@@ -36,6 +43,8 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
     this._status = ItemConfigurationStatus.Unloaded;
     this._traitConfigurations = new Array<TraitConfiguration>();
+    this._historyPreviousStates = new Array<ItemConfigurationState>();
+    this._historyNextStates = new Array<ItemConfigurationState>();
   }
 
   /**
@@ -120,6 +129,62 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Saves the current state of the item configuration to the previous history.
+   */
+  protected pushStateToPreviousHistory(): void {
+    this._historyPreviousStates.push(
+      lodash.cloneDeep(this._traitConfigurations)
+    );
+  }
+
+  /**
+   * Saves the current state of the item configuration to the next history.
+   */
+  protected pushStateToNextHistory(): void {
+    this._historyNextStates.unshift(
+      lodash.cloneDeep(this._traitConfigurations)
+    );
+  }
+
+  /**
+   * Removes the last state from the previous history.
+   */
+  protected popStateFromPreviousHistory(): ItemConfigurationState | undefined {
+    return this._historyPreviousStates.pop();
+  }
+
+  /**
+   * Removes the last state from the next history.
+   */
+  protected popStateFromNextHistory(): ItemConfigurationState | undefined {
+    return this._historyNextStates.shift();
+  }
+
+  /**
+   * Undo the last change in the item configuration.
+   */
+  public historyUndo(): void {
+    this.requireReady();
+
+    if (this._historyPreviousStates.length > 0) {
+      this.pushStateToNextHistory();
+      this._traitConfigurations = this.popStateFromPreviousHistory() || [];
+    }
+  }
+
+  /**
+   * Redo the last change in the item configuration.
+   */
+  public historyRedo(): void {
+    this.requireReady();
+
+    if (this._historyNextStates.length > 0) {
+      this.pushStateToPreviousHistory();
+      this._traitConfigurations = this.popStateFromNextHistory() || [];
+    }
+  }
+
+  /**
    * Set a variation configuration. It can be either a new configuration (eg. adding a new trait) or an existing one (eg. changing the color of an existing trait).
    * @param trait Trait name
    * @param variation Variation name
@@ -168,13 +233,15 @@ export class ItemConfiguration extends AssetsClientConsumer {
       traitConfiguration.variationName = variation;
       traitConfiguration.colorName = selectedColor || undefined;
     } else {
-      const newTraitConfiguration = new TraitConfiguration(this.assetsClient);
+      const newTraitConfiguration = new TraitConfiguration();
       newTraitConfiguration.traitName = trait;
       newTraitConfiguration.variationName = variation;
       newTraitConfiguration.colorName = selectedColor || undefined;
       this._traitConfigurations.push(newTraitConfiguration);
       this.sortTraitConfigurations();
     }
+
+    this.pushStateToPreviousHistory();
   }
 
   /**
@@ -292,11 +359,11 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
         if (conditionalRenderingConfig) {
           console.log(conditionalRenderingConfig);
-          return tc.getImageUrl(conditionalRenderingConfig);
+          return tc.getImageUrl(this.assetsClient, conditionalRenderingConfig);
         }
       }
 
-      return tc.getImageUrl();
+      return tc.getImageUrl(this.assetsClient);
     });
   }
 
