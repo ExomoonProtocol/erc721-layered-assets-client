@@ -254,6 +254,8 @@ export class ItemConfiguration extends AssetsClientConsumer {
       throw new Error("Variation doesn't support colors");
     }
 
+    this.pushStateToPreviousHistory();
+
     if (traitConfiguration) {
       traitConfiguration.variationName = variation;
       traitConfiguration.colorName = selectedColor || undefined;
@@ -266,7 +268,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
       this.sortTraitConfigurations();
     }
 
-    this.pushStateToPreviousHistory();
     this.clearNextHistory();
   }
 
@@ -288,7 +289,9 @@ export class ItemConfiguration extends AssetsClientConsumer {
         throw new Error(`Trait ${traitObj.name} is required`);
       }
 
+      this.pushStateToPreviousHistory();
       this._traitConfigurations.splice(traitConfigurationIndex, 1);
+      this.clearNextHistory();
     } else {
       throw new Error(`Trait ${trait} not found`);
     }
@@ -398,6 +401,13 @@ export class ItemConfiguration extends AssetsClientConsumer {
     return Math.random();
   }
 
+  /**
+   * Build a random item configuration.
+   * It will randomly select a variation for each trait, based on the randomness factor of the trait.
+   * If the trait is required, it will always be picked.
+   * @param client Assets client
+   * @returns Item configuration
+   */
   public static async buildRandomItemConfiguration(
     client: AssetsClient
   ): Promise<ItemConfiguration> {
@@ -436,6 +446,25 @@ export class ItemConfiguration extends AssetsClientConsumer {
     return itemConfiguration;
   }
 
+  public async randomize(): Promise<void> {
+    this.requireReady();
+
+    const randomItemConfiguration =
+      await ItemConfiguration.buildRandomItemConfiguration(this.assetsClient);
+
+    this.pushStateToPreviousHistory();
+    this._traitConfigurations = randomItemConfiguration._traitConfigurations;
+    this.clearNextHistory();
+  }
+
+  /**
+   * Build an item configuration from a layers data string.
+   * @param layersData Layers data string
+   * @param client Assets client
+   * @returns Item configuration
+   * @throws Error if trait or variation not found, or if color is not supported by the variation
+   * @note This method is useful for building an item configuration from a layers data string, which can be used in the frontend to render the NFT item.
+   */
   public static async buildFromLayersDataString(
     layersData: string,
     client: AssetsClient

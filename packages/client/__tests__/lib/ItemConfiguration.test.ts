@@ -5,6 +5,7 @@ import {
 } from "../../src/lib/ItemConfiguration";
 import { HttpServerMock } from "../HttpServerMock";
 import path from "path";
+import lodash from "lodash";
 
 describe("ItemConfiguration class", () => {
   let client: AssetsClient;
@@ -122,8 +123,11 @@ describe("ItemConfiguration class", () => {
       const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      const previousTraitConfigurations = lodash.cloneDeep(
+        itemConfiguration.traitConfigurations
+      );
+
       itemConfiguration.setVariation("Cover", "Custom Cover 1");
-      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
 
       itemConfiguration.historyUndo();
       expect(itemConfiguration.traitConfigurations).toEqual(
@@ -226,7 +230,7 @@ describe("ItemConfiguration class", () => {
   });
 
   describe("buildRandomItemConfiguration", () => {
-    it("should build configuration with all required traits and some optional ones", async () => {
+    it("should build configuration with all required traits and some optional ones (static)", async () => {
       const randomMock = jest.spyOn(global.Math, "random");
       randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
       randomMock.mockReturnValueOnce(0.6); // Pick background color
@@ -241,6 +245,70 @@ describe("ItemConfiguration class", () => {
 
       // Match the snapshot
       expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+
+      randomMock.mockRestore();
+    });
+  });
+
+  describe("randomize method", () => {
+    it("Should randomize the item configuration", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+
+      const randomMock = jest.spyOn(global.Math, "random");
+      randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
+      randomMock.mockReturnValueOnce(0.6); // Pick background color
+      randomMock.mockReturnValueOnce(0.4); // Decides if shape should be included
+      randomMock.mockReturnValueOnce(0.4); // Pick a variation of shape
+      randomMock.mockReturnValueOnce(0.2); // Decides if cover should be included
+      randomMock.mockReturnValueOnce(0.3); // Pick a variation of cover
+      randomMock.mockReturnValueOnce(0.6); // Pick cover color
+
+      itemConfiguration.randomize();
+
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+
+      randomMock.mockRestore();
+    });
+
+    it("Should be able to set, randomize, set again, and then undo the different steps", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+
+      const initialTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      const state1 = lodash.cloneDeep(itemConfiguration.traitConfigurations);
+
+      const randomMock = jest.spyOn(global.Math, "random");
+      randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
+      randomMock.mockReturnValueOnce(0.6); // Pick background color
+      randomMock.mockReturnValueOnce(0.4); // Decides if shape should be included
+      randomMock.mockReturnValueOnce(0.4); // Pick a variation of shape
+      randomMock.mockReturnValueOnce(0.2); // Decides if cover should be included
+      randomMock.mockReturnValueOnce(0.3); // Pick a variation of cover
+      randomMock.mockReturnValueOnce(0.6); // Pick cover color
+      await itemConfiguration.randomize();
+      const state2 = lodash.cloneDeep(itemConfiguration.traitConfigurations);
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+      const state3 = lodash.cloneDeep(itemConfiguration.traitConfigurations);
+
+      expect({
+        state1,
+        state2,
+        state3,
+      }).toMatchSnapshot();
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(state2);
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(state1);
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        initialTraitConfigurations
+      );
 
       randomMock.mockRestore();
     });

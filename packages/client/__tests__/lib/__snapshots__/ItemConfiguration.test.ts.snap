@@ -10,7 +10,7 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
 ]
 `;
 
-exports[`ItemConfiguration class buildRandomItemConfiguration should build configuration with all required traits and some optional ones 1`] = `
+exports[`ItemConfiguration class buildRandomItemConfiguration should build configuration with all required traits and some optional ones (static) 1`] = `
 [
   TraitConfiguration {
     "_colorName": "Brown",
@@ -64,6 +64,62 @@ exports[`ItemConfiguration class load method Should load initial item configurat
 exports[`ItemConfiguration class load method Should load initial item configuration 2`] = `
 [
   "https://example2.com/traits/Background/Single Color/Blue.png",
+]
+`;
+
+exports[`ItemConfiguration class randomize method Should be able to set, randomize, set again, and then undo the different steps 1`] = `
+{
+  "state1": [
+    TraitConfiguration {
+      "_colorName": "Blue",
+      "_traitName": "Background",
+      "_variationName": "Single Color",
+    },
+  ],
+  "state2": [
+    TraitConfiguration {
+      "_colorName": "Brown",
+      "_traitName": "Background",
+      "_variationName": "Single Color",
+    },
+    TraitConfiguration {
+      "_colorName": undefined,
+      "_traitName": "Shape",
+      "_variationName": "Circle",
+    },
+    TraitConfiguration {
+      "_colorName": "Blue",
+      "_traitName": "Cover",
+      "_variationName": "Custom Cover 1",
+    },
+  ],
+  "state3": [
+    TraitConfiguration {
+      "_colorName": "Brown",
+      "_traitName": "Background",
+      "_variationName": "Single Color",
+    },
+    TraitConfiguration {
+      "_colorName": undefined,
+      "_traitName": "Shape",
+      "_variationName": "Circle",
+    },
+    TraitConfiguration {
+      "_colorName": "Red",
+      "_traitName": "Cover",
+      "_variationName": "Custom Cover 1",
+    },
+  ],
+}
+`;
+
+exports[`ItemConfiguration class randomize method Should randomize the item configuration 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
 ]
 `;
 
