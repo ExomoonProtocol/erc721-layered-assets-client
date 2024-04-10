@@ -1,5 +1,10 @@
 const rules = require("@burneeble/eslint-plugin-burneeble").rules;
 
+
+// convert to ES
+// import { rules } from "@burneeble/eslint-plugin-burneeble";
+
+
 const customRules = {};
 
 Object.keys(rules).forEach((rule) => {
