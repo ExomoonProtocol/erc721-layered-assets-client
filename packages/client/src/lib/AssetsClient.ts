@@ -114,10 +114,6 @@ export class AssetsClient {
     if (this._useCache && this._cachedAssetsInfo?.collectionInfo) {
       collectionInfoObj = this._cachedAssetsInfo.collectionInfo;
     } else {
-      console.log(
-        "Typeof of joined string:",
-        typeof `${this.baseUrl}/collection.json`
-      );
       const response = await this.fetchResource(
         `${this.baseUrl}/collection.json`
       );
@@ -127,8 +123,6 @@ export class AssetsClient {
           response,
           CollectionInfo
         );
-
-      console.log("[AssetsClient] Collection info raw:", rawObj);
 
       collectionInfoObj = rawObj || null;
 
@@ -265,7 +259,7 @@ export class AssetsClient {
    * @returns Traits list array
    * @public
    */
-  public getTrais(): Trait[] {
+  public getTraits(): Trait[] {
     return this._cachedAssetsInfo.traits || [];
   }
 
@@ -350,7 +344,7 @@ export class AssetsClient {
       : params.variationName;
 
     if (params.conditionalTraitConfig) {
-      const traits = this.getTrais();
+      const traits = this.getTraits();
 
       let configMatchedWithTrait = false;
 

@@ -8,7 +8,8 @@
     "clean": "rm -rf dist && rm -rf .build",
     "clean-modules": "rm -rf node_modules && lerna exec -- rm -rf ./node_modules",
     "lint": "lerna run lint",
-    "docs": "lerna run docs"
+    "docs": "lerna run docs",
+    "publish-packages": "yarn build && lerna publish"
   },
   "workspaces": [
     "packages/*",
