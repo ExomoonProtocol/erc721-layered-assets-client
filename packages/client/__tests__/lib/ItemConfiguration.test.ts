@@ -9,6 +9,7 @@ import path from "path";
 describe("ItemConfiguration class", () => {
   let client: AssetsClient;
   let client2: AssetsClient;
+  let client3: AssetsClient;
 
   beforeEach(() => {
     HttpServerMock.instance.clearTemporary();
@@ -36,6 +37,18 @@ describe("ItemConfiguration class", () => {
       baseUrl: "https://example2.com",
       useCache: true,
     });
+
+    HttpServerMock.instance.addTemporaryResponseMappings([
+      {
+        url: "https://example3.com",
+        filePath: path.resolve(__dirname, "../assets/3/"),
+      },
+    ]);
+
+    client3 = new AssetsClient({
+      baseUrl: "https://example3.com",
+      useCache: true,
+    });
   });
 
   describe("load method", () => {
@@ -43,6 +56,14 @@ describe("ItemConfiguration class", () => {
       const itemConfiguration = new ItemConfiguration(client);
       await itemConfiguration.load();
       expect(itemConfiguration.status).toBe(ItemConfigurationStatus.Ready);
+    });
+
+    it("Should load initial item configuration", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+      expect(itemConfiguration.status).toBe(ItemConfigurationStatus.Ready);
+      expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
     });
   });
 
@@ -79,7 +100,7 @@ describe("ItemConfiguration class", () => {
 
   describe("removeVariation method", () => {
     it("Should remove variation", async () => {
-      const itemConfiguration = new ItemConfiguration(client2);
+      const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       itemConfiguration.setVariation("Background", "Single Color", "Blue");
       itemConfiguration.setVariation("Cover", "Custom Cover 1");
@@ -97,7 +118,7 @@ describe("ItemConfiguration class", () => {
     });
 
     it("Should throw an error if trying to remove a variation that doesn't exist", async () => {
-      const itemConfiguration = new ItemConfiguration(client2);
+      const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       expect(() => itemConfiguration.removeVariation("Cover")).toThrow();
       expect(() =>
@@ -108,14 +129,14 @@ describe("ItemConfiguration class", () => {
 
   describe("getTraitsUrls method", () => {
     it("Should get trait urls - single trait", async () => {
-      const itemConfiguration = new ItemConfiguration(client2);
+      const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       itemConfiguration.setVariation("Shape", "Circle");
       expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
     });
 
     it("Should get trait urls - multiple traits", async () => {
-      const itemConfiguration = new ItemConfiguration(client2);
+      const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       itemConfiguration.setVariation("Shape", "Circle");
       itemConfiguration.setVariation("Background", "Single Color", "Blue");
@@ -123,7 +144,7 @@ describe("ItemConfiguration class", () => {
     });
 
     it("Should get trait urls - multiple traits with conditional rendering", async () => {
-      const itemConfiguration = new ItemConfiguration(client2);
+      const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       itemConfiguration.setVariation("Shape", "Circle");
       itemConfiguration.setVariation("Background", "Single Color", "Blue");
@@ -134,7 +155,7 @@ describe("ItemConfiguration class", () => {
 
   describe("renderMetadata method", () => {
     it("Should render metadata", async () => {
-      const itemConfiguration = new ItemConfiguration(client2);
+      const itemConfiguration = new ItemConfiguration(client3);
       await itemConfiguration.load();
       itemConfiguration.setVariation("Shape", "Circle");
       itemConfiguration.setVariation("Background", "Single Color", "Blue");
@@ -146,7 +167,7 @@ describe("ItemConfiguration class", () => {
   describe("buildFromLayersDataString method", () => {
     it("Should build item configuration from layers data string", async () => {
       const itemConfiguration =
-        await ItemConfiguration.buildFromLayersDataString("0x00", client2);
+        await ItemConfiguration.buildFromLayersDataString("0x00", client3);
 
       expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
     });

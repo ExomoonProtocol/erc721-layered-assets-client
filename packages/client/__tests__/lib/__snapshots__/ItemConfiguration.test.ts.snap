@@ -4,10 +4,137 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
 [
   TraitConfiguration {
     "_assetsClient": AssetsClient {
+      "_baseUrl": "https://example3.com",
+      "_cachedAssetsInfo": {
+        "collectionInfo": CollectionInfo {
+          "collectionName": "Collection 1",
+          "traitsOrder": [
+            "Background",
+            "Shape",
+            "Cover",
+          ],
+        },
+        "traits": [
+          Trait {
+            "iconUrl": "https://example3.com/traits/Background/icon.svg",
+            "name": "Background",
+            "required": false,
+            "variations": [
+              Variation {
+                "colors": [
+                  "Black",
+                  "Blue",
+                  "Brown",
+                  "Green",
+                ],
+                "name": "Single Color",
+                "previewImageUrl": "https://example3.com/traits/Background/Single Color/thumbnail.png",
+              },
+              Variation {
+                "name": "Custom 1",
+                "previewImageUrl": "https://example3.com/traits/Background/Custom 1/thumbnail.png",
+              },
+            ],
+          },
+          Trait {
+            "iconUrl": "https://example3.com/traits/Shape/icon.svg",
+            "name": "Shape",
+            "required": false,
+            "variations": [
+              Variation {
+                "name": "Rectangle",
+                "previewImageUrl": "https://example3.com/traits/Shape/Rectangle/thumbnail.png",
+              },
+              Variation {
+                "name": "Circle",
+                "previewImageUrl": "https://example3.com/traits/Shape/Circle/thumbnail.png",
+              },
+              Variation {
+                "name": "Triangle",
+                "previewImageUrl": "https://example3.com/traits/Shape/Triangle/thumbnail.png",
+              },
+            ],
+          },
+          Trait {
+            "conditonalRenderingConfig": [
+              ConditionalRenderingConfig {
+                "colorName": undefined,
+                "traitName": "Shape",
+                "variationName": "Rectangle",
+              },
+              ConditionalRenderingConfig {
+                "colorName": undefined,
+                "traitName": "Shape",
+                "variationName": "Circle",
+              },
+              ConditionalRenderingConfig {
+                "colorName": undefined,
+                "traitName": "Shape",
+                "variationName": "Triangle",
+              },
+            ],
+            "iconUrl": "https://example3.com/traits/Cover/icon.svg",
+            "name": "Cover",
+            "required": false,
+            "variations": [
+              Variation {
+                "colors": [
+                  "Red",
+                  "Blue",
+                ],
+                "name": "Custom Cover 1",
+                "previewImageUrl": "https://example3.com/traits/Cover/Custom Cover 1/thumbnail.png",
+              },
+            ],
+          },
+        ],
+      },
+      "_fileProvider": HttpFileProvider {},
+      "_useCache": true,
+    },
+    "_colorName": "Black",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits 1`] = `
+[
+  "https://example3.com/traits/Background/Single Color/Blue.png",
+  "https://example3.com/traits/Shape/Circle/Circle.png",
+]
+`;
+
+exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits with conditional rendering 1`] = `
+[
+  "https://example3.com/traits/Background/Single Color/Blue.png",
+  "https://example3.com/traits/Shape/Circle/Circle.png",
+  "https://example3.com/traits/Cover/Shape_Circle/Custom Cover 1/Red.png",
+]
+`;
+
+exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - single trait 1`] = `
+[
+  "https://example3.com/traits/Shape/Circle/Circle.png",
+]
+`;
+
+exports[`ItemConfiguration class load method Should load initial item configuration 1`] = `
+[
+  TraitConfiguration {
+    "_assetsClient": AssetsClient {
       "_baseUrl": "https://example2.com",
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
+          "initialItemConfiguration": [
+            {
+              "colorName": "Blue",
+              "traitName": "Background",
+              "variationName": "Single Color",
+            },
+          ],
           "traitsOrder": [
             "Background",
             "Shape",
@@ -92,31 +219,16 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
       "_fileProvider": HttpFileProvider {},
       "_useCache": true,
     },
-    "_colorName": "Black",
+    "_colorName": "Blue",
     "_traitName": "Background",
     "_variationName": "Single Color",
   },
 ]
 `;
 
-exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits 1`] = `
+exports[`ItemConfiguration class load method Should load initial item configuration 2`] = `
 [
   "https://example2.com/traits/Background/Single Color/Blue.png",
-  "https://example2.com/traits/Shape/Circle/Circle.png",
-]
-`;
-
-exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits with conditional rendering 1`] = `
-[
-  "https://example2.com/traits/Background/Single Color/Blue.png",
-  "https://example2.com/traits/Shape/Circle/Circle.png",
-  "https://example2.com/traits/Cover/Shape_Circle/Custom Cover 1/Red.png",
-]
-`;
-
-exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - single trait 1`] = `
-[
-  "https://example2.com/traits/Shape/Circle/Circle.png",
 ]
 `;
 
@@ -124,7 +236,7 @@ exports[`ItemConfiguration class removeVariation method Should remove variation 
 [
   TraitConfiguration {
     "_assetsClient": AssetsClient {
-      "_baseUrl": "https://example2.com",
+      "_baseUrl": "https://example3.com",
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
@@ -136,9 +248,9 @@ exports[`ItemConfiguration class removeVariation method Should remove variation 
         },
         "traits": [
           Trait {
-            "iconUrl": "https://example2.com/traits/Background/icon.svg",
+            "iconUrl": "https://example3.com/traits/Background/icon.svg",
             "name": "Background",
-            "required": true,
+            "required": false,
             "variations": [
               Variation {
                 "colors": [
@@ -148,30 +260,30 @@ exports[`ItemConfiguration class removeVariation method Should remove variation 
                   "Green",
                 ],
                 "name": "Single Color",
-                "previewImageUrl": "https://example2.com/traits/Background/Single Color/thumbnail.png",
+                "previewImageUrl": "https://example3.com/traits/Background/Single Color/thumbnail.png",
               },
               Variation {
                 "name": "Custom 1",
-                "previewImageUrl": "https://example2.com/traits/Background/Custom 1/thumbnail.png",
+                "previewImageUrl": "https://example3.com/traits/Background/Custom 1/thumbnail.png",
               },
             ],
           },
           Trait {
-            "iconUrl": "https://example2.com/traits/Shape/icon.svg",
+            "iconUrl": "https://example3.com/traits/Shape/icon.svg",
             "name": "Shape",
             "required": false,
             "variations": [
               Variation {
                 "name": "Rectangle",
-                "previewImageUrl": "https://example2.com/traits/Shape/Rectangle/thumbnail.png",
+                "previewImageUrl": "https://example3.com/traits/Shape/Rectangle/thumbnail.png",
               },
               Variation {
                 "name": "Circle",
-                "previewImageUrl": "https://example2.com/traits/Shape/Circle/thumbnail.png",
+                "previewImageUrl": "https://example3.com/traits/Shape/Circle/thumbnail.png",
               },
               Variation {
                 "name": "Triangle",
-                "previewImageUrl": "https://example2.com/traits/Shape/Triangle/thumbnail.png",
+                "previewImageUrl": "https://example3.com/traits/Shape/Triangle/thumbnail.png",
               },
             ],
           },
@@ -193,7 +305,7 @@ exports[`ItemConfiguration class removeVariation method Should remove variation 
                 "variationName": "Triangle",
               },
             ],
-            "iconUrl": "https://example2.com/traits/Cover/icon.svg",
+            "iconUrl": "https://example3.com/traits/Cover/icon.svg",
             "name": "Cover",
             "required": false,
             "variations": [
@@ -203,7 +315,7 @@ exports[`ItemConfiguration class removeVariation method Should remove variation 
                   "Blue",
                 ],
                 "name": "Custom Cover 1",
-                "previewImageUrl": "https://example2.com/traits/Cover/Custom Cover 1/thumbnail.png",
+                "previewImageUrl": "https://example3.com/traits/Cover/Custom Cover 1/thumbnail.png",
               },
             ],
           },
