@@ -359,4 +359,24 @@ describe("ItemConfiguration class", () => {
       expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
     });
   });
+
+  describe("encodeLayersDataString method", () => {
+    it("Should encode layers data string with single trait", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Black");
+
+      expect(itemConfiguration.encodeLayersDataString()).toBe("0x00");
+    });
+
+    it("Should encode layers data string with multiple traits", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1", "Blue");
+
+      expect(itemConfiguration.encodeLayersDataString()).toBe("0x010801");
+    });
+  });
 });

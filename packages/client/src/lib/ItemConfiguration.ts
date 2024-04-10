@@ -512,4 +512,49 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
     return itemConfiguration;
   }
+
+  /**
+   * Encode layers data string based on the current item configuration.
+   * @returns Layers data string
+   * @throws Error if trait or variation not found, or if color is not supported by the variation
+   * @note This method is useful for encoding the item configuration into a layers data string, which can be used in the frontend to render the NFT item.
+   */
+  public encodeLayersDataString(): string {
+    this.requireReady();
+
+    let layersData = "0x";
+
+    // TODO check if trait index has always the correct index pos compared to the collection info traits order
+    this._traitConfigurations.forEach((tc, traitIndex) => {
+      const trait = this.assetsClient.getTrait(tc.traitName);
+      if (!trait) {
+        throw new Error(`Trait ${tc.traitName} not found`);
+      }
+
+      const variationIndex = trait.variations.findIndex(
+        (v) => v.name === tc.variationName
+      );
+
+      if (variationIndex === -1) {
+        throw new Error(
+          `Variation ${tc.variationName} not found for trait ${tc.traitName}`
+        );
+      }
+
+      const colorIndex = trait.variations[variationIndex].colors?.findIndex(
+        (c) => c === tc.colorName
+      );
+
+      if (colorIndex === -1) {
+        throw new Error(
+          `Color ${tc.colorName} not found for trait ${tc.traitName}`
+        );
+      }
+
+      const traitByte = (variationIndex << 3) + (colorIndex || 0);
+      layersData += traitByte.toString(16).padStart(2, "0");
+    });
+
+    return layersData;
+  }
 }
