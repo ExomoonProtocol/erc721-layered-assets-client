@@ -128,6 +128,30 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Remove a variation configuration for a trait.
+   * @param trait Trait name
+   */
+  public removeVariation(trait: string): void {
+    this.requireReady();
+
+    const traitConfigurationIndex = this._traitConfigurations.findIndex(
+      (tc) => tc.traitName === trait
+    );
+
+    if (traitConfigurationIndex !== -1) {
+      // Checks if the selected trait/variation is required
+      const traitObj = this.assetsClient.getTrait(trait);
+      if (traitObj?.required) {
+        throw new Error(`Trait ${traitObj.name} is required`);
+      }
+
+      this._traitConfigurations.splice(traitConfigurationIndex, 1);
+    } else {
+      throw new Error(`Trait ${trait} not found`);
+    }
+  }
+
+  /**
    * Sort trait configurations based on the order of traits in collection info
    */
   protected sortTraitConfigurations(): void {

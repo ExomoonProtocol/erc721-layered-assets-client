@@ -1,5 +1,6 @@
 {
   "name": "Background",
+  "required": true,
   "variations": [
     {
       "name": "Single Color",

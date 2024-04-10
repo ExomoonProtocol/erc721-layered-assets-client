@@ -77,6 +77,35 @@ describe("ItemConfiguration class", () => {
     });
   });
 
+  describe("removeVariation method", () => {
+    it("Should remove variation", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      itemConfiguration.removeVariation("Cover");
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+    });
+
+    it("Should throw an error if trying to remove a required variation", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+
+      expect(() => itemConfiguration.removeVariation("Background")).toThrow();
+    });
+
+    it("Should throw an error if trying to remove a variation that doesn't exist", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+      expect(() => itemConfiguration.removeVariation("Cover")).toThrow();
+      expect(() =>
+        itemConfiguration.removeVariation("Unknown Trait")
+      ).toThrow();
+    });
+  });
+
   describe("getTraitsUrls method", () => {
     it("Should get trait urls - single trait", async () => {
       const itemConfiguration = new ItemConfiguration(client2);

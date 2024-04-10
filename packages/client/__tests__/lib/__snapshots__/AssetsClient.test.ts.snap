@@ -13,6 +13,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a
       "description": "A simple background layer",
       "iconUrl": "https://example.com/traits/Background/icon.svg",
       "name": "Background",
+      "required": false,
       "variations": [
         Variation {
           "colors": [
@@ -51,6 +52,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
       "description": "A simple background layer",
       "iconUrl": "https://example.com/traits/Background/icon.svg",
       "name": "Background",
+      "required": false,
       "variations": [
         Variation {
           "colors": [
@@ -100,6 +102,7 @@ exports[`AssetsClient fetchTraits method Should fetch traits with cache: a1 - tr
     "description": "A simple background layer",
     "iconUrl": "https://example.com/traits/Background/icon.svg",
     "name": "Background",
+    "required": false,
     "variations": [
       Variation {
         "colors": [
@@ -130,6 +133,7 @@ exports[`AssetsClient fetchTraits method Should fetch traits: a1 - traits 1`] = 
     "description": "A simple background layer",
     "iconUrl": "https://example.com/traits/Background/icon.svg",
     "name": "Background",
+    "required": false,
     "variations": [
       Variation {
         "colors": [
