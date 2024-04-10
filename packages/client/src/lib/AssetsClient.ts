@@ -79,7 +79,7 @@ export class AssetsClient {
   protected async fetchResource(url: string): Promise<any> {
     console.log(`[AssetsClient] Fetching resource: ${url}`);
     // const res = await axios.get(url);
-    const res = await this._fileProvider.fetchResource(url);
+    const res = await this._fileProvider.fetchResource(url, {});
     return res;
   }
 
@@ -114,6 +114,10 @@ export class AssetsClient {
     if (this._useCache && this._cachedAssetsInfo?.collectionInfo) {
       collectionInfoObj = this._cachedAssetsInfo.collectionInfo;
     } else {
+      console.log(
+        "Typeof of joined string:",
+        typeof `${this.baseUrl}/collection.json`
+      );
       const response = await this.fetchResource(
         `${this.baseUrl}/collection.json`
       );
@@ -200,7 +204,7 @@ export class AssetsClient {
       // Build missing params in variations
       rawObj.variations = rawObj.variations.map((v) => {
         if (!v.previewImageUrl) {
-          v.previewImageUrl = `${this.baseUrl}/traits/${traitName}/thumbnail.png`;
+          v.previewImageUrl = `${this.baseUrl}/traits/${traitName}/${v.name}/thumbnail.png`;
         }
 
         return v;

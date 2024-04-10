@@ -54,5 +54,10 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
     await this.menu();
 
     await this.loadAssetsInfo();
+
+    console.log(
+      "Assets client:",
+      JSON.stringify(this.assetsClient.getAssetsObject(), null, 2)
+    );
   }
 }
