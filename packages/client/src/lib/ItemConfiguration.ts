@@ -69,8 +69,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
   protected setDefaultItemConfiguration(): void {
     const collectionInfo = this.assetsClient.getCollectionInfo();
 
-    console.log("AAAAAAA");
-
     if (collectionInfo?.initialItemConfiguration) {
       collectionInfo.initialItemConfiguration.forEach((traitConfiguration) => {
         this.setVariation(
@@ -80,8 +78,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
         );
       });
     }
-
-    console.log("EEEEEEEE");
 
     if (!this.isConfigurationValid()) {
       throw new Error("Invalid initial configuration");

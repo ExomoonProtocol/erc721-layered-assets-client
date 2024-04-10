@@ -8,6 +8,7 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
+          "initialItemConfiguration": [],
           "traitsOrder": [
             "Background",
             "Shape",
@@ -240,6 +241,7 @@ exports[`ItemConfiguration class removeVariation method Should remove variation 
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
+          "initialItemConfiguration": [],
           "traitsOrder": [
             "Background",
             "Shape",
@@ -361,6 +363,7 @@ exports[`ItemConfiguration class setVariation method Should set variation with a
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
+          "initialItemConfiguration": [],
           "traitsOrder": [
             "Background",
           ],
@@ -412,6 +415,7 @@ exports[`ItemConfiguration class setVariation method Should set variation with c
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
+          "initialItemConfiguration": [],
           "traitsOrder": [
             "Background",
           ],
@@ -463,6 +467,7 @@ exports[`ItemConfiguration class setVariation method Should set variation with n
       "_cachedAssetsInfo": {
         "collectionInfo": CollectionInfo {
           "collectionName": "Collection 1",
+          "initialItemConfiguration": [],
           "traitsOrder": [
             "Background",
           ],

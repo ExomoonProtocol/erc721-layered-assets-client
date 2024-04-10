@@ -57,5 +57,6 @@ export class CollectionInfo implements ICollectionInfo {
 
   constructor() {
     this.traitsOrder = [];
+    this.initialItemConfiguration = [];
   }
 }

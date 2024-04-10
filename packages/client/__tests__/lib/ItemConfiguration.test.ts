@@ -10,6 +10,7 @@ describe("ItemConfiguration class", () => {
   let client: AssetsClient;
   let client2: AssetsClient;
   let client3: AssetsClient;
+  let client4: AssetsClient;
 
   beforeEach(() => {
     HttpServerMock.instance.clearTemporary();
@@ -49,6 +50,18 @@ describe("ItemConfiguration class", () => {
       baseUrl: "https://example3.com",
       useCache: true,
     });
+
+    HttpServerMock.instance.addTemporaryResponseMappings([
+      {
+        url: "https://example4.com",
+        filePath: path.resolve(__dirname, "../assets/4/"),
+      },
+    ]);
+
+    client4 = new AssetsClient({
+      baseUrl: "https://example4.com",
+      useCache: true,
+    });
   });
 
   describe("load method", () => {
@@ -64,6 +77,12 @@ describe("ItemConfiguration class", () => {
       expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
       expect(itemConfiguration.status).toBe(ItemConfigurationStatus.Ready);
       expect(itemConfiguration.getTraitsUrls()).toMatchSnapshot();
+    });
+
+    it("Should get error if required trait is missing in initial configuration", async () => {
+      const itemConfiguration = new ItemConfiguration(client4);
+
+      await expect(itemConfiguration.load()).rejects.toThrow();
     });
   });
 

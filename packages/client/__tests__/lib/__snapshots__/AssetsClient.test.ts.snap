@@ -4,6 +4,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a
 {
   "collectionInfo": CollectionInfo {
     "collectionName": "Collection 1",
+    "initialItemConfiguration": [],
     "traitsOrder": [
       "Background",
     ],
@@ -43,6 +44,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
 {
   "collectionInfo": CollectionInfo {
     "collectionName": "Collection 1",
+    "initialItemConfiguration": [],
     "traitsOrder": [
       "Background",
     ],
@@ -81,6 +83,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
 exports[`AssetsClient fetchCollectionInfo method Should fetch collectionInfo with cache: a1 - collectionInfo cached 1`] = `
 CollectionInfo {
   "collectionName": "Collection 1",
+  "initialItemConfiguration": [],
   "traitsOrder": [
     "Background",
   ],
@@ -90,6 +93,7 @@ CollectionInfo {
 exports[`AssetsClient fetchCollectionInfo method Should fetch collectionInfo: a1 - collectionInfo 1`] = `
 CollectionInfo {
   "collectionName": "Collection 1",
+  "initialItemConfiguration": [],
   "traitsOrder": [
     "Background",
   ],
