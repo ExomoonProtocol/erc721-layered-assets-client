@@ -4,6 +4,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a
 {
   "collectionInfo": CollectionInfo {
     "collectionName": "Collection 1",
+    "initialItemConfiguration": [],
     "traitsOrder": [
       "Background",
     ],
@@ -13,6 +14,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a
       "description": "A simple background layer",
       "iconUrl": "https://example.com/traits/Background/icon.svg",
       "name": "Background",
+      "required": false,
       "variations": [
         Variation {
           "colors": [
@@ -23,13 +25,13 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets with cache: a
           ],
           "description": "A single color background",
           "name": "Single Color",
-          "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+          "previewImageUrl": "https://example.com/traits/Background/Single Color/thumbnail.png",
           "rarity": "common",
         },
         Variation {
           "description": "A custom background",
           "name": "Custom 1",
-          "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+          "previewImageUrl": "https://example.com/traits/Background/Custom 1/thumbnail.png",
           "rarity": "rare",
         },
       ],
@@ -42,6 +44,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
 {
   "collectionInfo": CollectionInfo {
     "collectionName": "Collection 1",
+    "initialItemConfiguration": [],
     "traitsOrder": [
       "Background",
     ],
@@ -51,6 +54,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
       "description": "A simple background layer",
       "iconUrl": "https://example.com/traits/Background/icon.svg",
       "name": "Background",
+      "required": false,
       "variations": [
         Variation {
           "colors": [
@@ -61,13 +65,13 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
           ],
           "description": "A single color background",
           "name": "Single Color",
-          "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+          "previewImageUrl": "https://example.com/traits/Background/Single Color/thumbnail.png",
           "rarity": "common",
         },
         Variation {
           "description": "A custom background",
           "name": "Custom 1",
-          "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+          "previewImageUrl": "https://example.com/traits/Background/Custom 1/thumbnail.png",
           "rarity": "rare",
         },
       ],
@@ -79,6 +83,7 @@ exports[`AssetsClient fetchAssetsObject method Should fetch assets: a1 - assets 
 exports[`AssetsClient fetchCollectionInfo method Should fetch collectionInfo with cache: a1 - collectionInfo cached 1`] = `
 CollectionInfo {
   "collectionName": "Collection 1",
+  "initialItemConfiguration": [],
   "traitsOrder": [
     "Background",
   ],
@@ -88,6 +93,7 @@ CollectionInfo {
 exports[`AssetsClient fetchCollectionInfo method Should fetch collectionInfo: a1 - collectionInfo 1`] = `
 CollectionInfo {
   "collectionName": "Collection 1",
+  "initialItemConfiguration": [],
   "traitsOrder": [
     "Background",
   ],
@@ -100,6 +106,7 @@ exports[`AssetsClient fetchTraits method Should fetch traits with cache: a1 - tr
     "description": "A simple background layer",
     "iconUrl": "https://example.com/traits/Background/icon.svg",
     "name": "Background",
+    "required": false,
     "variations": [
       Variation {
         "colors": [
@@ -110,13 +117,13 @@ exports[`AssetsClient fetchTraits method Should fetch traits with cache: a1 - tr
         ],
         "description": "A single color background",
         "name": "Single Color",
-        "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+        "previewImageUrl": "https://example.com/traits/Background/Single Color/thumbnail.png",
         "rarity": "common",
       },
       Variation {
         "description": "A custom background",
         "name": "Custom 1",
-        "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+        "previewImageUrl": "https://example.com/traits/Background/Custom 1/thumbnail.png",
         "rarity": "rare",
       },
     ],
@@ -130,6 +137,7 @@ exports[`AssetsClient fetchTraits method Should fetch traits: a1 - traits 1`] = 
     "description": "A simple background layer",
     "iconUrl": "https://example.com/traits/Background/icon.svg",
     "name": "Background",
+    "required": false,
     "variations": [
       Variation {
         "colors": [
@@ -140,13 +148,13 @@ exports[`AssetsClient fetchTraits method Should fetch traits: a1 - traits 1`] = 
         ],
         "description": "A single color background",
         "name": "Single Color",
-        "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+        "previewImageUrl": "https://example.com/traits/Background/Single Color/thumbnail.png",
         "rarity": "common",
       },
       Variation {
         "description": "A custom background",
         "name": "Custom 1",
-        "previewImageUrl": "https://example.com/traits/Background/thumbnail.png",
+        "previewImageUrl": "https://example.com/traits/Background/Custom 1/thumbnail.png",
         "rarity": "rare",
       },
     ],

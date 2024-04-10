@@ -9,6 +9,8 @@ import {
 } from "../models";
 import axios from "axios";
 import { ModelsUtils } from "../utils/ModelsUtils";
+import { BaseFileProvider } from "./FilesProviders/BaseFileProvider";
+import { HttpFileProvider } from "./FilesProviders";
 
 /**
  * Parameters for initializing a new AssetsClient instance.
@@ -28,6 +30,12 @@ export interface AssetsClientInitParams {
    * @default true
    */
   useCache?: boolean;
+
+  /**
+   * File provider to be used for fetching assets.
+   * If not provided, it will use the default file provider.
+   */
+  fileProvider?: BaseFileProvider;
 }
 
 /**
@@ -49,9 +57,17 @@ export class AssetsClient {
 
   private _cachedAssetsInfo: AssetsObject;
 
+  private _fileProvider: BaseFileProvider;
+
   constructor(initParams: AssetsClientInitParams) {
     this._baseUrl = initParams.baseUrl;
     this._useCache = initParams.useCache || false;
+
+    if (initParams.fileProvider) {
+      this._fileProvider = initParams.fileProvider;
+    } else {
+      this._fileProvider = new HttpFileProvider();
+    }
 
     this.initCache();
   }
@@ -62,7 +78,8 @@ export class AssetsClient {
 
   protected async fetchResource(url: string): Promise<any> {
     console.log(`[AssetsClient] Fetching resource: ${url}`);
-    const res = await axios.get(url);
+    // const res = await axios.get(url);
+    const res = await this._fileProvider.fetchResource(url, {});
     return res;
   }
 
@@ -103,11 +120,9 @@ export class AssetsClient {
 
       const rawObj =
         ModelsUtils.instance.serializer.deserializeObject<CollectionInfo>(
-          response.data,
+          response,
           CollectionInfo
         );
-
-      console.log("[AssetsClient] Collection info raw:", rawObj);
 
       collectionInfoObj = rawObj || null;
 
@@ -170,7 +185,7 @@ export class AssetsClient {
       `${this.baseUrl}/traits/${traitName}/trait.json`
     );
     const rawObj = ModelsUtils.instance.serializer.deserializeObject<Trait>(
-      response.data,
+      response,
       Trait
     );
 
@@ -183,7 +198,7 @@ export class AssetsClient {
       // Build missing params in variations
       rawObj.variations = rawObj.variations.map((v) => {
         if (!v.previewImageUrl) {
-          v.previewImageUrl = `${this.baseUrl}/traits/${traitName}/thumbnail.png`;
+          v.previewImageUrl = `${this.baseUrl}/traits/${traitName}/${v.name}/thumbnail.png`;
         }
 
         return v;
@@ -244,7 +259,7 @@ export class AssetsClient {
    * @returns Traits list array
    * @public
    */
-  public getTrais(): Trait[] {
+  public getTraits(): Trait[] {
     return this._cachedAssetsInfo.traits || [];
   }
 
@@ -329,7 +344,7 @@ export class AssetsClient {
       : params.variationName;
 
     if (params.conditionalTraitConfig) {
-      const traits = this.getTrais();
+      const traits = this.getTraits();
 
       let configMatchedWithTrait = false;
 

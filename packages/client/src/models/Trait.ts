@@ -22,6 +22,12 @@ export interface ITrait {
   description?: string;
 
   /**
+   * If the trait is required for the item generation.
+   * Default is `false`.
+   */
+  required?: boolean;
+
+  /**
    * List of variations for the trait.
    */
   variations: Array<IVariation>;
@@ -49,6 +55,9 @@ export class Trait implements ITrait {
   @JsonProperty({ required: false })
   public description?: string;
 
+  @JsonProperty({ required: false })
+  public required?: boolean;
+
   @JsonProperty({ type: ConditionalRenderingConfig, required: false })
   public conditonalRenderingConfig?: Array<ConditionalRenderingConfig>;
 
@@ -57,5 +66,6 @@ export class Trait implements ITrait {
 
   constructor() {
     this.variations = [];
+    this.required = false;
   }
 }

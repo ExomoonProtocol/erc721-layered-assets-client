@@ -120,6 +120,7 @@ jobs:
 
   docs:
     name: Documentation
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     needs: [build, lint, test]
     permissions: write-all
     runs-on: ubuntu-latest

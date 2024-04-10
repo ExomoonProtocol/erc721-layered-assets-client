@@ -4,5 +4,12 @@
     "Background",
     "Shape",
     "Cover"
+  ],
+  "initialItemConfiguration": [
+    {
+      "traitName": "Background",
+      "variationName": "Single Color",
+      "colorName": "Blue"
+    }
   ]
 }

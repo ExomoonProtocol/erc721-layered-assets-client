@@ -1,0 +1,14 @@
+{
+  "name": "Shape",
+  "variations": [
+    {
+      "name": "Rectangle"
+    },
+    {
+      "name": "Circle"
+    },
+    {
+      "name": "Triangle"
+    }
+  ]
+}

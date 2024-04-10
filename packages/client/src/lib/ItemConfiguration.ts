@@ -39,11 +39,61 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Check if the current item configuration is valid.
+   * It will check if all required traits are present in the configuration.
+   * @returns true if the configuration is valid, false otherwise
+   */
+  public isConfigurationValid(): boolean {
+    // Checks if in current configured traits there is some missing required trait. If so the configuration is invalid.
+
+    const collectionInfo = this.assetsClient.getCollectionInfo();
+    if (!collectionInfo) {
+      return false;
+    }
+
+    const requiredTraits = this.assetsClient
+      .getTraits()
+      .filter((trait) => trait.required);
+    const configuredTraits = this._traitConfigurations.map(
+      (tc) => tc.traitName
+    );
+
+    return requiredTraits.every((requiredTrait) =>
+      configuredTraits.includes(requiredTrait.name)
+    );
+  }
+
+  /**
+   * Set default item configuration based on the initial item configuration in the collection info.
+   */
+  protected setDefaultItemConfiguration(): void {
+    const collectionInfo = this.assetsClient.getCollectionInfo();
+
+    if (collectionInfo?.initialItemConfiguration) {
+      collectionInfo.initialItemConfiguration.forEach((traitConfiguration) => {
+        this.setVariation(
+          traitConfiguration.traitName,
+          traitConfiguration.variationName,
+          traitConfiguration.colorName
+        );
+      });
+    }
+
+    if (!this.isConfigurationValid()) {
+      throw new Error("Invalid initial configuration");
+    } else {
+      console.log("Default item configuration set");
+    }
+  }
+
+  /**
    * Prepares item configuration, and makes sure all assets are loaded in the `AssetsClient` instance.
    */
   public async load(): Promise<void> {
     await this.assetsClient.fetchAssetsObject();
     this._status = ItemConfigurationStatus.Ready;
+
+    this.setDefaultItemConfiguration();
   }
 
   /**
@@ -124,6 +174,30 @@ export class ItemConfiguration extends AssetsClientConsumer {
       newTraitConfiguration.colorName = selectedColor || undefined;
       this._traitConfigurations.push(newTraitConfiguration);
       this.sortTraitConfigurations();
+    }
+  }
+
+  /**
+   * Remove a variation configuration for a trait.
+   * @param trait Trait name
+   */
+  public removeVariation(trait: string): void {
+    this.requireReady();
+
+    const traitConfigurationIndex = this._traitConfigurations.findIndex(
+      (tc) => tc.traitName === trait
+    );
+
+    if (traitConfigurationIndex !== -1) {
+      // Checks if the selected trait/variation is required
+      const traitObj = this.assetsClient.getTrait(trait);
+      if (traitObj?.required) {
+        throw new Error(`Trait ${traitObj.name} is required`);
+      }
+
+      this._traitConfigurations.splice(traitConfigurationIndex, 1);
+    } else {
+      throw new Error(`Trait ${trait} not found`);
     }
   }
 

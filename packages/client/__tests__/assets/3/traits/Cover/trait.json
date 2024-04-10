@@ -1,0 +1,26 @@
+{
+  "name": "Cover",
+  "variations": [
+    {
+      "name": "Custom Cover 1",
+      "colors": [
+        "Red",
+        "Blue"
+      ]
+    }
+  ],
+  "conditonalRenderingConfig": [
+    {
+      "traitName": "Shape",
+      "variationName": "Rectangle"
+    },
+    {
+      "traitName": "Shape",
+      "variationName": "Circle"
+    },
+    {
+      "traitName": "Shape",
+      "variationName": "Triangle"
+    }
+  ]
+}
