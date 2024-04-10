@@ -7,7 +7,10 @@
 export abstract class BaseFileProvider {
   constructor() {}
 
-  public async fetchResource(_path: string): Promise<any> {
+  public async fetchResource(
+    _path: string,
+    _options: Record<string, any> = {}
+  ): Promise<any> {
     throw new Error("Method not implemented.");
   }
 }

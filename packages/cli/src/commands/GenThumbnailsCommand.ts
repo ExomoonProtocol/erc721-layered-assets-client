@@ -2,6 +2,7 @@ import { BaseCommandHandler } from "../lib/BaseCommandHandler";
 import chalk from "chalk";
 import inquirer from "inquirer";
 import { AssetsClient } from "@exomoon/erc721-layered-assets-client";
+import { FilesystemProvider } from "../lib/FilesystemProvider";
 
 export class GenThumbnailsCommand extends BaseCommandHandler {
   protected path: string;
@@ -32,10 +33,12 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
     console.log(chalk.green(`The path is: ${response.path}`));
 
     this.path = response.path;
+    console.log("Typeof of path", typeof this.path, typeof response.path);
 
     const client = new AssetsClient({
       baseUrl: this.path,
       useCache: true,
+      fileProvider: new FilesystemProvider(),
     });
 
     this.assetsClient = client;
