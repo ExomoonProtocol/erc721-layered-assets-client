@@ -80,7 +80,7 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
       variation.colors ? `${variation.colors[0]}.png` : `${variation.name}.png`
     );
 
-    const finalSize = 100;
+    const finalSize = 256;
     const thumbnailFileBuffer = await this.resizePngImage(
       filePath,
       finalSize,
