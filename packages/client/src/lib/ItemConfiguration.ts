@@ -525,7 +525,7 @@ export class ItemConfiguration extends AssetsClientConsumer {
     let layersData = "0x";
 
     // TODO check if trait index has always the correct index pos compared to the collection info traits order
-    this._traitConfigurations.forEach((tc, traitIndex) => {
+    this._traitConfigurations.forEach((tc) => {
       const trait = this.assetsClient.getTrait(tc.traitName);
       if (!trait) {
         throw new Error(`Trait ${tc.traitName} not found`);
