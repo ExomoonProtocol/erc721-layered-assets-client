@@ -42,6 +42,19 @@ export interface ITrait {
    * If not provided, the icon will be generated based on the expected default icon url.
    */
   iconUrl?: string;
+
+  /**
+   * Randomness factor for the trait.
+   * If provided, it will be used to calculate the randomness for the trait.
+   * It is a number between 0 and 1.
+   *
+   * @example 0.5 means 50% randomness.
+   * @example 0.1 means 10% randomness.
+   * @example 1 means 100% randomness.
+   * @note If not provided, the default randomness factor will be set to 0.5 (50% randomness)
+   * @note It is incompatible with the required flag. If the required flag is set to true, the randomness factor will be ignored.
+   */
+  radnomnessFactor?: number;
 }
 
 @JsonObject()
@@ -64,8 +77,12 @@ export class Trait implements ITrait {
   @JsonProperty({ required: false })
   public iconUrl?: string;
 
+  @JsonProperty({ required: false })
+  public radnomnessFactor?: number;
+
   constructor() {
     this.variations = [];
     this.required = false;
+    this.radnomnessFactor = 0.5;
   }
 }

@@ -10,6 +10,26 @@ exports[`ItemConfiguration class buildFromLayersDataString method Should build i
 ]
 `;
 
+exports[`ItemConfiguration class buildRandomItemConfiguration should build configuration with all required traits and some optional ones 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Brown",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+  TraitConfiguration {
+    "_colorName": undefined,
+    "_traitName": "Shape",
+    "_variationName": "Circle",
+  },
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Cover",
+    "_variationName": "Custom Cover 1",
+  },
+]
+`;
+
 exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits 1`] = `
 [
   "https://example3.com/traits/Background/Single Color/Blue.png",

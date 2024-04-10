@@ -185,6 +185,31 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Clear the previous history.
+   * This will remove all the states from the previous history.
+   */
+  public clearPreviousHistory(): void {
+    this._historyPreviousStates = [];
+  }
+
+  /**
+   * Clear the next history.
+   * This will remove all the states from the next history.
+   */
+  public clearNextHistory(): void {
+    this._historyNextStates = [];
+  }
+
+  /**
+   * Clear the history.
+   * This will remove all the states from the previous and next history.
+   */
+  public clearHistory(): void {
+    this.clearPreviousHistory();
+    this.clearNextHistory();
+  }
+
+  /**
    * Set a variation configuration. It can be either a new configuration (eg. adding a new trait) or an existing one (eg. changing the color of an existing trait).
    * @param trait Trait name
    * @param variation Variation name
@@ -242,6 +267,7 @@ export class ItemConfiguration extends AssetsClientConsumer {
     }
 
     this.pushStateToPreviousHistory();
+    this.clearNextHistory();
   }
 
   /**
@@ -365,6 +391,49 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
       return tc.getImageUrl(this.assetsClient);
     });
+  }
+
+  protected static randomNumber(): number {
+    console.log("Random number");
+    return Math.random();
+  }
+
+  public static async buildRandomItemConfiguration(
+    client: AssetsClient
+  ): Promise<ItemConfiguration> {
+    const itemConfiguration = new ItemConfiguration(client);
+    await itemConfiguration.load();
+
+    const traits = client.getTraits();
+    traits.forEach((trait) => {
+      let shouldBePicked = false;
+
+      if (trait.required) {
+        shouldBePicked = true;
+      } else {
+        shouldBePicked = this.randomNumber() < (trait.radnomnessFactor || 0.5);
+      }
+
+      if (!shouldBePicked) {
+        return;
+      }
+
+      const randomVariation =
+        trait.variations[
+          Math.floor(this.randomNumber() * trait.variations.length)
+        ];
+      itemConfiguration.setVariation(
+        trait.name,
+        randomVariation.name,
+        randomVariation.colors
+          ? randomVariation.colors[
+              Math.floor(this.randomNumber() * randomVariation.colors.length)
+            ]
+          : undefined
+      );
+    });
+
+    return itemConfiguration;
   }
 
   public static async buildFromLayersDataString(

@@ -225,6 +225,27 @@ describe("ItemConfiguration class", () => {
     });
   });
 
+  describe("buildRandomItemConfiguration", () => {
+    it("should build configuration with all required traits and some optional ones", async () => {
+      const randomMock = jest.spyOn(global.Math, "random");
+      randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
+      randomMock.mockReturnValueOnce(0.6); // Pick background color
+      randomMock.mockReturnValueOnce(0.4); // Decides if shape should be included
+      randomMock.mockReturnValueOnce(0.4); // Pick a variation of shape
+      randomMock.mockReturnValueOnce(0.2); // Decides if cover should be included
+      randomMock.mockReturnValueOnce(0.3); // Pick a variation of cover
+      randomMock.mockReturnValueOnce(0.6); // Pick cover color
+
+      const itemConfiguration =
+        await ItemConfiguration.buildRandomItemConfiguration(client2);
+
+      // Match the snapshot
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+
+      randomMock.mockRestore();
+    });
+  });
+
   describe("getTraitsUrls method", () => {
     it("Should get trait urls - single trait", async () => {
       const itemConfiguration = new ItemConfiguration(client3);
