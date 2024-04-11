@@ -41,5 +41,8 @@
   "files": [
     "/dist"
   ],
-  "gitHead": "bd90f130c04483bc14be2a83293b86acfa06c4d9"
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false
 }
