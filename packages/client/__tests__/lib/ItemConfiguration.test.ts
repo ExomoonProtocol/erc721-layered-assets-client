@@ -352,9 +352,16 @@ describe("ItemConfiguration class", () => {
   });
 
   describe("buildFromLayersDataString method", () => {
-    it("Should build item configuration from layers data string", async () => {
+    it("Should build item configuration from layers data string - single layer", async () => {
       const itemConfiguration =
         await ItemConfiguration.buildFromLayersDataString("0x00", client3);
+
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+    });
+
+    it("Should build item configuration from layers data string - multiple layers", async () => {
+      const itemConfiguration =
+        await ItemConfiguration.buildFromLayersDataString("0x080801", client3);
 
       expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
     });

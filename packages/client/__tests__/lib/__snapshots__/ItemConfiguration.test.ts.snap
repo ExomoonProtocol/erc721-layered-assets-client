@@ -1,6 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ItemConfiguration class buildFromLayersDataString method Should build item configuration from layers data string 1`] = `
+exports[`ItemConfiguration class buildFromLayersDataString method Should build item configuration from layers data string - multiple layers 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": undefined,
+    "_traitName": "Background",
+    "_variationName": "Custom 1",
+  },
+  TraitConfiguration {
+    "_colorName": undefined,
+    "_traitName": "Shape",
+    "_variationName": "Circle",
+  },
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Cover",
+    "_variationName": "Custom Cover 1",
+  },
+]
+`;
+
+exports[`ItemConfiguration class buildFromLayersDataString method Should build item configuration from layers data string - single layer 1`] = `
 [
   TraitConfiguration {
     "_colorName": "Black",
