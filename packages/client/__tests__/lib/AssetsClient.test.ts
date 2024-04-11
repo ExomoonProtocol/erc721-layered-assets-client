@@ -181,4 +181,20 @@ describe("AssetsClient", () => {
       ).toThrow("Trait Background not found");
     });
   });
+
+  describe("getTraitsGroups method", () => {
+    it("Should get traits groups", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/2/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      await client.fetchAssetsObject();
+      const groups = client.getTraitsGroups();
+      expect(groups).toMatchSnapshot();
+    });
+  });
 });

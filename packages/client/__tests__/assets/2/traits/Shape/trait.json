@@ -1,5 +1,6 @@
 {
   "name": "Shape",
+  "traitGroupName": "Accessory",
   "variations": [
     {
       "name": "Rectangle"

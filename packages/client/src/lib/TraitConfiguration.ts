@@ -1,21 +1,18 @@
 import { ConditionalRenderingConfig } from "../models";
 import { AssetsClient } from "./AssetsClient";
-import { AssetsClientConsumer } from "./AssetsClientConsumer";
 
 /**
  * Configuration for a single trait. Used by other classes to represent a trait.
  * It is abkle to handle statefor a single trait.
  */
-export class TraitConfiguration extends AssetsClientConsumer {
+export class TraitConfiguration {
   private _traitName: string;
 
   private _variationName: string;
 
   private _colorName?: string;
 
-  constructor(_client: AssetsClient) {
-    super(_client);
-  }
+  constructor() {}
 
   public get traitName(): string {
     return this._traitName;
@@ -64,9 +61,10 @@ export class TraitConfiguration extends AssetsClientConsumer {
    * @returns Image URL
    */
   public getImageUrl(
+    assetsClient: AssetsClient,
     conditionalRenderingConfig?: ConditionalRenderingConfig
   ): string {
-    return this.assetsClient.getTraitImageUrl({
+    return assetsClient.getTraitImageUrl({
       traitName: this._traitName,
       variationName: this._variationName,
       colorName: this._colorName,

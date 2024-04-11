@@ -4,6 +4,7 @@ import { NftMetadata } from "../models";
 import { AssetsClient } from "./AssetsClient";
 import { AssetsClientConsumer } from "./AssetsClientConsumer";
 import { TraitConfiguration } from "./TraitConfiguration";
+import lodash from "lodash";
 
 /**
  * Status of item configuration
@@ -21,13 +22,19 @@ export enum ItemConfigurationStatus {
   Ready,
 }
 
+export type ItemConfigurationState = Array<TraitConfiguration>;
+
 /**
  * Handles configuration for a single NFT item.
  * It can be used to build an NFT item configuration by setting variations for each trait; it may be useful both for creating the NFT item in the frontend and for rendering the NFT item image in the backend.
  * Under the hood, it wraps the `AssetsClient` and `TraitConfiguration` classes, handling the state for a single item.
  */
 export class ItemConfiguration extends AssetsClientConsumer {
-  private _traitConfigurations: Array<TraitConfiguration>;
+  private _historyPreviousStates: Array<ItemConfigurationState>;
+
+  private _historyNextStates: Array<ItemConfigurationState>;
+
+  private _traitConfigurations: ItemConfigurationState;
 
   private _status: ItemConfigurationStatus;
 
@@ -36,6 +43,8 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
     this._status = ItemConfigurationStatus.Unloaded;
     this._traitConfigurations = new Array<TraitConfiguration>();
+    this._historyPreviousStates = new Array<ItemConfigurationState>();
+    this._historyNextStates = new Array<ItemConfigurationState>();
   }
 
   /**
@@ -120,6 +129,87 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Saves the current state of the item configuration to the previous history.
+   */
+  protected pushStateToPreviousHistory(): void {
+    this._historyPreviousStates.push(
+      lodash.cloneDeep(this._traitConfigurations)
+    );
+  }
+
+  /**
+   * Saves the current state of the item configuration to the next history.
+   */
+  protected pushStateToNextHistory(): void {
+    this._historyNextStates.unshift(
+      lodash.cloneDeep(this._traitConfigurations)
+    );
+  }
+
+  /**
+   * Removes the last state from the previous history.
+   */
+  protected popStateFromPreviousHistory(): ItemConfigurationState | undefined {
+    return this._historyPreviousStates.pop();
+  }
+
+  /**
+   * Removes the last state from the next history.
+   */
+  protected popStateFromNextHistory(): ItemConfigurationState | undefined {
+    return this._historyNextStates.shift();
+  }
+
+  /**
+   * Undo the last change in the item configuration.
+   */
+  public historyUndo(): void {
+    this.requireReady();
+
+    if (this._historyPreviousStates.length > 0) {
+      this.pushStateToNextHistory();
+      this._traitConfigurations = this.popStateFromPreviousHistory() || [];
+    }
+  }
+
+  /**
+   * Redo the last change in the item configuration.
+   */
+  public historyRedo(): void {
+    this.requireReady();
+
+    if (this._historyNextStates.length > 0) {
+      this.pushStateToPreviousHistory();
+      this._traitConfigurations = this.popStateFromNextHistory() || [];
+    }
+  }
+
+  /**
+   * Clear the previous history.
+   * This will remove all the states from the previous history.
+   */
+  public clearPreviousHistory(): void {
+    this._historyPreviousStates = [];
+  }
+
+  /**
+   * Clear the next history.
+   * This will remove all the states from the next history.
+   */
+  public clearNextHistory(): void {
+    this._historyNextStates = [];
+  }
+
+  /**
+   * Clear the history.
+   * This will remove all the states from the previous and next history.
+   */
+  public clearHistory(): void {
+    this.clearPreviousHistory();
+    this.clearNextHistory();
+  }
+
+  /**
    * Set a variation configuration. It can be either a new configuration (eg. adding a new trait) or an existing one (eg. changing the color of an existing trait).
    * @param trait Trait name
    * @param variation Variation name
@@ -164,17 +254,21 @@ export class ItemConfiguration extends AssetsClientConsumer {
       throw new Error("Variation doesn't support colors");
     }
 
+    this.pushStateToPreviousHistory();
+
     if (traitConfiguration) {
       traitConfiguration.variationName = variation;
       traitConfiguration.colorName = selectedColor || undefined;
     } else {
-      const newTraitConfiguration = new TraitConfiguration(this.assetsClient);
+      const newTraitConfiguration = new TraitConfiguration();
       newTraitConfiguration.traitName = trait;
       newTraitConfiguration.variationName = variation;
       newTraitConfiguration.colorName = selectedColor || undefined;
       this._traitConfigurations.push(newTraitConfiguration);
       this.sortTraitConfigurations();
     }
+
+    this.clearNextHistory();
   }
 
   /**
@@ -195,7 +289,9 @@ export class ItemConfiguration extends AssetsClientConsumer {
         throw new Error(`Trait ${traitObj.name} is required`);
       }
 
+      this.pushStateToPreviousHistory();
       this._traitConfigurations.splice(traitConfigurationIndex, 1);
+      this.clearNextHistory();
     } else {
       throw new Error(`Trait ${trait} not found`);
     }
@@ -292,14 +388,83 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
         if (conditionalRenderingConfig) {
           console.log(conditionalRenderingConfig);
-          return tc.getImageUrl(conditionalRenderingConfig);
+          return tc.getImageUrl(this.assetsClient, conditionalRenderingConfig);
         }
       }
 
-      return tc.getImageUrl();
+      return tc.getImageUrl(this.assetsClient);
     });
   }
 
+  protected static randomNumber(): number {
+    console.log("Random number");
+    return Math.random();
+  }
+
+  /**
+   * Build a random item configuration.
+   * It will randomly select a variation for each trait, based on the randomness factor of the trait.
+   * If the trait is required, it will always be picked.
+   * @param client Assets client
+   * @returns Item configuration
+   */
+  public static async buildRandomItemConfiguration(
+    client: AssetsClient
+  ): Promise<ItemConfiguration> {
+    const itemConfiguration = new ItemConfiguration(client);
+    await itemConfiguration.load();
+
+    const traits = client.getTraits();
+    traits.forEach((trait) => {
+      let shouldBePicked = false;
+
+      if (trait.required) {
+        shouldBePicked = true;
+      } else {
+        shouldBePicked = this.randomNumber() < (trait.radnomnessFactor || 0.5);
+      }
+
+      if (!shouldBePicked) {
+        return;
+      }
+
+      const randomVariation =
+        trait.variations[
+          Math.floor(this.randomNumber() * trait.variations.length)
+        ];
+      itemConfiguration.setVariation(
+        trait.name,
+        randomVariation.name,
+        randomVariation.colors
+          ? randomVariation.colors[
+              Math.floor(this.randomNumber() * randomVariation.colors.length)
+            ]
+          : undefined
+      );
+    });
+
+    return itemConfiguration;
+  }
+
+  public async randomize(): Promise<void> {
+    this.requireReady();
+
+    const randomItemConfiguration =
+      await ItemConfiguration.buildRandomItemConfiguration(this.assetsClient);
+
+    this.pushStateToPreviousHistory();
+    this._traitConfigurations = randomItemConfiguration._traitConfigurations;
+    this.clearNextHistory();
+  }
+
+  /**
+   * Build an item configuration from a layers data string.
+   * @param layersData Layers data string
+   * @param client Assets client
+   * @returns Item configuration
+   * @throws Error if trait or variation not found, or if color is not supported by the variation
+   * @note This method is useful for building an item configuration from a layers data string, which can be used in the frontend to render the NFT item.
+   */
   public static async buildFromLayersDataString(
     layersData: string,
     client: AssetsClient
@@ -346,5 +511,50 @@ export class ItemConfiguration extends AssetsClientConsumer {
     }
 
     return itemConfiguration;
+  }
+
+  /**
+   * Encode layers data string based on the current item configuration.
+   * @returns Layers data string
+   * @throws Error if trait or variation not found, or if color is not supported by the variation
+   * @note This method is useful for encoding the item configuration into a layers data string, which can be used in the frontend to render the NFT item.
+   */
+  public encodeLayersDataString(): string {
+    this.requireReady();
+
+    let layersData = "0x";
+
+    // TODO check if trait index has always the correct index pos compared to the collection info traits order
+    this._traitConfigurations.forEach((tc) => {
+      const trait = this.assetsClient.getTrait(tc.traitName);
+      if (!trait) {
+        throw new Error(`Trait ${tc.traitName} not found`);
+      }
+
+      const variationIndex = trait.variations.findIndex(
+        (v) => v.name === tc.variationName
+      );
+
+      if (variationIndex === -1) {
+        throw new Error(
+          `Variation ${tc.variationName} not found for trait ${tc.traitName}`
+        );
+      }
+
+      const colorIndex = trait.variations[variationIndex].colors?.findIndex(
+        (c) => c === tc.colorName
+      );
+
+      if (colorIndex === -1) {
+        throw new Error(
+          `Color ${tc.colorName} not found for trait ${tc.traitName}`
+        );
+      }
+
+      const traitByte = (variationIndex << 3) + (colorIndex || 0);
+      layersData += traitByte.toString(16).padStart(2, "0");
+    });
+
+    return layersData;
   }
 }

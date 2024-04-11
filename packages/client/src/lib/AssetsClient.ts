@@ -45,6 +45,21 @@ export interface AssetsClientInitParams {
 export interface BaseFetchingParams {}
 
 /**
+ * Simple object for grouping traits.
+ */
+export interface TraitsGroup {
+  /**
+   * Group name. If the group contains just one trait, the group name will be the trait name.
+   */
+  groupName: string;
+
+  /**
+   * Traits list array (names of the traits).
+   */
+  traits: Array<string>;
+}
+
+/**
  * Assets client class. Represents a client for fetching assets.
  * It implements methods for fetching all the necessary assets about a Exomoon ERC721 Layered NFT collection: collection info, traits, variations, colors.
  * It also provides a caching mechanism for the fetched assets, in order to avoid fetching the same assets multiple times.
@@ -195,6 +210,10 @@ export class AssetsClient {
         rawObj.iconUrl = `${this.baseUrl}/traits/${traitName}/icon.svg`;
       }
 
+      if (!rawObj.traitGroupName) {
+        rawObj.traitGroupName = rawObj.name;
+      }
+
       // Build missing params in variations
       rawObj.variations = rawObj.variations.map((v) => {
         if (!v.previewImageUrl) {
@@ -261,6 +280,43 @@ export class AssetsClient {
    */
   public getTraits(): Trait[] {
     return this._cachedAssetsInfo.traits || [];
+  }
+
+  /**
+   * Get traits groups. If no traits are cached, it will return an empty array.
+   * This method should be called after being sure that the traits have been fetched, otherwise it will return an empty array.
+   *
+   * @returns Traits groups array
+   * @public
+   */
+  public getTraitsGroups(): TraitsGroup[] {
+    const traits = this.getTraits();
+
+    const traitsOrder =
+      this.getCollectionInfo()?.traitsOrder || traits.map((t) => t.name);
+
+    const groups: TraitsGroup[] = [];
+
+    traitsOrder.forEach((traitName) => {
+      const trait = traits.find((t) => t.name === traitName);
+
+      if (trait) {
+        const groupName = trait.traitGroupName || trait.name;
+
+        const groupIndex = groups.findIndex((g) => g.groupName === groupName);
+
+        if (groupIndex !== -1) {
+          groups[groupIndex].traits.push(trait.name);
+        } else {
+          groups.push({
+            groupName,
+            traits: [trait.name],
+          });
+        }
+      }
+    });
+
+    return groups;
   }
 
   /**

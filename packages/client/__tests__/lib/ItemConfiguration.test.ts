@@ -5,6 +5,7 @@ import {
 } from "../../src/lib/ItemConfiguration";
 import { HttpServerMock } from "../HttpServerMock";
 import path from "path";
+import lodash from "lodash";
 
 describe("ItemConfiguration class", () => {
   let client: AssetsClient;
@@ -117,6 +118,88 @@ describe("ItemConfiguration class", () => {
     });
   });
 
+  describe("historyUndo method", () => {
+    it("Should undo the last change", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      const previousTraitConfigurations = lodash.cloneDeep(
+        itemConfiguration.traitConfigurations
+      );
+
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+
+    it("Should do nothing if there is no operation to undo", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+  });
+
+  describe("historyRedo method", () => {
+    it("Should redo the last change", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+
+      itemConfiguration.historyRedo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+
+    it("Should do nothing if there is no operation to redo", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      itemConfiguration.historyUndo();
+      itemConfiguration.historyRedo();
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyRedo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+
+    it("Should redo multiple changes", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      const previousTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.historyUndo();
+      itemConfiguration.historyUndo();
+
+      itemConfiguration.historyRedo();
+      itemConfiguration.historyRedo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        previousTraitConfigurations
+      );
+    });
+  });
+
   describe("removeVariation method", () => {
     it("Should remove variation", async () => {
       const itemConfiguration = new ItemConfiguration(client3);
@@ -143,6 +226,91 @@ describe("ItemConfiguration class", () => {
       expect(() =>
         itemConfiguration.removeVariation("Unknown Trait")
       ).toThrow();
+    });
+  });
+
+  describe("buildRandomItemConfiguration", () => {
+    it("should build configuration with all required traits and some optional ones (static)", async () => {
+      const randomMock = jest.spyOn(global.Math, "random");
+      randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
+      randomMock.mockReturnValueOnce(0.6); // Pick background color
+      randomMock.mockReturnValueOnce(0.4); // Decides if shape should be included
+      randomMock.mockReturnValueOnce(0.4); // Pick a variation of shape
+      randomMock.mockReturnValueOnce(0.2); // Decides if cover should be included
+      randomMock.mockReturnValueOnce(0.3); // Pick a variation of cover
+      randomMock.mockReturnValueOnce(0.6); // Pick cover color
+
+      const itemConfiguration =
+        await ItemConfiguration.buildRandomItemConfiguration(client2);
+
+      // Match the snapshot
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+
+      randomMock.mockRestore();
+    });
+  });
+
+  describe("randomize method", () => {
+    it("Should randomize the item configuration", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+
+      const randomMock = jest.spyOn(global.Math, "random");
+      randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
+      randomMock.mockReturnValueOnce(0.6); // Pick background color
+      randomMock.mockReturnValueOnce(0.4); // Decides if shape should be included
+      randomMock.mockReturnValueOnce(0.4); // Pick a variation of shape
+      randomMock.mockReturnValueOnce(0.2); // Decides if cover should be included
+      randomMock.mockReturnValueOnce(0.3); // Pick a variation of cover
+      randomMock.mockReturnValueOnce(0.6); // Pick cover color
+
+      itemConfiguration.randomize();
+
+      expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+
+      randomMock.mockRestore();
+    });
+
+    it("Should be able to set, randomize, set again, and then undo the different steps", async () => {
+      const itemConfiguration = new ItemConfiguration(client2);
+      await itemConfiguration.load();
+
+      const initialTraitConfigurations = itemConfiguration.traitConfigurations;
+
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      const state1 = lodash.cloneDeep(itemConfiguration.traitConfigurations);
+
+      const randomMock = jest.spyOn(global.Math, "random");
+      randomMock.mockReturnValueOnce(0.2); // Pick the first variation of background
+      randomMock.mockReturnValueOnce(0.6); // Pick background color
+      randomMock.mockReturnValueOnce(0.4); // Decides if shape should be included
+      randomMock.mockReturnValueOnce(0.4); // Pick a variation of shape
+      randomMock.mockReturnValueOnce(0.2); // Decides if cover should be included
+      randomMock.mockReturnValueOnce(0.3); // Pick a variation of cover
+      randomMock.mockReturnValueOnce(0.6); // Pick cover color
+      await itemConfiguration.randomize();
+      const state2 = lodash.cloneDeep(itemConfiguration.traitConfigurations);
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+      const state3 = lodash.cloneDeep(itemConfiguration.traitConfigurations);
+
+      expect({
+        state1,
+        state2,
+        state3,
+      }).toMatchSnapshot();
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(state2);
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(state1);
+
+      itemConfiguration.historyUndo();
+      expect(itemConfiguration.traitConfigurations).toEqual(
+        initialTraitConfigurations
+      );
+
+      randomMock.mockRestore();
     });
   });
 
@@ -189,6 +357,26 @@ describe("ItemConfiguration class", () => {
         await ItemConfiguration.buildFromLayersDataString("0x00", client3);
 
       expect(itemConfiguration.traitConfigurations).toMatchSnapshot();
+    });
+  });
+
+  describe("encodeLayersDataString method", () => {
+    it("Should encode layers data string with single trait", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Black");
+
+      expect(itemConfiguration.encodeLayersDataString()).toBe("0x00");
+    });
+
+    it("Should encode layers data string with multiple traits", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1", "Blue");
+
+      expect(itemConfiguration.encodeLayersDataString()).toBe("0x010801");
     });
   });
 });

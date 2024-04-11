@@ -1,5 +1,6 @@
 {
   "name": "Cover",
+  "traitGroupName": "Accessory",
   "variations": [
     {
       "name": "Custom Cover 1",
