@@ -490,9 +490,14 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
       const trait = client.getTraitByIndex(traitIndex);
       if (!trait) {
-        throw new Error(`Trait with indexx ${traitIndex} not found`);
+        throw new Error(`Trait with index ${traitIndex} not found`);
       }
-      console.log(trait);
+
+      // If variation index is 31, it means the trait is not present in the item configuration
+      if (variationIndex === 0b11111) {
+        traitIndex++;
+        continue;
+      }
 
       const variation = trait.variations[variationIndex];
       if (!variation) {
@@ -525,34 +530,33 @@ export class ItemConfiguration extends AssetsClientConsumer {
 
     let layersData = "0x";
 
-    // TODO check if trait index has always the correct index pos compared to the collection info traits order
-    this._traitConfigurations.forEach((tc) => {
-      const trait = this.assetsClient.getTrait(tc.traitName);
-      if (!trait) {
-        throw new Error(`Trait ${tc.traitName} not found`);
-      }
-
-      const variationIndex = trait.variations.findIndex(
-        (v) => v.name === tc.variationName
+    this.assetsClient.getTraits().forEach((trait) => {
+      const traitConfiguration = this._traitConfigurations.find(
+        (tc) => tc.traitName === trait.name
       );
 
-      if (variationIndex === -1) {
-        throw new Error(
-          `Variation ${tc.variationName} not found for trait ${tc.traitName}`
+      let traitByte = 0;
+
+      if (traitConfiguration) {
+        const variation = trait.variations.find(
+          (v) => v.name === traitConfiguration.variationName
         );
+
+        if (variation) {
+          const variationIndex = trait.variations.indexOf(variation);
+          traitByte += variationIndex << 3;
+
+          if (variation.colors && variation.colors.length > 0) {
+            const colorIndex = variation.colors.indexOf(
+              traitConfiguration.colorName || ""
+            );
+            traitByte += colorIndex;
+          }
+        }
+      } else {
+        traitByte = 0b11111 << 3;
       }
 
-      const colorIndex = trait.variations[variationIndex].colors?.findIndex(
-        (c) => c === tc.colorName
-      );
-
-      if (colorIndex === -1) {
-        throw new Error(
-          `Color ${tc.colorName} not found for trait ${tc.traitName}`
-        );
-      }
-
-      const traitByte = (variationIndex << 3) + (colorIndex || 0);
       layersData += traitByte.toString(16).padStart(2, "0");
     });
 

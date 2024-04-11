@@ -366,7 +366,7 @@ describe("ItemConfiguration class", () => {
       await itemConfiguration.load();
       itemConfiguration.setVariation("Background", "Single Color", "Black");
 
-      expect(itemConfiguration.encodeLayersDataString()).toBe("0x00");
+      expect(itemConfiguration.encodeLayersDataString()).toBe("0x00f8f8");
     });
 
     it("Should encode layers data string with multiple traits", async () => {
