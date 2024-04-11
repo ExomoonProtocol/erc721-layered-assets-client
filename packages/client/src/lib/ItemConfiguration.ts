@@ -103,6 +103,7 @@ export class ItemConfiguration extends AssetsClientConsumer {
     this._status = ItemConfigurationStatus.Ready;
 
     this.setDefaultItemConfiguration();
+    this.clearHistory();
   }
 
   /**
