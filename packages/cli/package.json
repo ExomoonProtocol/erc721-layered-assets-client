@@ -16,7 +16,6 @@
     "clean-build": "yarn clean && yarn build",
     "clean": "rm -rf dist && rm -rf dist",
     "lint": "eslint --ext .js,.ts .",
-    "docs": "typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts",
     "start": "yarn build && node --experimental-specifier-resolution=node dist/esm/index.js"
   },
   "dependencies": {
