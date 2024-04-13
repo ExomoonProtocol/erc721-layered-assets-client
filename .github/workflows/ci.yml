@@ -166,6 +166,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "us-east-1"
           aws-bucket: ${{ secrets.AWS_BUCKET }}
-          file-path: ${{ steps.extract_branch.outputs.branch }}.zip
+          file-path: packages/client/${{ steps.extract_branch.outputs.branch }}.zip
           destination-dir: /assets-client
           bucket-root: /
