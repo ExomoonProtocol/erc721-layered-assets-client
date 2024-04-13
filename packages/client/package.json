@@ -16,7 +16,7 @@
     "clean-build": "yarn clean && yarn build",
     "clean": "rm -rf dist && rm -rf dist",
     "lint": "eslint . --ext .js,.ts",
-    "docs": "typedoc --plugin typedoc-plugin-markdown --out docs src/index.ts && node ./scripts/postDocsGen.js"
+    "docs": "typedoc && node scripts/postDocsGen.js"
   },
   "dependencies": {
     "axios": "^1.6.8",
@@ -32,6 +32,7 @@
     "eslint": "^8.56.0",
     "jest": "^29.5.0",
     "jest-junit": "^16.0.0",
+    "replace-in-file": "^7.1.0",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.2",
     "typedoc": "^0.25.12",
