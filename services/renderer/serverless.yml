@@ -75,7 +75,7 @@ functions:
       - http:
           cors: true
           method: get
-          path: /render/data/{data}/file/{file}
+          path: /render/data/{data}/{file}
           caching:
             enabled: true
             cacheKeyParameters:
