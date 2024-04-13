@@ -17,7 +17,7 @@ async function run() {
 
   // Rename modules.md into README.md
   const modulesPath = path.resolve(docsPath, 'modules.md');
-  const readmePathNew = path.resolve(docsPath, 'Assets Client.md');
+  const readmePathNew = path.resolve(docsPath, 'AssetsClient.md');
   if (fs.existsSync(modulesPath)) {
     fs.renameSync(modulesPath, readmePathNew);
   }
@@ -26,7 +26,7 @@ async function run() {
   const options = {
     files: path.resolve(docsPath, "**", '*.md'),
     from: /modules.md/g,
-    to: 'Assets Client.md',
+    to: 'AssetsClient.md',
   };
 
   try {
