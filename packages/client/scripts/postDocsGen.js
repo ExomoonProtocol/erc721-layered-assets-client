@@ -22,7 +22,7 @@ async function run() {
     fs.renameSync(modulesPath, readmePathNew);
   }
 
-  // Replace 'modules.md' with 'Assets Client.md' in all files
+  // Replace 'modules.md' with 'AssetsClient.md' in all files
   const options = {
     files: path.resolve(docsPath, "**", '*.md'),
     from: /modules.md/g,
@@ -31,6 +31,19 @@ async function run() {
 
   try {
     await replace(options);
+  } catch (error) {
+    console.error('Error occurred:', error);
+  }
+
+  // Replace 'README.md' with 'AssetsClient.md' in all files
+  const options2 = {
+    files: path.resolve(docsPath, "**", '*.md'),
+    from: /README.md/g,
+    to: 'AssetsClient.md',
+  };
+
+  try {
+    await replace(options2);
   } catch (error) {
     console.error('Error occurred:', error);
   }
