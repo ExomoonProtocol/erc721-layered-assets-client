@@ -320,7 +320,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
       this.assetsClient.getCollectionInfo()?.traitsOrder || []
     )
       .map((traitName) => {
-        console.log(traitName);
         return this._traitConfigurations.find(
           (tc) => tc.traitName === traitName
         ) as TraitConfiguration;
@@ -365,7 +364,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
     return this._traitConfigurations.map((tc) => {
       // Getting info about trait (asset info)
       const traitAsset = this.assetsClient.getTrait(tc.traitName);
-      console.log("Asset: ", traitAsset);
 
       // Check if there is a conditional rendering config for this trait
       if (traitAsset?.conditonalRenderingConfig) {
@@ -402,7 +400,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
           );
 
         if (conditionalRenderingConfig) {
-          console.log(conditionalRenderingConfig);
           return tc.getImageUrl(this.assetsClient, conditionalRenderingConfig);
         }
       }
@@ -412,7 +409,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   protected static randomNumber(): number {
-    console.log("Random number");
     return Math.random();
   }
 
