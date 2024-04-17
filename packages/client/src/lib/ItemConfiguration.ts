@@ -107,6 +107,20 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Get the number of next states in the history.
+   */
+  public get historyPreviousStatesLength(): number {
+    return this._historyPreviousStates.length;
+  }
+
+  /**
+   * Get the number of next states in the history.
+   */
+  public get historyNextStatesLength(): number {
+    return this._historyNextStates.length;
+  }
+
+  /**
    * Gets the list of all traits configurations for the item, sorted based on the order of traits in the collection info.
    */
   public get traitConfigurations(): Array<TraitConfiguration> {
