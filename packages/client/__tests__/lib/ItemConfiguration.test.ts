@@ -118,6 +118,43 @@ describe("ItemConfiguration class", () => {
     });
   });
 
+  describe("historyPreviousStatesLength getter", () => {
+    it("Should return 0 if there are no previous states", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      expect(itemConfiguration.historyPreviousStatesLength).toBe(0);
+    });
+
+    it("Should return the number of previous states", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      expect(itemConfiguration.historyPreviousStatesLength).toBe(2);
+    });
+  });
+
+  describe("historyNextStatesLength getter", () => {
+    it("Should return 0 if there are no next states", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      expect(itemConfiguration.historyNextStatesLength).toBe(0);
+    });
+
+    it("Should return the number of next states", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+
+      itemConfiguration.historyUndo();
+      itemConfiguration.historyUndo();
+
+      expect(itemConfiguration.historyNextStatesLength).toBe(2);
+    });
+  });
+
   describe("historyUndo method", () => {
     it("Should undo the last change", async () => {
       const itemConfiguration = new ItemConfiguration(client3);

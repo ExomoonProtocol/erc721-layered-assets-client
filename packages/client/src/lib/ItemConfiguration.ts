@@ -107,6 +107,20 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   /**
+   * Get the number of next states in the history.
+   */
+  public get historyPreviousStatesLength(): number {
+    return this._historyPreviousStates.length;
+  }
+
+  /**
+   * Get the number of next states in the history.
+   */
+  public get historyNextStatesLength(): number {
+    return this._historyNextStates.length;
+  }
+
+  /**
    * Gets the list of all traits configurations for the item, sorted based on the order of traits in the collection info.
    */
   public get traitConfigurations(): Array<TraitConfiguration> {
@@ -306,7 +320,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
       this.assetsClient.getCollectionInfo()?.traitsOrder || []
     )
       .map((traitName) => {
-        console.log(traitName);
         return this._traitConfigurations.find(
           (tc) => tc.traitName === traitName
         ) as TraitConfiguration;
@@ -351,7 +364,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
     return this._traitConfigurations.map((tc) => {
       // Getting info about trait (asset info)
       const traitAsset = this.assetsClient.getTrait(tc.traitName);
-      console.log("Asset: ", traitAsset);
 
       // Check if there is a conditional rendering config for this trait
       if (traitAsset?.conditonalRenderingConfig) {
@@ -388,7 +400,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
           );
 
         if (conditionalRenderingConfig) {
-          console.log(conditionalRenderingConfig);
           return tc.getImageUrl(this.assetsClient, conditionalRenderingConfig);
         }
       }
@@ -398,7 +409,6 @@ export class ItemConfiguration extends AssetsClientConsumer {
   }
 
   protected static randomNumber(): number {
-    console.log("Random number");
     return Math.random();
   }
 
