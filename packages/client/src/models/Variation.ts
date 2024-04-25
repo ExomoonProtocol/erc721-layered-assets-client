@@ -31,6 +31,12 @@ export interface IVariation {
   rarity?: number | string;
 
   /**
+   * If the variation has a custom preview image.
+   * Default is `false`.
+   */
+  hasCustomPreviewImage?: boolean;
+
+  /**
    * Preview/Thumbnail image URL for the variation.
    * If not provided, the image url will be generated based on the expected default thumbnail image url.
    */
@@ -53,6 +59,9 @@ export class Variation implements IVariation {
 
   @JsonProperty({ required: false })
   public rarity?: number | string;
+
+  @JsonProperty({ required: false })
+  public hasCustomPreviewImage?: boolean;
 
   @JsonProperty({ required: false })
   public previewImageUrl?: string;

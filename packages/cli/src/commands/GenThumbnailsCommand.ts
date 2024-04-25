@@ -67,6 +67,15 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
       return;
     }
 
+    if (variation.hasCustomPreviewImage) {
+      console.log(
+        chalk.red(
+          `Custom preview image for variation ${trait.name} ${variation.name}`
+        )
+      );
+      return;
+    }
+
     // Generate the thumbnail for a variation
     console.log(
       chalk.green(
