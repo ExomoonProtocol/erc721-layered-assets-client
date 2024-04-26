@@ -442,4 +442,70 @@ export class AssetsClient {
 
     return imageUrl;
   }
+
+  /**
+   * Evals the preview image url for the provided trait, variation and color (optional).
+   * If a conditional trait config is provided, it will override the default trait, variation and color, according to the conditional trait config itself.
+   *
+   * @param params Parameters for getting the preview image URL
+   * @returns Preview image URL string
+   * @public
+   */
+  public getPreviewImageUrl(params: {
+    traitName: string;
+    variationName: string;
+    conditionalTraitConfig?: ConditionalRenderingConfig;
+  }): string {
+    const trait = this.getTrait(params.traitName);
+
+    if (!trait) {
+      throw new Error(`Trait ${params.traitName} not found`);
+    }
+
+    let traitUrlSection = trait.name;
+    const variationUrlSection = params.variationName;
+
+    if (params.conditionalTraitConfig) {
+      const traits = this.getTraits();
+
+      let configMatchedWithTrait = false;
+
+      const config = params.conditionalTraitConfig;
+      const trait = traits.find((t) => t.name === config.traitName);
+
+      if (trait) {
+        // If there is no variation name, use match only by trait name
+        if (!config.variationName) {
+          configMatchedWithTrait = true;
+        }
+
+        // If there is a variation name, match by trait name and variation name
+        const variation = trait.variations.find(
+          (v) => v.name === config.variationName
+        );
+
+        if (variation) {
+          if (config.colorName) {
+            // If there is a color name, match by trait name, variation name and color name
+            const color = variation.colors.find((c) => c === config.colorName);
+
+            if (color) {
+              configMatchedWithTrait = true;
+            }
+          } else {
+            // If there is no color name, match by trait name and variation name
+            configMatchedWithTrait = true;
+          }
+        }
+
+        if (configMatchedWithTrait) {
+          traitUrlSection = `${params.traitName}/${config.folderName}`;
+        }
+      }
+    }
+
+    const imageUrl = `${this.baseUrl}/traits/${traitUrlSection}/${variationUrlSection}/thumbnail.png`;
+
+    return imageUrl;
+  }
 }

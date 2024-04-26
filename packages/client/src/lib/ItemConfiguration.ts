@@ -408,6 +408,42 @@ export class ItemConfiguration extends AssetsClientConsumer {
     });
   }
 
+  // /**
+  //  * Get the preview images URLs for the variations of the specified trait.
+  //  * It will also consider conditional rendering configurations, so that the correct URLs are returned for each variation.
+  //  * @param traitName Trait name
+  //  * @returns Array of variation preview image urls
+  //  */
+  // public getVariationsPreviewUrls(traitName: string): Array<string> {
+  //   this.requireReady();
+
+  //   const trait = this.assetsClient.getTrait(traitName);
+
+  //   if (!trait) {
+  //     throw new Error(`Trait ${traitName} not found`);
+  //   }
+
+  //   return trait.variations.map((variation) => {
+  //     // Check if there is a conditional rendering config for this trait
+  //     if (trait.conditonalRenderingConfig) {
+  //       const conditionalRenderingConfig = trait.conditonalRenderingConfig.find(
+  //         (currentConditionalConfig) => {
+  //           return (
+  //             currentConditionalConfig.traitName === traitName &&
+  //             currentConditionalConfig.variationName === variation.name
+  //           );
+  //         }
+  //       );
+
+  //       if (conditionalRenderingConfig) {
+  //         return variation.getPreviewImageUrl();
+  //       }
+  //     }
+
+  //     return variation.getPreviewImageUrl(this.assetsClient);
+  //   });
+  // }
+
   protected static randomNumber(): number {
     return Math.random();
   }

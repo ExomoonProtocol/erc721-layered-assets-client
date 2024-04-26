@@ -182,6 +182,50 @@ describe("AssetsClient", () => {
     });
   });
 
+  describe("getPreviewImageUrl method", () => {
+    it("Should get preview image url of a normal variation", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/1/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      await client.fetchAssetsObject();
+      const url = client.getPreviewImageUrl({
+        traitName: "Background",
+        variationName: "Single Color",
+      });
+      expect(url).toBe(
+        "https://example.com/traits/Background/Single Color/thumbnail.png"
+      );
+    });
+
+    it("Should get preview image with conditional rendering config", async () => {
+      HttpServerMock.instance.addTemporaryResponseMappings([
+        {
+          url: "https://example.com",
+          filePath: path.resolve(__dirname, "../assets/2/"),
+        },
+      ]);
+
+      const client = new AssetsClient({ baseUrl: "https://example.com" });
+      await client.fetchAssetsObject();
+      const url = client.getPreviewImageUrl({
+        traitName: "Cover",
+        variationName: "Rectangle",
+        conditionalTraitConfig: new ConditionalRenderingConfig({
+          traitName: "Shape",
+          variationName: "Rectangle",
+        }),
+      });
+      expect(url).toBe(
+        "https://example.com/traits/Cover/Shape_Rectangle/Rectangle/thumbnail.png"
+      );
+    });
+  });
+
   describe("getTraitsGroups method", () => {
     it("Should get traits groups", async () => {
       HttpServerMock.instance.addTemporaryResponseMappings([
