@@ -3,6 +3,7 @@ import chalk from "chalk";
 import inquirer from "inquirer";
 import {
   AssetsClient,
+  ConditionalRenderingConfig,
   Trait,
   Variation,
 } from "@exomoon/erc721-layered-assets-client";
@@ -109,6 +110,48 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
     fs.writeFileSync(variation.previewImageUrl, thumbnailFileBuffer);
   }
 
+  public async genConditionalRenderingThumbnail(
+    trait: Trait,
+    variation: Variation,
+    conditionalRenderingConfig?: ConditionalRenderingConfig
+  ) {
+    // Generate the thumbnail for a variation with conditional rendering
+    console.log(
+      chalk.greenBright(
+        `Generating thumbnail for variation ${trait.name} ${variation.name} with conditional rendering: ${conditionalRenderingConfig?.traitName} ${conditionalRenderingConfig?.variationName}...`
+      )
+    );
+
+    if (!trait) {
+      throw new Error("Trait not found");
+    }
+
+    if (!variation) {
+      throw new Error("Variation not found");
+    }
+
+    const previewImageUrl = this.assetsClient.getPreviewImageUrl({
+      traitName: trait.name,
+      variationName: variation.name,
+      conditionalTraitConfig: conditionalRenderingConfig,
+    });
+
+    const filePath = path.join(
+      previewImageUrl,
+      "..",
+      variation.colors ? `${variation.colors[0]}.png` : `${variation.name}.png`
+    );
+
+    const finalSize = 256;
+    const thumbnailFileBuffer = await this.resizePngImage(
+      filePath,
+      finalSize,
+      finalSize
+    );
+
+    fs.writeFileSync(previewImageUrl, thumbnailFileBuffer);
+  }
+
   public async resizePngImage(
     imageFilePath: string,
     finalWidth: number,
@@ -135,6 +178,12 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
     traits.forEach((t) => {
       t.variations.forEach((v) => {
         promises.push(this.genVariationThumbnail(t, v));
+      });
+
+      t.conditonalRenderingConfig?.forEach((condition) => {
+        t.variations.forEach((v) => {
+          promises.push(this.genConditionalRenderingThumbnail(t, v, condition));
+        });
       });
     });
 
