@@ -69,10 +69,20 @@ export class GenThumbnailsCommand extends BaseCommandHandler {
 
     if (variation.hasCustomPreviewImage) {
       console.log(
-        chalk.red(
+        chalk.white(
           `Custom preview image for variation ${trait.name} ${variation.name}`
         )
       );
+
+      // Check if exist
+      if (!fs.existsSync(variation.previewImageUrl)) {
+        console.log(
+          chalk.red(
+            `Custom preview image for variation ${trait.name} ${variation.name} not found`
+          )
+        );
+      }
+
       return;
     }
 
