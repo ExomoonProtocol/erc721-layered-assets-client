@@ -71,6 +71,35 @@ exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - si
 ]
 `;
 
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - Conditional rendering 1`] = `
+[
+  "https://example3.com/traits/Shape/Rectangle/thumbnail.png",
+  "https://example3.com/traits/Shape/Circle/thumbnail.png",
+  "https://example3.com/traits/Shape/Triangle/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - Conditional rendering 2`] = `
+[
+  "https://example3.com/traits/Background/Single Color/thumbnail.png",
+  "https://example3.com/traits/Background/Custom 1/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - Conditional rendering 3`] = `
+[
+  "https://example3.com/traits/Cover/Shape_Circle/Custom Cover 1/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - simple trait 1`] = `
+[
+  "https://example3.com/traits/Shape/Rectangle/thumbnail.png",
+  "https://example3.com/traits/Shape/Circle/thumbnail.png",
+  "https://example3.com/traits/Shape/Triangle/thumbnail.png",
+]
+`;
+
 exports[`ItemConfiguration class load method Should load initial item configuration 1`] = `
 [
   TraitConfiguration {

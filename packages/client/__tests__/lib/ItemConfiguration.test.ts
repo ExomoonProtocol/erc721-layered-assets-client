@@ -377,6 +377,34 @@ describe("ItemConfiguration class", () => {
     });
   });
 
+  describe("getVariationsPreviewUrls method", () => {
+    it("Should get variations preview urls - simple trait", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      expect(
+        itemConfiguration.getVariationsPreviewUrls("Shape")
+      ).toMatchSnapshot();
+    });
+
+    it("Should get variations preview urls - Conditional rendering", async () => {
+      const itemConfiguration = new ItemConfiguration(client3);
+      await itemConfiguration.load();
+      itemConfiguration.setVariation("Shape", "Circle");
+      itemConfiguration.setVariation("Background", "Single Color", "Blue");
+      itemConfiguration.setVariation("Cover", "Custom Cover 1");
+      expect(
+        itemConfiguration.getVariationsPreviewUrls("Shape")
+      ).toMatchSnapshot();
+      expect(
+        itemConfiguration.getVariationsPreviewUrls("Background")
+      ).toMatchSnapshot();
+      expect(
+        itemConfiguration.getVariationsPreviewUrls("Cover")
+      ).toMatchSnapshot();
+    });
+  });
+
   describe("renderMetadata method", () => {
     it("Should render metadata", async () => {
       const itemConfiguration = new ItemConfiguration(client3);

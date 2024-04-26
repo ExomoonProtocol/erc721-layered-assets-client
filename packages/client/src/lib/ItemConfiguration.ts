@@ -408,41 +408,76 @@ export class ItemConfiguration extends AssetsClientConsumer {
     });
   }
 
-  // /**
-  //  * Get the preview images URLs for the variations of the specified trait.
-  //  * It will also consider conditional rendering configurations, so that the correct URLs are returned for each variation.
-  //  * @param traitName Trait name
-  //  * @returns Array of variation preview image urls
-  //  */
-  // public getVariationsPreviewUrls(traitName: string): Array<string> {
-  //   this.requireReady();
+  /**
+   * Get the preview images URLs for the variations of the specified trait.
+   * It will also consider conditional rendering configurations, so that the correct URLs are returned for each variation.
+   * @param traitName Trait name
+   * @returns Array of variation preview image urls
+   */
+  public getVariationsPreviewUrls(traitName: string): Array<string> {
+    this.requireReady();
 
-  //   const trait = this.assetsClient.getTrait(traitName);
+    const trait = this.assetsClient.getTrait(traitName);
 
-  //   if (!trait) {
-  //     throw new Error(`Trait ${traitName} not found`);
-  //   }
+    if (!trait) {
+      throw new Error(`Trait ${traitName} not found`);
+    }
 
-  //   return trait.variations.map((variation) => {
-  //     // Check if there is a conditional rendering config for this trait
-  //     if (trait.conditonalRenderingConfig) {
-  //       const conditionalRenderingConfig = trait.conditonalRenderingConfig.find(
-  //         (currentConditionalConfig) => {
-  //           return (
-  //             currentConditionalConfig.traitName === traitName &&
-  //             currentConditionalConfig.variationName === variation.name
-  //           );
-  //         }
-  //       );
+    console.log("Trait: ", trait);
 
-  //       if (conditionalRenderingConfig) {
-  //         return variation.getPreviewImageUrl();
-  //       }
-  //     }
+    return trait.variations.map((variation) => {
+      // Check if there is a conditional rendering config for this trait
+      if (trait.conditonalRenderingConfig) {
+        const conditionalRenderingConfig = trait.conditonalRenderingConfig.find(
+          (currentConditionalConfig) => {
+            const matchedConfiguration = this._traitConfigurations.find(
+              (tcToMatch) => {
+                let matched = true;
 
-  //     return variation.getPreviewImageUrl(this.assetsClient);
-  //   });
-  // }
+                if (
+                  currentConditionalConfig.traitName !== tcToMatch.traitName
+                ) {
+                  matched = false;
+                } else if (
+                  currentConditionalConfig.variationName &&
+                  currentConditionalConfig.variationName !==
+                    tcToMatch.variationName
+                ) {
+                  matched = false;
+                } else if (
+                  currentConditionalConfig.colorName &&
+                  currentConditionalConfig.colorName !== tcToMatch.colorName
+                ) {
+                  matched = false;
+                }
+
+                return matched;
+              }
+            );
+
+            return matchedConfiguration;
+          }
+        );
+
+        if (conditionalRenderingConfig) {
+          console.log(
+            "[DEBUG] Conditional rendering config found",
+            conditionalRenderingConfig
+          );
+          return this.assetsClient.getPreviewImageUrl({
+            traitName: traitName,
+            variationName: variation.name,
+            conditionalTraitConfig: conditionalRenderingConfig,
+          });
+        }
+      }
+
+      return this.assetsClient.getPreviewImageUrl({
+        traitName: traitName,
+        variationName: variation.name,
+      });
+    });
+  }
 
   protected static randomNumber(): number {
     return Math.random();
