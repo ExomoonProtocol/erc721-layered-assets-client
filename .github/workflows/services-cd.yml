@@ -56,7 +56,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --force
+          sudo apt update
+          sudo apt install -y libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev
+          npm_config_build_from_source=true yarn install
+
+      - name: Build
+        run: |
+          yarn build
+
 
       - name: Serverless Deploy - d1
         if: ${{ github.event.inputs.stageName == 'd1' }}

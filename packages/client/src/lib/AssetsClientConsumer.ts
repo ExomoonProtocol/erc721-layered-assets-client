@@ -10,6 +10,9 @@ export class AssetsClientConsumer {
     this._assetsClient = client;
   }
 
+  /**
+   * Get assets client instance used by the consumer
+   */
   public get assetsClient(): AssetsClient {
     return this._assetsClient;
   }

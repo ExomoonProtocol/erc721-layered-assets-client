@@ -1,0 +1,87 @@
+service: Exomoon-Assets-Renderer
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-latest-layer-version
+  # - serverless-api-gateway-caching
+
+package:
+  individually: true
+  excludeDevDependencies: true
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: ${env:STAGE}
+  environment:
+    STAGE: ${self:provider.stage}
+    ASSETS_BASE_URL: ${env:ASSETS_BASE_URL}
+    API_GATEWAY_NAME: Exomoon-ApiGateway-Assets-Renderer-${self:provider.stage}
+  layers:
+    - arn:aws:lambda:${self:provider.region}:${aws:accountId}:layer:canvas-nodejs:latest
+
+custom:
+  stage: ${self:provider.stage}
+
+  # apiGatewayCaching:
+  #   enabled: true
+
+  serverless-offline:
+    httpPort: 3003
+    websocketPort: 3004
+    lambdaPort: 3005
+
+  webpack:
+    webpackConfig: "webpack.config.js"
+    packager: "yarn"
+    excludeFiles: src/**/*.test.js
+    keepOutputDirectory: true
+    packagerOptions:
+      lockFile: "../../yarn.lock"
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:provider.environment.API_GATEWAY_NAME}
+        BinaryMediaTypes:
+          - "image/png"
+
+  Outputs:
+    ApiGatewayRestApiId:
+      Value:
+        Ref: ApiGatewayRestApi
+      Export:
+        Name: exomoon-assets-${self:provider.stage}-ExtApiGatewayRestApiId
+
+    ApiGatewayRestApiRootResourceId:
+      Value:
+        Fn::GetAtt:
+          - ApiGatewayRestApi
+          - RootResourceId
+      Export:
+        Name: exomoon-assets-${self:provider.stage}-ExtApiGatewayRestApiRootResourceId
+
+functions:
+  render:
+    handler: src/functions/render.render
+    events:
+      - http:
+          cors: true
+          method: get
+          path: /render/data/{data}/{file}
+          # caching:
+          #   enabled: true
+          #   cacheKeyParameters:
+          #     - name: request.path.data
+          #     - name: request.path.file
+          #     - name: request.querystring.size
+          #   perKeyInvalidation:
+          #     requireAuthorization: false
+          #     handleUnauthorizedRequests: Ignore

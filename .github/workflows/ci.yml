@@ -2,6 +2,9 @@ name: CI Pipeline
 
 on: [push]
 
+env:
+  ASSETS_BASE_URL: ${{ secrets.ASSETS_BASE_URL }}
+
 jobs:
   build:
     name: Build
@@ -15,12 +18,20 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
       - name: Cache Node.js modules
         uses: actions/cache@v4
         with:
           path: |
             ./node_modules
             ./packages/client/node_modules
+            ./services/renderer/node_modules
           key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-yarn-
@@ -59,6 +70,7 @@ jobs:
           path: |
             ./node_modules
             ./packages/client/node_modules
+            ./services/renderer/node_modules
           key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-yarn-
@@ -90,6 +102,7 @@ jobs:
           path: |
             ./node_modules
             ./packages/client/node_modules
+            ./services/renderer/node_modules
           key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.OS }}-yarn-
@@ -104,3 +117,55 @@ jobs:
 
       - name: Coverage
         run: yarn coverage
+
+  docs:
+    name: Documentation
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    needs: [build, lint, test]
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ./node_modules
+            ./packages/client/node_modules
+            ./services/renderer/node_modules
+          key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-yarn-
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Generate Documentation
+        run: |
+          yarn run docs
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Zip Documentation
+        run: cd packages/client/docs && zip -r ../${{ steps.extract_branch.outputs.branch }}.zip .
+
+      - uses: hkusu/s3-upload-action@v2
+        id: upload
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "us-east-1"
+          aws-bucket: ${{ secrets.AWS_BUCKET }}
+          file-path: packages/client/${{ steps.extract_branch.outputs.branch }}.zip
+          destination-dir: /assets-client
+          bucket-root: /

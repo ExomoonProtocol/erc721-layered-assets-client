@@ -1,60 +1,212 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ItemConfiguration class buildFromLayersDataString method Should build item configuration from layers data string - multiple layers 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": undefined,
+    "_traitName": "Background",
+    "_variationName": "Custom 1",
+  },
+  TraitConfiguration {
+    "_colorName": undefined,
+    "_traitName": "Shape",
+    "_variationName": "Circle",
+  },
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Cover",
+    "_variationName": "Custom Cover 1",
+  },
+]
+`;
+
+exports[`ItemConfiguration class buildFromLayersDataString method Should build item configuration from layers data string - single layer 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Black",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class buildRandomItemConfiguration should build configuration with all required traits and some optional ones (static) 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Brown",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+  TraitConfiguration {
+    "_colorName": undefined,
+    "_traitName": "Shape",
+    "_variationName": "Circle",
+  },
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Cover",
+    "_variationName": "Custom Cover 1",
+  },
+]
+`;
+
 exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits 1`] = `
 [
-  "https://example2.com/traits/Background/Single Color/Blue.png",
-  "https://example2.com/traits/Shape/Circle/Circle.png",
+  "https://example3.com/traits/Background/Single Color/Blue.png",
+  "https://example3.com/traits/Shape/Circle/Circle.png",
 ]
 `;
 
 exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - multiple traits with conditional rendering 1`] = `
 [
-  "https://example2.com/traits/Background/Single Color/Blue.png",
-  "https://example2.com/traits/Shape/Circle/Circle.png",
-  "https://example2.com/traits/Cover/Shape_Circle/Custom Cover 1/Red.png",
+  "https://example3.com/traits/Background/Single Color/Blue.png",
+  "https://example3.com/traits/Shape/Circle/Circle.png",
+  "https://example3.com/traits/Cover/Shape_Circle/Custom Cover 1/Red.png",
 ]
 `;
 
 exports[`ItemConfiguration class getTraitsUrls method Should get trait urls - single trait 1`] = `
 [
-  "https://example2.com/traits/Shape/Circle/Circle.png",
+  "https://example3.com/traits/Shape/Circle/Circle.png",
 ]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - Conditional rendering 1`] = `
+[
+  "https://example3.com/traits/Shape/Rectangle/thumbnail.png",
+  "https://example3.com/traits/Shape/Circle/thumbnail.png",
+  "https://example3.com/traits/Shape/Triangle/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - Conditional rendering 2`] = `
+[
+  "https://example3.com/traits/Background/Single Color/thumbnail.png",
+  "https://example3.com/traits/Background/Custom 1/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - Conditional rendering 3`] = `
+[
+  "https://example3.com/traits/Cover/Shape_Circle/Custom Cover 1/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class getVariationsPreviewUrls method Should get variations preview urls - simple trait 1`] = `
+[
+  "https://example3.com/traits/Shape/Rectangle/thumbnail.png",
+  "https://example3.com/traits/Shape/Circle/thumbnail.png",
+  "https://example3.com/traits/Shape/Triangle/thumbnail.png",
+]
+`;
+
+exports[`ItemConfiguration class load method Should load initial item configuration 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class load method Should load initial item configuration 2`] = `
+[
+  "https://example2.com/traits/Background/Single Color/Blue.png",
+]
+`;
+
+exports[`ItemConfiguration class randomize method Should be able to set, randomize, set again, and then undo the different steps 1`] = `
+{
+  "state1": [
+    TraitConfiguration {
+      "_colorName": "Blue",
+      "_traitName": "Background",
+      "_variationName": "Single Color",
+    },
+  ],
+  "state2": [
+    TraitConfiguration {
+      "_colorName": "Brown",
+      "_traitName": "Background",
+      "_variationName": "Single Color",
+    },
+    TraitConfiguration {
+      "_colorName": undefined,
+      "_traitName": "Shape",
+      "_variationName": "Circle",
+    },
+    TraitConfiguration {
+      "_colorName": "Blue",
+      "_traitName": "Cover",
+      "_variationName": "Custom Cover 1",
+    },
+  ],
+  "state3": [
+    TraitConfiguration {
+      "_colorName": "Brown",
+      "_traitName": "Background",
+      "_variationName": "Single Color",
+    },
+    TraitConfiguration {
+      "_colorName": undefined,
+      "_traitName": "Shape",
+      "_variationName": "Circle",
+    },
+    TraitConfiguration {
+      "_colorName": "Red",
+      "_traitName": "Cover",
+      "_variationName": "Custom Cover 1",
+    },
+  ],
+}
+`;
+
+exports[`ItemConfiguration class randomize method Should randomize the item configuration 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class removeVariation method Should remove variation 1`] = `
+[
+  TraitConfiguration {
+    "_colorName": "Blue",
+    "_traitName": "Background",
+    "_variationName": "Single Color",
+  },
+]
+`;
+
+exports[`ItemConfiguration class renderMetadata method Should render metadata 1`] = `
+{
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "Single Color Blue",
+    },
+    {
+      "trait_type": "Shape",
+      "value": "Circle",
+    },
+    {
+      "trait_type": "Cover",
+      "value": "Custom Cover 1 Red",
+    },
+  ],
+  "description": "",
+  "image": "{{imageUrl}}",
+  "name": "Collection 1 #{{id}}",
+}
 `;
 
 exports[`ItemConfiguration class setVariation method Should set variation with a speciic color 1`] = `
 [
   TraitConfiguration {
-    "_assetsClient": AssetsClient {
-      "_baseUrl": "https://example.com",
-      "_cachedAssetsInfo": {
-        "collectionInfo": CollectionInfo {
-          "collectionName": "Collection 1",
-          "traitsOrder": [
-            "Background",
-          ],
-        },
-        "traits": [
-          Trait {
-            "name": "Background",
-            "variations": [
-              Variation {
-                "colors": [
-                  "Black",
-                  "Blue",
-                  "Brown",
-                  "Green",
-                ],
-                "name": "Single Color",
-              },
-              Variation {
-                "name": "Custom 1",
-              },
-            ],
-          },
-        ],
-      },
-      "_useCache": true,
-    },
     "_colorName": "Blue",
     "_traitName": "Background",
     "_variationName": "Single Color",
@@ -65,37 +217,6 @@ exports[`ItemConfiguration class setVariation method Should set variation with a
 exports[`ItemConfiguration class setVariation method Should set variation with color without specifying a color 1`] = `
 [
   TraitConfiguration {
-    "_assetsClient": AssetsClient {
-      "_baseUrl": "https://example.com",
-      "_cachedAssetsInfo": {
-        "collectionInfo": CollectionInfo {
-          "collectionName": "Collection 1",
-          "traitsOrder": [
-            "Background",
-          ],
-        },
-        "traits": [
-          Trait {
-            "name": "Background",
-            "variations": [
-              Variation {
-                "colors": [
-                  "Black",
-                  "Blue",
-                  "Brown",
-                  "Green",
-                ],
-                "name": "Single Color",
-              },
-              Variation {
-                "name": "Custom 1",
-              },
-            ],
-          },
-        ],
-      },
-      "_useCache": true,
-    },
     "_colorName": "Black",
     "_traitName": "Background",
     "_variationName": "Single Color",
@@ -106,37 +227,6 @@ exports[`ItemConfiguration class setVariation method Should set variation with c
 exports[`ItemConfiguration class setVariation method Should set variation with no color 1`] = `
 [
   TraitConfiguration {
-    "_assetsClient": AssetsClient {
-      "_baseUrl": "https://example.com",
-      "_cachedAssetsInfo": {
-        "collectionInfo": CollectionInfo {
-          "collectionName": "Collection 1",
-          "traitsOrder": [
-            "Background",
-          ],
-        },
-        "traits": [
-          Trait {
-            "name": "Background",
-            "variations": [
-              Variation {
-                "colors": [
-                  "Black",
-                  "Blue",
-                  "Brown",
-                  "Green",
-                ],
-                "name": "Single Color",
-              },
-              Variation {
-                "name": "Custom 1",
-              },
-            ],
-          },
-        ],
-      },
-      "_useCache": true,
-    },
     "_colorName": undefined,
     "_traitName": "Background",
     "_variationName": "Custom 1",

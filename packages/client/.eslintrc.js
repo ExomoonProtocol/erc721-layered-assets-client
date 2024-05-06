@@ -17,7 +17,7 @@ module.exports = {
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     ...customRules,
   },
-  ignorePatterns: ["dist/", ".eslintrc.js", "__tests__/"],
+  ignorePatterns: ["dist/", ".eslintrc.js", "__tests__/", "scripts/"],
   env: {
     node: true,
     es6: true,

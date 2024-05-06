@@ -7,10 +7,13 @@
     "coverage": "lerna run coverage --concurrency=1 --stream",
     "clean": "rm -rf dist && rm -rf .build",
     "clean-modules": "rm -rf node_modules && lerna exec -- rm -rf ./node_modules",
-    "lint": "lerna run lint"
+    "lint": "lerna run lint",
+    "docs": "lerna run docs",
+    "publish-packages": "yarn build && lerna publish"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "services/*"
   ],
   "dependencies": {},
   "devDependencies": {
