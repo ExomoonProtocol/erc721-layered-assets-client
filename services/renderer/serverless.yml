@@ -5,7 +5,7 @@ plugins:
   - serverless-offline
   - serverless-dotenv-plugin
   - serverless-latest-layer-version
-  - serverless-api-gateway-caching
+  # - serverless-api-gateway-caching
 
 package:
   individually: true
@@ -28,8 +28,8 @@ provider:
 custom:
   stage: ${self:provider.stage}
 
-  apiGatewayCaching:
-    enabled: true
+  # apiGatewayCaching:
+  #   enabled: true
 
   serverless-offline:
     httpPort: 3003
@@ -76,12 +76,12 @@ functions:
           cors: true
           method: get
           path: /render/data/{data}/{file}
-          caching:
-            enabled: true
-            cacheKeyParameters:
-              - name: request.path.data
-              - name: request.path.file
-              - name: request.querystring.size
-            perKeyInvalidation:
-              requireAuthorization: false
-              handleUnauthorizedRequests: Ignore
+          # caching:
+          #   enabled: true
+          #   cacheKeyParameters:
+          #     - name: request.path.data
+          #     - name: request.path.file
+          #     - name: request.querystring.size
+          #   perKeyInvalidation:
+          #     requireAuthorization: false
+          #     handleUnauthorizedRequests: Ignore
